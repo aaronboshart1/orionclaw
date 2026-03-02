@@ -16,6 +16,7 @@ import { NodeType, NodeStatus, EdgeCondition } from '../types.js';
 import { WorkflowGraph } from './workflow-graph.js';
 import { WorkflowState } from '../state/workflow-state.js';
 import { ContextAssembler } from '../state/context-assembler.js';
+import type { HindsightProcessor } from '../memory/hindsight.js';
 
 /** Bridge interface for dispatching AGENT nodes to a runtime. */
 export interface AgentBridge {
@@ -30,6 +31,8 @@ export interface ExecutorOptions {
   onEvent?: (event: ExecutionEvent) => void;
   /** Callback for HUMAN nodes — must resolve when approval is received. */
   onHumanApproval?: (node: Node) => Promise<boolean>;
+  /** Optional HindsightProcessor for post-execution lesson extraction. */
+  hindsightProcessor?: HindsightProcessor;
 }
 
 export class GraphExecutor {
@@ -41,6 +44,7 @@ export class GraphExecutor {
   private workflowTimeoutMs: number;
   private onEvent?: (event: ExecutionEvent) => void;
   private onHumanApproval?: (node: Node) => Promise<boolean>;
+  private hindsightProcessor?: HindsightProcessor;
 
   constructor(opts: ExecutorOptions) {
     this.bridge = opts.bridge;
@@ -49,6 +53,7 @@ export class GraphExecutor {
     this.workflowTimeoutMs = opts.workflowTimeoutMs ?? 600_000; // 10 min default
     this.onEvent = opts.onEvent;
     this.onHumanApproval = opts.onHumanApproval;
+    this.hindsightProcessor = opts.hindsightProcessor;
   }
 
   async execute(graph: WorkflowGraph, input?: unknown): Promise<ExecutionTrace> {
@@ -67,7 +72,7 @@ export class GraphExecutor {
     const deadline = Date.now() + this.workflowTimeoutMs;
 
     for (const layer of layers) {
-      if (failed) break;
+      if (failed) {break;}
       if (Date.now() > deadline) {
         this.emit({ timestamp: new Date().toISOString(), type: 'workflow_failed', data: { reason: 'timeout' } });
         failed = true;
@@ -105,9 +110,9 @@ export class GraphExecutor {
     }
 
     const resultsObj: Record<string, NodeResult> = {};
-    for (const [k, v] of this.results) resultsObj[k] = v;
+    for (const [k, v] of this.results) {resultsObj[k] = v;}
 
-    return {
+    const trace: ExecutionTrace = {
       workflowId,
       graph: graph.toJSON(),
       events: [...this.events],
@@ -118,6 +123,17 @@ export class GraphExecutor {
       durationMs,
       totalTokens: (totalInput + totalOutput > 0) ? { input: totalInput, output: totalOutput } : undefined,
     };
+
+    // Post-execution: extract lessons via HindsightProcessor (non-fatal)
+    if (this.hindsightProcessor) {
+      try {
+        await this.hindsightProcessor.processTrace(trace);
+      } catch (err) {
+        console.warn('[GraphExecutor] HindsightProcessor.processTrace failed:', (err as Error).message);
+      }
+    }
+
+    return trace;
   }
 
   private async executeNode(node: Node, graph: WorkflowGraph, deadline: number): Promise<void> {
@@ -196,7 +212,7 @@ export class GraphExecutor {
           throw new Error(`Tool node ${node.id} has no toolFn`);
         }
         const input: Record<string, unknown> = {};
-        for (const [id, r] of predResults) input[id] = r.output;
+        for (const [id, r] of predResults) {input[id] = r.output;}
         const output = await node.toolFn(input, this.state.toJSON().entries);
         return {
           nodeId: node.id,
@@ -241,7 +257,7 @@ export class GraphExecutor {
       case NodeType.JOIN: {
         // Wait-for-all: all predecessors must be complete (guaranteed by layer ordering)
         const outputs: Record<string, unknown> = {};
-        for (const [id, r] of predResults) outputs[id] = r.output;
+        for (const [id, r] of predResults) {outputs[id] = r.output;}
         return {
           nodeId: node.id,
           status: NodeStatus.COMPLETED,
@@ -335,27 +351,27 @@ export class GraphExecutor {
 
   private shouldExecute(node: Node, graph: WorkflowGraph): boolean {
     const incomingEdges = graph.getEdgesTo(node.id);
-    if (incomingEdges.length === 0) return true; // entry node
+    if (incomingEdges.length === 0) {return true;} // entry node
 
     for (const edge of incomingEdges) {
       const predResult = this.results.get(edge.source);
-      if (!predResult) continue;
+      if (!predResult) {continue;}
 
       switch (edge.condition) {
         case EdgeCondition.ALWAYS:
           return true;
         case EdgeCondition.ON_SUCCESS:
-          if (predResult.status === NodeStatus.COMPLETED) return true;
+          if (predResult.status === NodeStatus.COMPLETED) {return true;}
           break;
         case EdgeCondition.ON_FAILURE:
-          if (predResult.status === NodeStatus.FAILED) return true;
+          if (predResult.status === NodeStatus.FAILED) {return true;}
           break;
         case EdgeCondition.CONDITIONAL: {
           // For router edges, check if this was the selected route
           const routerOutput = predResult.output as { selectedRoute?: string; targetNode?: string } | null;
-          if (routerOutput?.targetNode === node.id) return true;
+          if (routerOutput?.targetNode === node.id) {return true;}
           // Also check conditionFn if present
-          if (edge.conditionFn && edge.conditionFn(predResult)) return true;
+          if (edge.conditionFn && edge.conditionFn(predResult)) {return true;}
           break;
         }
       }
@@ -378,7 +394,7 @@ export class GraphExecutor {
     const results = new Map<string, NodeResult>();
     for (const p of preds) {
       const r = this.results.get(p);
-      if (r) results.set(p, r);
+      if (r) {results.set(p, r);}
     }
     return results;
   }

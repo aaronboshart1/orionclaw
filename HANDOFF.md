@@ -371,7 +371,11 @@ agent-stats.json                          — Agent performance metrics
 - [x] Build Graph Executor (graph/executor.ts — layer-by-layer execution, all 8 node types, timeouts, fallback edges)
 - [x] Build OpenClaw Bridge (integration/openclaw-bridge.ts — maps to SpawnSubagentParams, mode:'run')
 - [ ] End-to-end test with real agents
-- [x] Hindsight Processor (memory/hindsight.ts — lesson extraction, confidence decay, JSONL persistence, LessonProvider)
+- [x] Hindsight Processor (memory/hindsight.ts — lesson extraction, confidence decay, JSONL persistence, LessonProvider, Hindsight API integration)
+- [x] Hindsight API Client (memory/hindsight-api.ts — retain/recall/listBanks, native fetch, graceful fallback)
+- [x] Hindsight Memory Provider (memory/hindsight-memory-provider.ts — MemoryProvider impl for agent context injection)
+- [x] Hindsight wired into GraphExecutor (post-execution lesson extraction) and Planner (pre-planning context recall)
+- [x] HindsightConfig added to OrionClawConfig (url, defaultBank, memoryBank, enabled)
 - [x] Feedback Collectors (feedback/implicit.ts, inline.ts, reflection.ts — all three channels)
 - [x] Agent Registry (agents/registry.ts — capability matching, performance tracking)
 - [x] Planner (planner/planner.ts — task classification, pattern selection, graph building)

@@ -2,7 +2,7 @@
  * OrionClaw Orchestration Engine — Barrel Exports
  */
 
-// Types
+// Types (includes HindsightConfig)
 export * from './types.js';
 
 // Graph
@@ -25,7 +25,11 @@ export { generateDashboardHtml } from './integration/canvas-dashboard.js';
 export type { DashboardState } from './integration/canvas-dashboard.js';
 
 // Memory
+export { HindsightApiClient } from './memory/hindsight-api.js';
+export type { HindsightMemoryItem, HindsightRecallOptions, HindsightBank } from './memory/hindsight-api.js';
 export { HindsightProcessor } from './memory/hindsight.js';
+export type { HindsightProcessorOptions } from './memory/hindsight.js';
+export { HindsightMemoryProvider } from './memory/hindsight-memory-provider.js';
 
 // Feedback
 export { ImplicitFeedbackCollector } from './feedback/implicit.js';

@@ -240,6 +240,13 @@ export interface OrchestrationPlan {
 
 // ── Config ─────────────────────────────────────────────────────────────────
 
+export interface HindsightConfig {
+  url: string;
+  defaultBank: string;
+  memoryBank: string;
+  enabled: boolean;
+}
+
 export interface OrionClawConfig {
   enabled: boolean;
   defaultModel?: string;
@@ -250,4 +257,5 @@ export interface OrionClawConfig {
   feedbackSampleRate?: number;
   agents?: RegisteredAgent[];
   dataDir?: string;
+  hindsight?: HindsightConfig;
 }

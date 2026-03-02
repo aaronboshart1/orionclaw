@@ -15,6 +15,7 @@ import { WorkflowBuilder } from '../graph/builder.js';
 import type { WorkflowGraph } from '../graph/workflow-graph.js';
 import type { LessonProvider } from '../state/context-assembler.js';
 import type { AgentRegistry } from '../agents/registry.js';
+import type { HindsightApiClient } from '../memory/hindsight-api.js';
 
 export type TaskType = 'research' | 'coding' | 'writing' | 'analysis' | 'mixed';
 
@@ -44,15 +45,36 @@ const TYPE_PATTERN_MAP: Record<TaskType, OrchestrationPattern> = {
 };
 
 export class Planner {
+  private hindsightClient?: HindsightApiClient;
+  private hindsightBank: string;
+
   constructor(
     private registry?: AgentRegistry,
     private lessonProvider?: LessonProvider,
-  ) {}
+    options?: { hindsightClient?: HindsightApiClient; hindsightBank?: string },
+  ) {
+    this.hindsightClient = options?.hindsightClient;
+    this.hindsightBank = options?.hindsightBank ?? 'project-orionclaw';
+  }
 
   /**
    * Plan a workflow from a natural language task description.
    */
   async plan(taskDescription: string): Promise<OrchestrationPlan> {
+    // 0. Recall relevant context from Hindsight (non-fatal)
+    let hindsightContext = '';
+    if (this.hindsightClient) {
+      try {
+        hindsightContext = await this.hindsightClient.recall(
+          this.hindsightBank,
+          `planning context for: ${taskDescription}`,
+          2048,
+        );
+      } catch {
+        // Non-fatal
+      }
+    }
+
     // 1. Classify the task
     const classification = this.classifyTask(taskDescription);
 
@@ -72,7 +94,7 @@ export class Planner {
     return {
       pattern: classification.pattern,
       graph: graph.toJSON(),
-      reasoning: this.buildReasoning(classification, lessons),
+      reasoning: this.buildReasoning(classification, lessons, hindsightContext),
     };
   }
 
@@ -89,7 +111,7 @@ export class Planner {
 
     for (const [type, keywords] of Object.entries(TASK_KEYWORDS)) {
       for (const kw of keywords) {
-        if (lower.includes(kw)) scores[type as TaskType]++;
+        if (lower.includes(kw)) {scores[type as TaskType]++;}
       }
     }
 
@@ -97,7 +119,7 @@ export class Planner {
     let bestType: TaskType = 'mixed';
     let bestScore = 0;
     for (const [type, score] of Object.entries(scores)) {
-      if (type === 'mixed') continue;
+      if (type === 'mixed') {continue;}
       if (score > bestScore) {
         bestScore = score;
         bestType = type as TaskType;
@@ -105,7 +127,7 @@ export class Planner {
     }
 
     // If no clear winner, it's mixed
-    if (bestScore === 0) bestType = 'mixed';
+    if (bestScore === 0) {bestType = 'mixed';}
 
     // Extract subtasks (split on sentences or newlines)
     const subtasks = this.extractSubtasks(taskDescription);
@@ -247,7 +269,7 @@ export class Planner {
 
   /** Select the best agent for a task from the registry. */
   private selectAgent(agents: RegisteredAgent[], task: string): RegisteredAgent | undefined {
-    if (agents.length === 0) return undefined;
+    if (agents.length === 0) {return undefined;}
 
     const lower = task.toLowerCase();
     let best: RegisteredAgent | undefined;
@@ -261,7 +283,7 @@ export class Planner {
         }
       }
       // Prefer lower cost
-      if (agent.costTier === 'low') score += 0.1;
+      if (agent.costTier === 'low') {score += 0.1;}
       if (score > bestScore) {
         bestScore = score;
         best = agent;
@@ -272,7 +294,7 @@ export class Planner {
   }
 
   /** Build reasoning string for the plan. */
-  private buildReasoning(classification: TaskClassification, lessons: HindsightLesson[]): string {
+  private buildReasoning(classification: TaskClassification, lessons: HindsightLesson[], hindsightContext = ''): string {
     const parts = [classification.reasoning];
 
     if (classification.subtasks.length > 1) {
@@ -283,6 +305,10 @@ export class Planner {
       parts.push(`Informed by ${lessons.length} hindsight lesson(s)`);
       const topLesson = lessons[0];
       parts.push(`Top lesson: "${topLesson.lesson}" (confidence: ${topLesson.confidence.toFixed(2)})`);
+    }
+
+    if (hindsightContext) {
+      parts.push(`Hindsight context available (${hindsightContext.length} chars)`);
     }
 
     return parts.join('. ');

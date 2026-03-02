@@ -3,6 +3,7 @@
  *
  * Post-workflow lesson extraction, confidence decay, and JSONL persistence.
  * Implements LessonProvider for the ContextAssembler.
+ * Also retains lessons and execution summaries to Hindsight API.
  */
 
 import { promises as fs } from 'node:fs';
@@ -10,6 +11,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import type { ExecutionTrace, HindsightLesson, LessonType } from '../types.js';
 import type { LessonProvider } from '../state/context-assembler.js';
+import { HindsightApiClient } from './hindsight-api.js';
 
 const DEFAULT_DATA_DIR = path.join(
   process.env['HOME'] ?? '/tmp',
@@ -21,14 +23,33 @@ const LESSONS_FILE = 'lessons.jsonl';
 const DEFAULT_DECAY_RATE = 0.05; // per day
 const MIN_CONFIDENCE = 0.1;
 
+export interface HindsightProcessorOptions {
+  dataDir?: string;
+  bankId?: string;
+  hindsightUrl?: string;
+  hindsightEnabled?: boolean;
+}
+
 export class HindsightProcessor implements LessonProvider {
   private dataDir: string;
   private lessonsPath: string;
   private lessons: HindsightLesson[] = [];
   private loaded = false;
+  private apiClient: HindsightApiClient | null;
+  private bankId: string;
 
-  constructor(dataDir?: string) {
-    this.dataDir = dataDir ?? DEFAULT_DATA_DIR;
+  constructor(options?: HindsightProcessorOptions | string) {
+    if (typeof options === 'string' || options === undefined) {
+      // Legacy constructor: HindsightProcessor(dataDir?)
+      this.dataDir = (options) ?? DEFAULT_DATA_DIR;
+      this.bankId = 'project-orionclaw';
+      this.apiClient = new HindsightApiClient();
+    } else {
+      this.dataDir = options.dataDir ?? DEFAULT_DATA_DIR;
+      this.bankId = options.bankId ?? 'project-orionclaw';
+      const enabled = options.hindsightEnabled !== false;
+      this.apiClient = enabled ? new HindsightApiClient(options.hindsightUrl) : null;
+    }
     this.lessonsPath = path.join(this.dataDir, LESSONS_FILE);
   }
 
@@ -58,9 +79,10 @@ export class HindsightProcessor implements LessonProvider {
   /**
    * Extract lessons from a completed workflow trace.
    * In production this would call Haiku 4.5 — here we do rule-based extraction.
+   * Also retains lessons and execution summary to Hindsight API.
    */
   async processTrace(trace: ExecutionTrace): Promise<HindsightLesson[]> {
-    if (!this.loaded) await this.load();
+    if (!this.loaded) {await this.load();}
 
     const newLessons: HindsightLesson[] = [];
     const now = new Date().toISOString();
@@ -119,14 +141,39 @@ export class HindsightProcessor implements LessonProvider {
       }
     }
 
+    // Save locally (JSONL backup/cache)
     this.lessons.push(...newLessons);
     await this.save();
+
+    // Retain lessons to Hindsight API
+    if (this.apiClient && newLessons.length > 0) {
+      await this.apiClient.retain(
+        this.bankId,
+        newLessons.map(l => ({
+          content: `[${l.type}] ${l.taskPattern}: ${l.lesson} (confidence: ${l.confidence})`,
+          context: 'lesson',
+          timestamp: l.createdAt,
+        })),
+      );
+    }
+
+    // Retain execution summary to Hindsight API
+    if (this.apiClient) {
+      const outcome = failedNodes.length === 0 ? 'success' : 'partial_failure';
+      const summary = `Workflow ${trace.workflowId}: ${outcome}, ${completedNodes.length} completed, ${failedNodes.length} failed, ${nodeIds.length} total nodes, ${trace.durationMs ?? 0}ms duration`;
+      await this.apiClient.retain(this.bankId, [{
+        content: summary,
+        context: 'workflow_execution',
+        timestamp: now,
+      }]);
+    }
+
     return newLessons;
   }
 
   /** Apply confidence decay and prune low-confidence lessons. */
   async decay(): Promise<number> {
-    if (!this.loaded) await this.load();
+    if (!this.loaded) {await this.load();}
 
     const now = Date.now();
     let pruned = 0;
@@ -147,36 +194,64 @@ export class HindsightProcessor implements LessonProvider {
     return pruned;
   }
 
-  /** LessonProvider interface — search for relevant lessons. */
+  /** LessonProvider interface — search for relevant lessons from both local JSONL and Hindsight. */
   async search(taskDescription: string): Promise<HindsightLesson[]> {
-    if (!this.loaded) await this.load();
+    if (!this.loaded) {await this.load();}
 
+    // Local JSONL search
     const query = taskDescription.toLowerCase();
-    const scored = this.lessons
+    const localScored = this.lessons
       .map(lesson => {
         let score = lesson.confidence;
-        // Simple keyword matching
         const words = query.split(/\s+/);
         for (const word of words) {
-          if (word.length < 3) continue;
-          if (lesson.lesson.toLowerCase().includes(word)) score += 0.1;
-          if (lesson.taskPattern.toLowerCase().includes(word)) score += 0.2;
+          if (word.length < 3) {continue;}
+          if (lesson.lesson.toLowerCase().includes(word)) {score += 0.1;}
+          if (lesson.taskPattern.toLowerCase().includes(word)) {score += 0.2;}
           for (const tag of lesson.appliesTo) {
-            if (tag.toLowerCase().includes(word)) score += 0.15;
+            if (tag.toLowerCase().includes(word)) {score += 0.15;}
           }
         }
         return { lesson, score };
       })
-      .filter(s => s.score > MIN_CONFIDENCE)
-      .sort((a, b) => b.score - a.score);
+      .filter(s => s.score > MIN_CONFIDENCE);
 
-    // Mark as used
-    const results = scored.slice(0, 10).map(s => {
+    // Hindsight API recall
+    let hindsightLessons: HindsightLesson[] = [];
+    if (this.apiClient) {
+      try {
+        const recalled = await this.apiClient.recall(this.bankId, `lessons for: ${taskDescription}`, 2048);
+        if (recalled) {
+          // Parse recalled text into synthetic lessons
+          hindsightLessons = [{
+            id: `hindsight-recall-${crypto.randomUUID()}`,
+            taskPattern: 'hindsight:recalled',
+            lesson: recalled,
+            confidence: 0.65,
+            type: 'outcome' as LessonType,
+            appliesTo: [],
+            createdAt: new Date().toISOString(),
+            decayRate: DEFAULT_DECAY_RATE,
+          }];
+        }
+      } catch {
+        // Hindsight recall failure is non-fatal
+      }
+    }
+
+    // Merge: local scored + hindsight, sort by score/confidence
+    const allScored = [
+      ...localScored,
+      ...hindsightLessons.map(l => ({ lesson: l, score: l.confidence })),
+    ].toSorted((a, b) => b.score - a.score);
+
+    // Mark local results as used
+    const results = allScored.slice(0, 10).map(s => {
       s.lesson.lastUsed = new Date().toISOString();
       return s.lesson;
     });
 
-    if (results.length > 0) {
+    if (localScored.length > 0) {
       await this.save();
     }
 
@@ -185,7 +260,7 @@ export class HindsightProcessor implements LessonProvider {
 
   /** Get all stored lessons. */
   async getAllLessons(): Promise<HindsightLesson[]> {
-    if (!this.loaded) await this.load();
+    if (!this.loaded) {await this.load();}
     return [...this.lessons];
   }
 }
