@@ -74,7 +74,7 @@ describe("slack prepareSlackMessage inbound contract", () => {
       threadInheritParent: false,
       slashCommand: {
         enabled: false,
-        name: "openclaw",
+        name: "orionclaw",
         sessionPrefix: "slack:slash",
         ephemeral: true,
       },
@@ -732,7 +732,7 @@ describe("prepareSlackMessage sender prefix", () => {
       useAccessGroups: true,
       slashCommand: {
         enabled: false,
-        name: "openclaw",
+        name: "orionclaw",
         sessionPrefix: "slack:slash",
         ephemeral: true,
       },

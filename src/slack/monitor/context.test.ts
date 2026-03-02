@@ -36,7 +36,7 @@ function createTestContext() {
     threadInheritParent: false,
     slashCommand: {
       enabled: true,
-      name: "openclaw",
+      name: "orionclaw",
       ephemeral: true,
       sessionPrefix: "slack:slash",
     },

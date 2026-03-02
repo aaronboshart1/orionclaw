@@ -70,7 +70,7 @@ describe("Nix integration (U3, U5, U9)", () => {
       ).toBe(path.join(path.resolve(customHome), ".openclaw"));
     });
 
-    it("CONFIG_PATH defaults to OPENCLAW_HOME/.openclaw/openclaw.json", () => {
+    it("CONFIG_PATH defaults to OPENCLAW_HOME/.orionclaw/openclaw.json", () => {
       const customHome = path.join(path.sep, "custom", "home");
       expect(
         resolveConfigPathCandidate(
@@ -83,7 +83,7 @@ describe("Nix integration (U3, U5, U9)", () => {
       ).toBe(path.join(path.resolve(customHome), ".openclaw", "openclaw.json"));
     });
 
-    it("CONFIG_PATH defaults to ~/.openclaw/openclaw.json when env not set", () => {
+    it("CONFIG_PATH defaults to ~/.orionclaw/openclaw.json when env not set", () => {
       expect(
         resolveConfigPathCandidate(
           envWith({ OPENCLAW_CONFIG_PATH: undefined, OPENCLAW_STATE_DIR: undefined }),
@@ -103,7 +103,7 @@ describe("Nix integration (U3, U5, U9)", () => {
       await withTempHome(async (home) => {
         expect(
           resolveConfigPathCandidate(
-            envWith({ OPENCLAW_HOME: home, OPENCLAW_CONFIG_PATH: "~/.openclaw/custom.json" }),
+            envWith({ OPENCLAW_HOME: home, OPENCLAW_CONFIG_PATH: "~/.orionclaw/custom.json" }),
             () => home,
           ),
         ).toBe(path.join(home, ".openclaw", "custom.json"));
@@ -156,7 +156,7 @@ describe("Nix integration (U3, U5, U9)", () => {
                   {
                     id: "main",
                     workspace: "~/ws-agent",
-                    agentDir: "~/.openclaw/agents/main",
+                    agentDir: "~/.orionclaw/agents/main",
                     sandbox: { workspaceRoot: "~/sandbox-root" },
                   },
                 ],
@@ -165,7 +165,7 @@ describe("Nix integration (U3, U5, U9)", () => {
                 whatsapp: {
                   accounts: {
                     personal: {
-                      authDir: "~/.openclaw/credentials/wa-personal",
+                      authDir: "~/.orionclaw/credentials/wa-personal",
                     },
                   },
                 },

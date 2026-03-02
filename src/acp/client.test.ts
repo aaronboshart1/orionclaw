@@ -57,12 +57,12 @@ describe("resolveAcpClientSpawnEnv", () => {
   it("sets OPENCLAW_SHELL marker and preserves existing env values", () => {
     const env = resolveAcpClientSpawnEnv({
       PATH: "/usr/bin",
-      USER: "openclaw",
+      USER: "orionclaw",
     });
 
     expect(env.OPENCLAW_SHELL).toBe("acp-client");
     expect(env.PATH).toBe("/usr/bin");
-    expect(env.USER).toBe("openclaw");
+    expect(env.USER).toBe("orionclaw");
   });
 
   it("overrides pre-existing OPENCLAW_SHELL to acp-client", () => {
@@ -76,7 +76,7 @@ describe("resolveAcpClientSpawnEnv", () => {
 describe("resolveAcpClientSpawnInvocation", () => {
   it("keeps non-windows invocation unchanged", () => {
     const resolved = resolveAcpClientSpawnInvocation(
-      { serverCommand: "openclaw", serverArgs: ["acp", "--verbose"] },
+      { serverCommand: "orionclaw", serverArgs: ["acp", "--verbose"] },
       {
         platform: "darwin",
         env: {},
@@ -84,7 +84,7 @@ describe("resolveAcpClientSpawnInvocation", () => {
       },
     );
     expect(resolved).toEqual({
-      command: "openclaw",
+      command: "orionclaw",
       args: ["acp", "--verbose"],
       shell: undefined,
       windowsHide: undefined,
@@ -93,7 +93,7 @@ describe("resolveAcpClientSpawnInvocation", () => {
 
   it("unwraps .cmd shim entrypoint on windows", async () => {
     const dir = await createTempDir();
-    const scriptPath = path.join(dir, "openclaw", "dist", "entry.js");
+    const scriptPath = path.join(dir, "orionclaw", "dist", "entry.js");
     const shimPath = path.join(dir, "openclaw.cmd");
     await mkdir(path.dirname(scriptPath), { recursive: true });
     await writeFile(scriptPath, "console.log('ok')\n", "utf8");

@@ -9,16 +9,16 @@ describe("normalizeConfigPaths", () => {
       const cfg = normalizeConfigPaths({
         tools: { exec: { pathPrepend: ["~/bin"] } },
         plugins: { load: { paths: ["~/plugins/a"] } },
-        logging: { file: "~/.openclaw/logs/openclaw.log" },
+        logging: { file: "~/.orionclaw/logs/openclaw.log" },
         hooks: {
-          path: "~/.openclaw/hooks.json5",
+          path: "~/.orionclaw/hooks.json5",
           transformsDir: "~/hooks-xform",
         },
         channels: {
           telegram: {
             accounts: {
               personal: {
-                tokenFile: "~/.openclaw/telegram.token",
+                tokenFile: "~/.orionclaw/telegram.token",
               },
             },
           },
@@ -32,7 +32,7 @@ describe("normalizeConfigPaths", () => {
             {
               id: "main",
               workspace: "~/ws-agent",
-              agentDir: "~/.openclaw/agents/main",
+              agentDir: "~/.orionclaw/agents/main",
               identity: {
                 name: "~not-a-path",
               },

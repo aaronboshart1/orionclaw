@@ -43,7 +43,7 @@ vi.mock("../config/config.js", async (importOriginal) => {
       browser: {
         enabled: true,
         evaluateEnabled: false,
-        defaultProfile: "openclaw",
+        defaultProfile: "orionclaw",
         profiles: {
           openclaw: { cdpPort: testPort + 1, color: "#FF4500" },
         },

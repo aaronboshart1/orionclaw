@@ -40,9 +40,9 @@ describe("runCli exit behavior", () => {
       throw new Error(`unexpected process.exit(${String(code)})`);
     }) as typeof process.exit);
 
-    await runCli(["node", "openclaw", "status"]);
+    await runCli(["node", "orionclaw", "status"]);
 
-    expect(tryRouteCliMock).toHaveBeenCalledWith(["node", "openclaw", "status"]);
+    expect(tryRouteCliMock).toHaveBeenCalledWith(["node", "orionclaw", "status"]);
     expect(exitSpy).not.toHaveBeenCalled();
     exitSpy.mockRestore();
   });

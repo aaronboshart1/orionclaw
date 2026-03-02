@@ -45,12 +45,12 @@ describe("resolveGatewaySystemdServiceName", () => {
   it("returns default service name when no profile is set", () => {
     const result = resolveGatewaySystemdServiceName();
     expect(result).toBe(GATEWAY_SYSTEMD_SERVICE_NAME);
-    expect(result).toBe("openclaw-gateway");
+    expect(result).toBe("orionclaw-gateway");
   });
 
   it("returns profile-specific service name when profile is set", () => {
     const result = resolveGatewaySystemdServiceName("dev");
-    expect(result).toBe("openclaw-gateway-dev");
+    expect(result).toBe("orionclaw-gateway-dev");
   });
 });
 

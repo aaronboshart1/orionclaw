@@ -12,7 +12,7 @@ import {
 } from "./profiles.js";
 
 describe("profile name validation", () => {
-  it.each(["openclaw", "work", "my-profile", "test123", "a", "a-b-c-1-2-3", "1test"])(
+  it.each(["orionclaw", "work", "my-profile", "test123", "a", "a-b-c-1-2-3", "1test"])(
     "accepts valid lowercase name: %s",
     (name) => {
       expect(isValidProfileName(name)).toBe(true);

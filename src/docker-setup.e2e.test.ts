@@ -61,7 +61,7 @@ async function createDockerSetupSandbox(): Promise<DockerSetupSandbox> {
   await writeFile(dockerfilePath, "FROM scratch\n");
   await writeFile(
     composePath,
-    "services:\n  openclaw-gateway:\n    image: noop\n  openclaw-cli:\n    image: noop\n",
+    "services:\n  orionclaw-gateway:\n    image: noop\n  openclaw-cli:\n    image: noop\n",
   );
   await writeDockerStub(binDir, logPath);
 
@@ -81,7 +81,7 @@ function createEnv(
     DOCKER_STUB_LOG: sandbox.logPath,
     OPENCLAW_GATEWAY_TOKEN: "test-token",
     OPENCLAW_CONFIG_DIR: join(sandbox.rootDir, "config"),
-    OPENCLAW_WORKSPACE_DIR: join(sandbox.rootDir, "openclaw"),
+    OPENCLAW_WORKSPACE_DIR: join(sandbox.rootDir, "orionclaw"),
   };
 
   for (const [key, value] of Object.entries(overrides)) {
@@ -273,12 +273,12 @@ describe("docker-setup.sh", () => {
     await writeFile(activeSandbox.logPath, "");
     await writeFile(
       join(activeSandbox.rootDir, "docker-compose.sandbox.yml"),
-      "services:\n  openclaw-gateway:\n    volumes:\n      - /var/run/docker.sock:/var/run/docker.sock\n",
+      "services:\n  orionclaw-gateway:\n    volumes:\n      - /var/run/docker.sock:/var/run/docker.sock\n",
     );
 
     const result = runDockerSetup(activeSandbox, {
       OPENCLAW_SANDBOX: "1",
-      DOCKER_STUB_FAIL_MATCH: "--entrypoint docker openclaw-gateway --version",
+      DOCKER_STUB_FAIL_MATCH: "--entrypoint docker orionclaw-gateway --version",
     });
 
     expect(result.status).toBe(0);
@@ -311,7 +311,7 @@ describe("docker-setup.sh", () => {
           (line) =>
             line.includes("compose") &&
             line.includes(" up -d") &&
-            line.includes("openclaw-gateway"),
+            line.includes("orionclaw-gateway"),
         );
       expect(gatewayStarts).toHaveLength(2);
       expect(log).toContain(
@@ -320,7 +320,7 @@ describe("docker-setup.sh", () => {
       expect(log).toContain("config set agents.defaults.sandbox.mode off");
       const forceRecreateLine = log
         .split("\n")
-        .find((line) => line.includes("up -d --force-recreate openclaw-gateway"));
+        .find((line) => line.includes("up -d --force-recreate orionclaw-gateway"));
       expect(forceRecreateLine).toBeDefined();
       expect(forceRecreateLine).not.toContain("docker-compose.sandbox.yml");
       await expect(
@@ -396,7 +396,7 @@ describe("docker-setup.sh", () => {
 
   it("keeps docker-compose CLI network namespace settings in sync", async () => {
     const compose = await readFile(join(repoRoot, "docker-compose.yml"), "utf8");
-    expect(compose).toContain('network_mode: "service:openclaw-gateway"');
-    expect(compose).toContain("depends_on:\n      - openclaw-gateway");
+    expect(compose).toContain('network_mode: "service:orionclaw-gateway"');
+    expect(compose).toContain("depends_on:\n      - orionclaw-gateway");
   });
 });

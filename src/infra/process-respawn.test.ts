@@ -135,7 +135,7 @@ describe("restartGatewayProcessWithFreshPid", () => {
 
   it("returns supervised when OPENCLAW_SYSTEMD_UNIT is set", () => {
     clearSupervisorHints();
-    process.env.OPENCLAW_SYSTEMD_UNIT = "openclaw-gateway.service";
+    process.env.OPENCLAW_SYSTEMD_UNIT = "orionclaw-gateway.service";
     const result = restartGatewayProcessWithFreshPid();
     expect(result.mode).toBe("supervised");
     expect(spawnMock).not.toHaveBeenCalled();

@@ -34,7 +34,7 @@ function createIoForHome(home: string, env: NodeJS.ProcessEnv = {} as NodeJS.Pro
 }
 
 describe("config io paths", () => {
-  it("uses ~/.openclaw/openclaw.json when config exists", async () => {
+  it("uses ~/.orionclaw/openclaw.json when config exists", async () => {
     await withTempHome(async (home) => {
       const configPath = await writeConfig(home, ".openclaw", 19001);
       const io = createIoForHome(home);
@@ -43,7 +43,7 @@ describe("config io paths", () => {
     });
   });
 
-  it("defaults to ~/.openclaw/openclaw.json when config is missing", async () => {
+  it("defaults to ~/.orionclaw/openclaw.json when config is missing", async () => {
     await withTempHome(async (home) => {
       const io = createIoForHome(home);
       expect(io.configPath).toBe(path.join(home, ".openclaw", "openclaw.json"));

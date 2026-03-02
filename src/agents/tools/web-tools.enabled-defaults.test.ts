@@ -348,7 +348,7 @@ describe("web_search kimi provider", () => {
                       type: "function",
                       function: {
                         name: "$web_search",
-                        arguments: JSON.stringify({ q: "openclaw" }),
+                        arguments: JSON.stringify({ q: "orionclaw" }),
                       },
                     },
                   ],

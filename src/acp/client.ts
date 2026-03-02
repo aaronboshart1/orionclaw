@@ -373,7 +373,7 @@ export function resolveAcpClientSpawnInvocation(
     platform: runtime.platform,
     env: runtime.env,
     execPath: runtime.execPath,
-    packageName: "openclaw",
+    packageName: "orionclaw",
     allowShellFallback: true,
   });
   const resolved = materializeWindowsSpawnProgram(program, params.serverArgs);
@@ -448,7 +448,7 @@ export async function createAcpClient(opts: AcpClientOptions = {}): Promise<AcpC
   const serverArgs = buildServerArgs(opts);
 
   const entryPath = resolveSelfEntryPath();
-  const serverCommand = opts.serverCommand ?? (entryPath ? process.execPath : "openclaw");
+  const serverCommand = opts.serverCommand ?? (entryPath ? process.execPath : "orionclaw");
   const effectiveArgs = opts.serverCommand || !entryPath ? serverArgs : [entryPath, ...serverArgs];
   const spawnEnv = resolveAcpClientSpawnEnv();
   const spawnInvocation = resolveAcpClientSpawnInvocation(

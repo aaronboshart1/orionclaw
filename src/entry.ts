@@ -40,7 +40,7 @@ if (
 ) {
   // Imported as a dependency — skip all entry-point side effects.
 } else {
-  process.title = "openclaw";
+  process.title = "orionclaw";
   installProcessWarningFilter();
   normalizeEnv();
   if (!isTruthyEnvValue(process.env.NODE_DISABLE_COMPILE_CACHE)) {

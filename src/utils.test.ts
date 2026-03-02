@@ -167,8 +167,8 @@ describe("shortenHomePath", () => {
     vi.stubEnv("OPENCLAW_HOME", "/srv/openclaw-home");
     vi.stubEnv("HOME", "/home/other");
 
-    expect(shortenHomePath(`${path.resolve("/srv/openclaw-home")}/.openclaw/openclaw.json`)).toBe(
-      "$OPENCLAW_HOME/.openclaw/openclaw.json",
+    expect(shortenHomePath(`${path.resolve("/srv/openclaw-home")}/.orionclaw/openclaw.json`)).toBe(
+      "$OPENCLAW_HOME/.orionclaw/openclaw.json",
     );
 
     vi.unstubAllEnvs();
@@ -181,8 +181,8 @@ describe("shortenHomeInString", () => {
     vi.stubEnv("HOME", "/home/other");
 
     expect(
-      shortenHomeInString(`config: ${path.resolve("/srv/openclaw-home")}/.openclaw/openclaw.json`),
-    ).toBe("config: $OPENCLAW_HOME/.openclaw/openclaw.json");
+      shortenHomeInString(`config: ${path.resolve("/srv/openclaw-home")}/.orionclaw/openclaw.json`),
+    ).toBe("config: $OPENCLAW_HOME/.orionclaw/openclaw.json");
 
     vi.unstubAllEnvs();
   });
@@ -220,7 +220,7 @@ describe("resolveUserPath", () => {
   });
 
   it("expands ~/ to home dir", () => {
-    expect(resolveUserPath("~/openclaw")).toBe(path.resolve(os.homedir(), "openclaw"));
+    expect(resolveUserPath("~/openclaw")).toBe(path.resolve(os.homedir(), "orionclaw"));
   });
 
   it("resolves relative paths", () => {
@@ -231,7 +231,7 @@ describe("resolveUserPath", () => {
     vi.stubEnv("OPENCLAW_HOME", "/srv/openclaw-home");
     vi.stubEnv("HOME", "/home/other");
 
-    expect(resolveUserPath("~/openclaw")).toBe(path.resolve("/srv/openclaw-home", "openclaw"));
+    expect(resolveUserPath("~/openclaw")).toBe(path.resolve("/srv/openclaw-home", "orionclaw"));
 
     vi.unstubAllEnvs();
   });

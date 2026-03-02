@@ -18,7 +18,7 @@ afterEach(() => {
 
 describe("browser server-context remote profile tab operations", () => {
   it("uses profile-level attachOnly when global attachOnly is false", async () => {
-    const state = makeState("openclaw");
+    const state = makeState("orionclaw");
     state.resolved.attachOnly = false;
     state.resolved.profiles.openclaw = {
       cdpPort: 18800,
@@ -30,7 +30,7 @@ describe("browser server-context remote profile tab operations", () => {
     const launchMock = vi.mocked(chromeModule.launchOpenClawChrome);
     const ctx = createBrowserRouteContext({ getState: () => state });
 
-    await expect(ctx.forProfile("openclaw").ensureBrowserAvailable()).rejects.toThrow(
+    await expect(ctx.forProfile("orionclaw").ensureBrowserAvailable()).rejects.toThrow(
       /attachOnly is enabled/i,
     );
     expect(reachableMock).toHaveBeenCalled();
@@ -38,7 +38,7 @@ describe("browser server-context remote profile tab operations", () => {
   });
 
   it("keeps attachOnly websocket failures off the loopback ownership error path", async () => {
-    const state = makeState("openclaw");
+    const state = makeState("orionclaw");
     state.resolved.attachOnly = false;
     state.resolved.profiles.openclaw = {
       cdpPort: 18800,
@@ -51,7 +51,7 @@ describe("browser server-context remote profile tab operations", () => {
     const launchMock = vi.mocked(chromeModule.launchOpenClawChrome);
     const ctx = createBrowserRouteContext({ getState: () => state });
 
-    await expect(ctx.forProfile("openclaw").ensureBrowserAvailable()).rejects.toThrow(
+    await expect(ctx.forProfile("orionclaw").ensureBrowserAvailable()).rejects.toThrow(
       /attachOnly is enabled and CDP websocket/i,
     );
     expect(httpReachableMock).toHaveBeenCalled();

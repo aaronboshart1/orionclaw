@@ -16,7 +16,7 @@ function buildConfig() {
       enabled: true,
       color: "#FF4500",
       headless: true,
-      defaultProfile: "openclaw",
+      defaultProfile: "orionclaw",
       profiles: { ...cfgProfiles },
     },
   };
@@ -140,7 +140,7 @@ describe("server-context hot-reload profiles", () => {
     const after = resolveBrowserProfileWithHotReload({
       current: state,
       refreshConfigFromDisk: true,
-      name: "openclaw",
+      name: "orionclaw",
     });
     expect(after?.cdpPort).toBe(19999);
     expect(state.resolved.profiles.openclaw?.cdpPort).toBe(19999);

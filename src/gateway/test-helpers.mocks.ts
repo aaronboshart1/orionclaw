@@ -197,7 +197,7 @@ export const resetTestPluginRegistry = () => {
 };
 
 const testConfigRoot = {
-  value: path.join(os.tmpdir(), `openclaw-gateway-test-${process.pid}-${crypto.randomUUID()}`),
+  value: path.join(os.tmpdir(), `orionclaw-gateway-test-${process.pid}-${crypto.randomUUID()}`),
 };
 
 export const setTestConfigRoot = (root: string) => {
@@ -413,7 +413,7 @@ vi.mock("../config/config.js", async () => {
           : {};
       const defaults = {
         model: { primary: "anthropic/claude-opus-4-6" },
-        workspace: path.join(os.tmpdir(), "openclaw-gateway-test"),
+        workspace: path.join(os.tmpdir(), "orionclaw-gateway-test"),
         ...fileDefaults,
         ...testState.agentConfig,
       };

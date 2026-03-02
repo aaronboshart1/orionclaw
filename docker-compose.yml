@@ -1,6 +1,6 @@
 services:
-  openclaw-gateway:
-    image: ${OPENCLAW_IMAGE:-openclaw:local}
+  orionclaw-gateway:
+    image: ${OPENCLAW_IMAGE:-orionclaw:local}
     environment:
       HOME: /home/node
       TERM: xterm-256color
@@ -10,8 +10,8 @@ services:
       CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY:-}
       CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE:-}
     volumes:
-      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
-      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+      - ${OPENCLAW_CONFIG_DIR}:/home/node/.orionclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.orionclaw/workspace
       ## Uncomment the lines below to enable sandbox isolation
       ## (agents.defaults.sandbox). Requires Docker CLI in the image
       ## (build with --build-arg OPENCLAW_INSTALL_DOCKER_CLI=1) or use
@@ -48,9 +48,9 @@ services:
       retries: 5
       start_period: 20s
 
-  openclaw-cli:
-    image: ${OPENCLAW_IMAGE:-openclaw:local}
-    network_mode: "service:openclaw-gateway"
+  orionclaw-cli:
+    image: ${OPENCLAW_IMAGE:-orionclaw:local}
+    network_mode: "service:orionclaw-gateway"
     cap_drop:
       - NET_RAW
       - NET_ADMIN
@@ -66,11 +66,11 @@ services:
       CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY:-}
       CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE:-}
     volumes:
-      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
-      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+      - ${OPENCLAW_CONFIG_DIR}:/home/node/.orionclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.orionclaw/workspace
     stdin_open: true
     tty: true
     init: true
     entrypoint: ["node", "dist/index.js"]
     depends_on:
-      - openclaw-gateway
+      - orionclaw-gateway

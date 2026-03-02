@@ -61,7 +61,7 @@ describe("isSystemdServiceEnabled", () => {
   it("calls systemctl is-enabled when systemctl is present", async () => {
     const { isSystemdServiceEnabled } = await import("./systemd.js");
     execFileMock.mockImplementationOnce((_cmd, args, _opts, cb) => {
-      expect(args).toEqual(["--user", "is-enabled", "openclaw-gateway.service"]);
+      expect(args).toEqual(["--user", "is-enabled", "orionclaw-gateway.service"]);
       cb(null, "enabled", "");
     });
     const result = await isSystemdServiceEnabled({ env: {} });
@@ -115,12 +115,12 @@ describe("resolveSystemdUserUnitPath", () => {
     {
       name: "uses default service name when OPENCLAW_PROFILE is unset",
       env: { HOME: "/home/test" },
-      expected: "/home/test/.config/systemd/user/openclaw-gateway.service",
+      expected: "/home/test/.config/systemd/user/orionclaw-gateway.service",
     },
     {
       name: "uses profile-specific service name when OPENCLAW_PROFILE is set to a custom value",
       env: { HOME: "/home/test", OPENCLAW_PROFILE: "jbphoenix" },
-      expected: "/home/test/.config/systemd/user/openclaw-gateway-jbphoenix.service",
+      expected: "/home/test/.config/systemd/user/orionclaw-gateway-jbphoenix.service",
     },
     {
       name: "prefers OPENCLAW_SYSTEMD_UNIT over OPENCLAW_PROFILE",
@@ -168,7 +168,7 @@ describe("splitArgsPreservingQuotes", () => {
       splitArgsPreservingQuotes('openclaw --name "My \\"Bot\\"" --foo bar', {
         escapeMode: "backslash",
       }),
-    ).toEqual(["openclaw", "--name", 'My "Bot"', "--foo", "bar"]);
+    ).toEqual(["orionclaw", "--name", 'My "Bot"', "--foo", "bar"]);
   });
 
   it("supports schtasks-style escaped quotes while preserving other backslashes", () => {
@@ -176,13 +176,13 @@ describe("splitArgsPreservingQuotes", () => {
       splitArgsPreservingQuotes('openclaw --path "C:\\\\Program Files\\\\OpenClaw"', {
         escapeMode: "backslash-quote-only",
       }),
-    ).toEqual(["openclaw", "--path", "C:\\\\Program Files\\\\OpenClaw"]);
+    ).toEqual(["orionclaw", "--path", "C:\\\\Program Files\\\\OpenClaw"]);
 
     expect(
       splitArgsPreservingQuotes('openclaw --label "My \\"Quoted\\" Name"', {
         escapeMode: "backslash-quote-only",
       }),
-    ).toEqual(["openclaw", "--label", 'My "Quoted" Name']);
+    ).toEqual(["orionclaw", "--label", 'My "Quoted" Name']);
   });
 });
 
@@ -208,7 +208,7 @@ describe("systemd service control", () => {
     execFileMock
       .mockImplementationOnce((_cmd, _args, _opts, cb) => cb(null, "", ""))
       .mockImplementationOnce((_cmd, args, _opts, cb) => {
-        expect(args).toEqual(["--user", "stop", "openclaw-gateway.service"]);
+        expect(args).toEqual(["--user", "stop", "orionclaw-gateway.service"]);
         cb(null, "", "");
       });
     const write = vi.fn();
@@ -224,7 +224,7 @@ describe("systemd service control", () => {
     execFileMock
       .mockImplementationOnce((_cmd, _args, _opts, cb) => cb(null, "", ""))
       .mockImplementationOnce((_cmd, args, _opts, cb) => {
-        expect(args).toEqual(["--user", "restart", "openclaw-gateway-work.service"]);
+        expect(args).toEqual(["--user", "restart", "orionclaw-gateway-work.service"]);
         cb(null, "", "");
       });
     const write = vi.fn();

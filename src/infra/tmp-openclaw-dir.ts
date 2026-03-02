@@ -67,7 +67,7 @@ export function resolvePreferredOpenClawTmpDir(
 
   const fallback = (): string => {
     const base = tmpdir();
-    const suffix = uid === undefined ? "openclaw" : `openclaw-${uid}`;
+    const suffix = uid === undefined ? "orionclaw" : `openclaw-${uid}`;
     return path.join(base, suffix);
   };
 

@@ -26,7 +26,7 @@ describe("resolveOpenClawMetadata install validation", () => {
   it("accepts safe install specs", () => {
     const install = resolveInstall({
       metadata:
-        '{"openclaw":{"install":[{"kind":"brew","formula":"python@3.12"},{"kind":"node","package":"@scope/pkg@1.2.3"},{"kind":"go","module":"example.com/tool/cmd@v1.2.3"},{"kind":"uv","package":"uvicorn[standard]==0.31.0"},{"kind":"download","url":"https://example.com/tool.tar.gz"}]}}',
+        '{"orionclaw":{"install":[{"kind":"brew","formula":"python@3.12"},{"kind":"node","package":"@scope/pkg@1.2.3"},{"kind":"go","module":"example.com/tool/cmd@v1.2.3"},{"kind":"uv","package":"uvicorn[standard]==0.31.0"},{"kind":"download","url":"https://example.com/tool.tar.gz"}]}}',
     });
     expect(install).toEqual([
       { kind: "brew", formula: "python@3.12" },
@@ -39,28 +39,28 @@ describe("resolveOpenClawMetadata install validation", () => {
 
   it("drops unsafe brew formula values", () => {
     const install = resolveInstall({
-      metadata: '{"openclaw":{"install":[{"kind":"brew","formula":"wget --HEAD"}]}}',
+      metadata: '{"orionclaw":{"install":[{"kind":"brew","formula":"wget --HEAD"}]}}',
     });
     expect(install).toBeUndefined();
   });
 
   it("drops unsafe npm package specs for node installers", () => {
     const install = resolveInstall({
-      metadata: '{"openclaw":{"install":[{"kind":"node","package":"file:../malicious"}]}}',
+      metadata: '{"orionclaw":{"install":[{"kind":"node","package":"file:../malicious"}]}}',
     });
     expect(install).toBeUndefined();
   });
 
   it("drops unsafe go module specs", () => {
     const install = resolveInstall({
-      metadata: '{"openclaw":{"install":[{"kind":"go","module":"https://evil.example/mod"}]}}',
+      metadata: '{"orionclaw":{"install":[{"kind":"go","module":"https://evil.example/mod"}]}}',
     });
     expect(install).toBeUndefined();
   });
 
   it("drops unsafe download urls", () => {
     const install = resolveInstall({
-      metadata: '{"openclaw":{"install":[{"kind":"download","url":"file:///tmp/payload.tgz"}]}}',
+      metadata: '{"orionclaw":{"install":[{"kind":"download","url":"file:///tmp/payload.tgz"}]}}',
     });
     expect(install).toBeUndefined();
   });

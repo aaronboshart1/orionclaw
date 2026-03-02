@@ -38,7 +38,7 @@ function mockConfig(home: string, storePath: string) {
       defaults: {
         model: { primary: "openai/gpt-5.3-codex" },
         models: { "openai/gpt-5.3-codex": {} },
-        workspace: path.join(home, "openclaw"),
+        workspace: path.join(home, "orionclaw"),
       },
     },
     session: { store: storePath, mainKey: "main" },
@@ -62,7 +62,7 @@ function mockConfigWithAcpOverrides(
       defaults: {
         model: { primary: "openai/gpt-5.3-codex" },
         models: { "openai/gpt-5.3-codex": {} },
-        workspace: path.join(home, "openclaw"),
+        workspace: path.join(home, "orionclaw"),
       },
     },
     session: { store: storePath, mainKey: "main" },

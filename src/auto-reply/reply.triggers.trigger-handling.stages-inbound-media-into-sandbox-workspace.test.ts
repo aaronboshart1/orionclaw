@@ -30,7 +30,7 @@ describe("stageSandboxMedia", () => {
   it("stages allowed media and blocks unsafe paths", async () => {
     await withSandboxMediaTempHome("openclaw-triggers-", async (home) => {
       const cfg = createSandboxMediaStageConfig(home);
-      const workspaceDir = join(home, "openclaw");
+      const workspaceDir = join(home, "orionclaw");
       const sandboxDir = join(home, "sandboxes", "session");
       vi.mocked(ensureSandboxWorkspaceForSession).mockResolvedValue({
         workspaceDir: sandboxDir,
@@ -106,7 +106,7 @@ describe("stageSandboxMedia", () => {
   it("blocks destination symlink escapes when staging into sandbox workspace", async () => {
     await withSandboxMediaTempHome("openclaw-triggers-", async (home) => {
       const cfg = createSandboxMediaStageConfig(home);
-      const workspaceDir = join(home, "openclaw");
+      const workspaceDir = join(home, "orionclaw");
       const sandboxDir = join(home, "sandboxes", "session");
       vi.mocked(ensureSandboxWorkspaceForSession).mockResolvedValue({
         workspaceDir: sandboxDir,
@@ -146,7 +146,7 @@ describe("stageSandboxMedia", () => {
   it("skips oversized media staging and keeps original media paths", async () => {
     await withSandboxMediaTempHome("openclaw-triggers-", async (home) => {
       const cfg = createSandboxMediaStageConfig(home);
-      const workspaceDir = join(home, "openclaw");
+      const workspaceDir = join(home, "orionclaw");
       const sandboxDir = join(home, "sandboxes", "session");
       vi.mocked(ensureSandboxWorkspaceForSession).mockResolvedValue({
         workspaceDir: sandboxDir,

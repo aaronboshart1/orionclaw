@@ -49,7 +49,7 @@ describe("workspace path resolution", () => {
           await editTool.execute("ws-edit", {
             path: editFile,
             oldText: "world",
-            newText: "openclaw",
+            newText: "orionclaw",
           });
           expect(await fs.readFile(path.join(workspaceDir, editFile), "utf8")).toBe(
             "hello openclaw",

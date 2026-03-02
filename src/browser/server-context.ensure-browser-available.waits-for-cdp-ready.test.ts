@@ -38,7 +38,7 @@ function makeBrowserState(): BrowserServerState {
       noSandbox: false,
       attachOnly: false,
       ssrfPolicy: { allowPrivateNetwork: true },
-      defaultProfile: "openclaw",
+      defaultProfile: "orionclaw",
       profiles: {
         openclaw: { cdpPort: 18800, color: "#FF4500" },
       },
@@ -77,7 +77,7 @@ describe("browser server-context ensureBrowserAvailable", () => {
 
     const state = makeBrowserState();
     const ctx = createBrowserRouteContext({ getState: () => state });
-    const profile = ctx.forProfile("openclaw");
+    const profile = ctx.forProfile("orionclaw");
 
     const promise = profile.ensureBrowserAvailable();
     await vi.advanceTimersByTimeAsync(100);
@@ -111,7 +111,7 @@ describe("browser server-context ensureBrowserAvailable", () => {
 
     const state = makeBrowserState();
     const ctx = createBrowserRouteContext({ getState: () => state });
-    const profile = ctx.forProfile("openclaw");
+    const profile = ctx.forProfile("orionclaw");
 
     const promise = profile.ensureBrowserAvailable();
     const rejected = expect(promise).rejects.toThrow("not reachable after start");

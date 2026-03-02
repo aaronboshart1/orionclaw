@@ -400,12 +400,12 @@ describe("config cli", () => {
     it("handles config file path with home directory", async () => {
       const resolved: OpenClawConfig = { gateway: { port: 18789 } };
       const snapshot = buildSnapshot({ resolved, config: resolved });
-      snapshot.path = "/home/user/.openclaw/openclaw.json";
+      snapshot.path = "/home/user/.orionclaw/openclaw.json";
       mockReadConfigFileSnapshot.mockResolvedValueOnce(snapshot);
 
       await runConfigCommand(["config", "file"]);
 
-      expect(mockLog).toHaveBeenCalledWith("/home/user/.openclaw/openclaw.json");
+      expect(mockLog).toHaveBeenCalledWith("/home/user/.orionclaw/openclaw.json");
     });
   });
 });

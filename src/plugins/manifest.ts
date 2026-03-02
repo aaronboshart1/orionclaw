@@ -114,7 +114,7 @@ export function loadPluginManifest(rootDir: string): PluginManifestLoadResult {
   };
 }
 
-// package.json "openclaw" metadata (used for onboarding/catalog)
+// package.json "orionclaw" metadata (used for onboarding/catalog)
 export type PluginPackageChannel = {
   id?: string;
   label?: string;

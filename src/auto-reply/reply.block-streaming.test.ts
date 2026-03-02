@@ -52,7 +52,7 @@ function createReplyConfig(home: string, streamMode?: "block"): OpenClawConfig {
     agents: {
       defaults: {
         model: { primary: "anthropic/claude-opus-4-5" },
-        workspace: path.join(home, "openclaw"),
+        workspace: path.join(home, "orionclaw"),
       },
     },
     channels: { telegram: { allowFrom: ["*"], streamMode } },

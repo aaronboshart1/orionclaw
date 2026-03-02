@@ -265,7 +265,7 @@ async function runAutoUpdateCommand(params: {
     }
   }
   if (argv.length === 0) {
-    argv.push("openclaw", ...baseArgs);
+    argv.push("orionclaw", ...baseArgs);
   }
 
   try {

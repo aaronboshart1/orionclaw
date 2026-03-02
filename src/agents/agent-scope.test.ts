@@ -44,7 +44,7 @@ describe("resolveAgentConfig", () => {
             id: "main",
             name: "Main Agent",
             workspace: "~/openclaw",
-            agentDir: "~/.openclaw/agents/main",
+            agentDir: "~/.orionclaw/agents/main",
             model: "anthropic/claude-opus-4",
           },
         ],
@@ -54,7 +54,7 @@ describe("resolveAgentConfig", () => {
     expect(result).toEqual({
       name: "Main Agent",
       workspace: "~/openclaw",
-      agentDir: "~/.openclaw/agents/main",
+      agentDir: "~/.orionclaw/agents/main",
       model: "anthropic/claude-opus-4",
       identity: undefined,
       groupChat: undefined,

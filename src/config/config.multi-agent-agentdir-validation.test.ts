@@ -27,8 +27,8 @@ describe("multi-agent agentDir validation", () => {
       {
         agents: {
           list: [
-            { id: "a", agentDir: "~/.openclaw/agents/shared/agent" },
-            { id: "b", agentDir: "~/.openclaw/agents/shared/agent" },
+            { id: "a", agentDir: "~/.orionclaw/agents/shared/agent" },
+            { id: "b", agentDir: "~/.orionclaw/agents/shared/agent" },
           ],
         },
         bindings: [{ agentId: "a", match: { channel: "telegram" } }],

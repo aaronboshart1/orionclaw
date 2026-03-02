@@ -14,7 +14,7 @@ export type ExtraGatewayService = {
   label: string;
   detail: string;
   scope: "user" | "system";
-  marker?: "openclaw" | "clawdbot" | "moltbot";
+  marker?: "orionclaw" | "clawdbot" | "moltbot";
   legacy?: boolean;
 };
 
@@ -22,7 +22,7 @@ export type FindExtraGatewayServicesOptions = {
   deep?: boolean;
 };
 
-const EXTRA_MARKERS = ["openclaw", "clawdbot", "moltbot"] as const;
+const EXTRA_MARKERS = ["orionclaw", "clawdbot", "moltbot"] as const;
 
 export function renderGatewayServiceCleanupHints(
   env: Record<string, string | undefined> = process.env as Record<string, string | undefined>,
@@ -100,7 +100,7 @@ function isOpenClawGatewaySystemdService(name: string, contents: string): boolea
   if (hasGatewayServiceMarker(contents)) {
     return true;
   }
-  if (!name.startsWith("openclaw-gateway")) {
+  if (!name.startsWith("orionclaw-gateway")) {
     return false;
   }
   return contents.toLowerCase().includes("gateway");
@@ -216,7 +216,7 @@ async function scanLaunchdDir(params: {
     if (isIgnoredLaunchdLabel(label)) {
       continue;
     }
-    if (marker === "openclaw" && isOpenClawGatewayLaunchdService(label, contents)) {
+    if (marker === "orionclaw" && isOpenClawGatewayLaunchdService(label, contents)) {
       continue;
     }
     results.push({
@@ -225,7 +225,7 @@ async function scanLaunchdDir(params: {
       detail: `plist: ${fullPath}`,
       scope: params.scope,
       marker,
-      legacy: marker !== "openclaw" || isLegacyLabel(label),
+      legacy: marker !== "orionclaw" || isLegacyLabel(label),
     });
   }
 
@@ -248,7 +248,7 @@ async function scanSystemdDir(params: {
     if (!marker) {
       continue;
     }
-    if (marker === "openclaw" && isOpenClawGatewaySystemdService(name, contents)) {
+    if (marker === "orionclaw" && isOpenClawGatewaySystemdService(name, contents)) {
       continue;
     }
     results.push({
@@ -257,7 +257,7 @@ async function scanSystemdDir(params: {
       detail: `unit: ${fullPath}`,
       scope: params.scope,
       marker,
-      legacy: marker !== "openclaw",
+      legacy: marker !== "orionclaw",
     });
   }
 
@@ -422,7 +422,7 @@ export async function findExtraGatewayServices(
         detail: task.taskToRun ? `task: ${name}, run: ${task.taskToRun}` : name,
         scope: "system",
         marker,
-        legacy: marker !== "openclaw",
+        legacy: marker !== "orionclaw",
       });
     }
     return results;
