@@ -9,7 +9,7 @@ type AnyMock = MockFn<(...args: unknown[]) => unknown>;
 type AnyAsyncMock = MockFn<(...args: unknown[]) => Promise<unknown>>;
 
 const { sessionStorePath } = vi.hoisted(() => ({
-  sessionStorePath: `/tmp/openclaw-telegram-${Math.random().toString(16).slice(2)}.json`,
+  sessionStorePath: `/tmp/orionclaw-telegram-${Math.random().toString(16).slice(2)}.json`,
 }));
 
 const { loadWebMedia } = vi.hoisted((): { loadWebMedia: AnyMock } => ({

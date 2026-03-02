@@ -479,13 +479,13 @@ async function readContainerConfigHash(containerName: string): Promise<string | 
 
 function formatSandboxRecreateHint(params: { scope: SandboxConfig["scope"]; sessionKey: string }) {
   if (params.scope === "session") {
-    return formatCliCommand(`openclaw sandbox recreate --session ${params.sessionKey}`);
+    return formatCliCommand(`orionclaw sandbox recreate --session ${params.sessionKey}`);
   }
   if (params.scope === "agent") {
     const agentId = resolveSandboxAgentId(params.sessionKey) ?? "main";
-    return formatCliCommand(`openclaw sandbox recreate --agent ${agentId}`);
+    return formatCliCommand(`orionclaw sandbox recreate --agent ${agentId}`);
   }
-  return formatCliCommand("openclaw sandbox recreate --all");
+  return formatCliCommand("orionclaw sandbox recreate --all");
 }
 
 export async function ensureSandboxContainer(params: {

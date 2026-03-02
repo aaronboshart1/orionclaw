@@ -103,7 +103,7 @@ export function registerBrowserExtensionCommands(
             `- “Load unpacked” → select: ${displayPath}`,
             `- Pin “OpenClaw Browser Relay”, then click it on the tab (badge shows ON)`,
             "",
-            `${theme.muted("Docs:")} ${formatDocsLink("/tools/chrome-extension", "docs.openclaw.ai/tools/chrome-extension")}`,
+            `${theme.muted("Docs:")} ${formatDocsLink("/tools/chrome-extension", "docs.orionclaw.local/tools/chrome-extension")}`,
           ].join("\n"),
         ),
       );
@@ -119,8 +119,8 @@ export function registerBrowserExtensionCommands(
         defaultRuntime.error(
           danger(
             [
-              `Chrome extension is not installed. Run: "${formatCliCommand("openclaw browser extension install")}"`,
-              `Docs: ${formatDocsLink("/tools/chrome-extension", "docs.openclaw.ai/tools/chrome-extension")}`,
+              `Chrome extension is not installed. Run: "${formatCliCommand("orionclaw browser extension install")}"`,
+              `Docs: ${formatDocsLink("/tools/chrome-extension", "docs.orionclaw.local/tools/chrome-extension")}`,
             ].join("\n"),
           ),
         );

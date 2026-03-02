@@ -441,9 +441,9 @@ export function loadOpenClawPlugins(options: PluginLoadOptions = {}): PluginRegi
       ...(pluginSdkAlias || pluginSdkAccountIdAlias
         ? {
             alias: {
-              ...(pluginSdkAlias ? { "openclaw/plugin-sdk": pluginSdkAlias } : {}),
+              ...(pluginSdkAlias ? { "orionclaw/plugin-sdk": pluginSdkAlias } : {}),
               ...(pluginSdkAccountIdAlias
-                ? { "openclaw/plugin-sdk/account-id": pluginSdkAccountIdAlias }
+                ? { "orionclaw/plugin-sdk/account-id": pluginSdkAccountIdAlias }
                 : {}),
             },
           }

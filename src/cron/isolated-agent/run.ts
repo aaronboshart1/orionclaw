@@ -76,7 +76,7 @@ export type RunCronAgentTurnResult = {
    * channel (via outbound payloads, the subagent announce flow, or a matching
    * messaging-tool send). Callers should skip posting a summary to the main
    * session to avoid duplicate
-   * messages.  See: https://github.com/openclaw/openclaw/issues/15692
+   * messages.  See: https://github.com/orionclaw/orionclaw/issues/15692
    */
   delivered?: boolean;
   /**
@@ -466,7 +466,7 @@ export async function runCronIsolatedAgentTurn(params: {
           // Passing an existing ID activates the resume watchdog profile
           // (noOutputTimeoutRatio 0.3, maxMs 180 s) instead of the fresh profile
           // (ratio 0.8, maxMs 600 s), causing jobs to time out at roughly 1/3 of
-          // the configured timeoutSeconds. See: https://github.com/openclaw/openclaw/issues/29774
+          // the configured timeoutSeconds. See: https://github.com/orionclaw/orionclaw/issues/29774
           const cliSessionId = cronSession.isNewSession
             ? undefined
             : getCliSessionId(cronSession.sessionEntry, providerOverride);

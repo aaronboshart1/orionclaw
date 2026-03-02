@@ -5,7 +5,7 @@ import type { OpenClawConfig } from "../config/config.js";
 import type { CronJob } from "./types.js";
 
 export async function withTempCronHome<T>(fn: (home: string) => Promise<T>): Promise<T> {
-  return withTempHomeBase(fn, { prefix: "openclaw-cron-" });
+  return withTempHomeBase(fn, { prefix: "orionclaw-cron-" });
 }
 
 export async function writeSessionStore(
@@ -25,7 +25,7 @@ export async function writeSessionStoreEntries(
   home: string,
   entries: Record<string, Record<string, unknown>>,
 ): Promise<string> {
-  const dir = path.join(home, ".openclaw", "sessions");
+  const dir = path.join(home, ".orionclaw", "sessions");
   await fs.mkdir(dir, { recursive: true });
   const storePath = path.join(dir, "sessions.json");
   await fs.writeFile(storePath, JSON.stringify(entries, null, 2), "utf-8");

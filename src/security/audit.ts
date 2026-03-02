@@ -669,7 +669,7 @@ function collectBrowserControlFindings(
       severity: "warn",
       title: "Browser control config looks invalid",
       detail: String(err),
-      remediation: `Fix browser.cdpUrl in ${resolveConfigPath()} and re-run "${formatCliCommand("openclaw security audit --deep")}".`,
+      remediation: `Fix browser.cdpUrl in ${resolveConfigPath()} and re-run "${formatCliCommand("orionclaw security audit --deep")}".`,
     });
     return findings;
   }
@@ -1086,7 +1086,7 @@ export async function runSecurityAudit(opts: SecurityAuditOptions): Promise<Secu
       severity: "warn",
       title: "Gateway probe failed (deep)",
       detail: deep.gateway.error ?? "gateway unreachable",
-      remediation: `Run "${formatCliCommand("openclaw status --all")}" to debug connectivity/auth, then re-run "${formatCliCommand("openclaw security audit --deep")}".`,
+      remediation: `Run "${formatCliCommand("orionclaw status --all")}" to debug connectivity/auth, then re-run "${formatCliCommand("orionclaw security audit --deep")}".`,
     });
   }
 

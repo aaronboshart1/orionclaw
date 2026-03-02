@@ -1,7 +1,7 @@
 import { createHmac } from "node:crypto";
 import { loadConfig } from "../config/config.js";
 
-const RELAY_TOKEN_CONTEXT = "openclaw-extension-relay-v1";
+const RELAY_TOKEN_CONTEXT = "orionclaw-extension-relay-v1";
 const DEFAULT_RELAY_PROBE_TIMEOUT_MS = 500;
 const OPENCLAW_RELAY_BROWSER = "OpenClaw/extension-relay";
 

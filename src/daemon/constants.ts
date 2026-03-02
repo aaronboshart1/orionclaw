@@ -1,11 +1,11 @@
 // Default service labels (canonical + legacy compatibility)
-export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.openclaw.gateway";
+export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.orionclaw.gateway";
 export const GATEWAY_SYSTEMD_SERVICE_NAME = "orionclaw-gateway";
 export const GATEWAY_WINDOWS_TASK_NAME = "OpenClaw Gateway";
 export const GATEWAY_SERVICE_MARKER = "orionclaw";
 export const GATEWAY_SERVICE_KIND = "gateway";
-export const NODE_LAUNCH_AGENT_LABEL = "ai.openclaw.node";
-export const NODE_SYSTEMD_SERVICE_NAME = "openclaw-node";
+export const NODE_LAUNCH_AGENT_LABEL = "ai.orionclaw.node";
+export const NODE_SYSTEMD_SERVICE_NAME = "orionclaw-node";
 export const NODE_WINDOWS_TASK_NAME = "OpenClaw Node";
 export const NODE_SERVICE_MARKER = "orionclaw";
 export const NODE_SERVICE_KIND = "node";
@@ -35,7 +35,7 @@ export function resolveGatewayLaunchAgentLabel(profile?: string): string {
   if (!normalized) {
     return GATEWAY_LAUNCH_AGENT_LABEL;
   }
-  return `ai.openclaw.${normalized}`;
+  return `ai.orionclaw.${normalized}`;
 }
 
 export function resolveLegacyGatewayLaunchAgentLabels(profile?: string): string[] {

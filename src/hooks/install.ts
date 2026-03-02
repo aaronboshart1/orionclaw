@@ -92,11 +92,11 @@ export function resolveHookInstallDir(hookId: string, hooksDir?: string): string
 async function ensureOpenClawHooks(manifest: HookPackageManifest) {
   const hooks = manifest[MANIFEST_KEY]?.hooks;
   if (!Array.isArray(hooks)) {
-    throw new Error("package.json missing openclaw.hooks");
+    throw new Error("package.json missing orionclaw.hooks");
   }
   const list = hooks.map((e) => (typeof e === "string" ? e.trim() : "")).filter(Boolean);
   if (list.length === 0) {
-    throw new Error("package.json openclaw.hooks is empty");
+    throw new Error("package.json orionclaw.hooks is empty");
   }
   return list;
 }
@@ -212,7 +212,7 @@ async function installHookPackageFromDir(params: {
     if (!isPathInside(params.packageDir, hookDir)) {
       return {
         ok: false,
-        error: `openclaw.hooks entry escapes package directory: ${entry}`,
+        error: `orionclaw.hooks entry escapes package directory: ${entry}`,
       };
     }
     await validateHookDir(hookDir);
@@ -223,7 +223,7 @@ async function installHookPackageFromDir(params: {
     ) {
       return {
         ok: false,
-        error: `openclaw.hooks entry resolves outside package directory: ${entry}`,
+        error: `orionclaw.hooks entry resolves outside package directory: ${entry}`,
       };
     }
     const hookName = await resolveHookNameFromDir(hookDir);
@@ -338,7 +338,7 @@ export async function installHooksFromArchive(params: {
 
   return await withExtractedArchiveRoot({
     archivePath,
-    tempDirPrefix: "openclaw-hook-",
+    tempDirPrefix: "orionclaw-hook-",
     timeoutMs,
     logger,
     onExtracted: async (rootDir) => {
@@ -388,7 +388,7 @@ export async function installHooksFromNpmSpec(params: {
 
   logger.info?.(`Downloading ${spec}…`);
   const flowResult = await installFromNpmSpecArchiveWithInstaller({
-    tempDirPrefix: "openclaw-hook-pack-",
+    tempDirPrefix: "orionclaw-hook-pack-",
     spec,
     timeoutMs,
     expectedIntegrity: params.expectedIntegrity,

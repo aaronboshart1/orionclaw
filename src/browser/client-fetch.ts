@@ -42,7 +42,7 @@ function withLoopbackBrowserAuthImpl(
   deps: LoopbackBrowserAuthDeps,
 ): RequestInit & { timeoutMs?: number } {
   const headers = new Headers(init?.headers ?? {});
-  if (headers.has("authorization") || headers.has("x-openclaw-password")) {
+  if (headers.has("authorization") || headers.has("x-orionclaw-password")) {
     return { ...init, headers };
   }
   if (!isLoopbackHttpUrl(url)) {
@@ -57,7 +57,7 @@ function withLoopbackBrowserAuthImpl(
       return { ...init, headers };
     }
     if (auth.password) {
-      headers.set("x-openclaw-password", auth.password);
+      headers.set("x-orionclaw-password", auth.password);
       return { ...init, headers };
     }
   } catch {
@@ -78,7 +78,7 @@ function withLoopbackBrowserAuthImpl(
     if (bridgeAuth?.token) {
       headers.set("Authorization", `Bearer ${bridgeAuth.token}`);
     } else if (bridgeAuth?.password) {
-      headers.set("x-openclaw-password", bridgeAuth.password);
+      headers.set("x-orionclaw-password", bridgeAuth.password);
     }
   } catch {
     // ignore
@@ -102,7 +102,7 @@ function enhanceBrowserFetchError(url: string, err: unknown, timeoutMs: number):
   const isLocal = !isAbsoluteHttp(url);
   // Human-facing hint for logs/diagnostics.
   const operatorHint = isLocal
-    ? `Restart the OpenClaw gateway (OpenClaw.app menubar, or \`${formatCliCommand("openclaw gateway")}\`).`
+    ? `Restart the OpenClaw gateway (OpenClaw.app menubar, or \`${formatCliCommand("orionclaw gateway")}\`).`
     : "If this is a sandboxed session, ensure the sandbox browser is running.";
   // Model-facing suffix: explicitly tell the LLM NOT to retry.
   // Without this, models see "try again" and enter an infinite tool-call loop.

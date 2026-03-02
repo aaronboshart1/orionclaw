@@ -147,7 +147,7 @@ export async function startGatewayBonjourAdvertiser(
 
   const gateway = responder.createService({
     name: safeServiceName(instanceName),
-    type: "openclaw-gw",
+    type: "orionclaw-gw",
     protocol: Protocol.TCP,
     port: opts.gatewayPort,
     domain: "local",

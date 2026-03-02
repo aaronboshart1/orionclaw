@@ -32,7 +32,7 @@ function sleepSync(ms: number): void {
 
 /**
  * Find PIDs of gateway processes listening on the given port using synchronous lsof.
- * Returns only PIDs that belong to openclaw gateway processes (not the current process).
+ * Returns only PIDs that belong to orionclaw gateway processes (not the current process).
  */
 export function findGatewayPidsOnPortSync(port: number): number[] {
   if (process.platform === "win32") {

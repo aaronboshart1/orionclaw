@@ -121,7 +121,7 @@ export function getPwMocks(): Record<string, MockFn> {
   return pwMocks as unknown as Record<string, MockFn>;
 }
 
-const chromeUserDataDir = vi.hoisted(() => ({ dir: "/tmp/openclaw" }));
+const chromeUserDataDir = vi.hoisted(() => ({ dir: "/tmp/orionclaw" }));
 installChromeUserDataDirHooks(chromeUserDataDir);
 
 function makeProc(pid = 123) {

@@ -93,7 +93,7 @@ function isOpenClawGatewayLaunchdService(label: string, contents: string): boole
   if (!lowerContents.includes("gateway")) {
     return false;
   }
-  return label.startsWith("ai.openclaw.");
+  return label.startsWith("ai.orionclaw.");
 }
 
 function isOpenClawGatewaySystemdService(name: string, contents: string): boolean {
@@ -112,7 +112,7 @@ function isOpenClawGatewayTaskName(name: string): boolean {
     return false;
   }
   const defaultName = resolveGatewayWindowsTaskName().toLowerCase();
-  return normalized === defaultName || normalized.startsWith("openclaw gateway");
+  return normalized === defaultName || normalized.startsWith("orionclaw gateway");
 }
 
 function tryExtractPlistLabel(contents: string): string | null {

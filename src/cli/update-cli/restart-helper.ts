@@ -69,7 +69,7 @@ export async function prepareRestartScript(
     if (platform === "linux") {
       const unitName = resolveSystemdUnit(env);
       const escaped = shellEscape(unitName);
-      filename = `openclaw-restart-${timestamp}.sh`;
+      filename = `orionclaw-restart-${timestamp}.sh`;
       scriptContent = `#!/bin/sh
 # Standalone restart script — survives parent process termination.
 # Wait briefly to ensure file locks are released after update.
@@ -83,7 +83,7 @@ rm -f "$0"
       const escaped = shellEscape(label);
       // Fallback to 501 if getuid is not available (though it should be on macOS)
       const uid = process.getuid ? process.getuid() : 501;
-      filename = `openclaw-restart-${timestamp}.sh`;
+      filename = `orionclaw-restart-${timestamp}.sh`;
       scriptContent = `#!/bin/sh
 # Standalone restart script — survives parent process termination.
 # Wait briefly to ensure file locks are released after update.
@@ -99,7 +99,7 @@ rm -f "$0"
       }
       const port =
         Number.isFinite(gatewayPort) && gatewayPort > 0 ? gatewayPort : DEFAULT_GATEWAY_PORT;
-      filename = `openclaw-restart-${timestamp}.bat`;
+      filename = `orionclaw-restart-${timestamp}.bat`;
       scriptContent = `@echo off
 REM Standalone restart script — survives parent process termination.
 REM Wait briefly to ensure file locks are released after update.

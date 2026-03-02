@@ -95,11 +95,11 @@ export function registerGatewayCli(program: Command) {
         "after",
         () =>
           `\n${theme.heading("Examples:")}\n${formatHelpExamples([
-            ["openclaw gateway run", "Run the gateway in the foreground."],
-            ["openclaw gateway status", "Show service status and probe reachability."],
-            ["openclaw gateway discover", "Find local and wide-area gateway beacons."],
-            ["openclaw gateway call health", "Call a gateway RPC method directly."],
-          ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/gateway", "docs.openclaw.ai/cli/gateway")}\n`,
+            ["orionclaw gateway run", "Run the gateway in the foreground."],
+            ["orionclaw gateway status", "Show service status and probe reachability."],
+            ["orionclaw gateway discover", "Find local and wide-area gateway beacons."],
+            ["orionclaw gateway call health", "Call a gateway RPC method directly."],
+          ])}\n\n${theme.muted("Docs:")} ${formatDocsLink("/cli/gateway", "docs.orionclaw.local/cli/gateway")}\n`,
       ),
   );
 

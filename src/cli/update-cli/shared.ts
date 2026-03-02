@@ -51,7 +51,7 @@ export function parseTimeoutMsOrExit(timeout?: string): number | undefined | nul
   return timeoutMs;
 }
 
-const OPENCLAW_REPO_URL = "https://github.com/openclaw/openclaw.git";
+const OPENCLAW_REPO_URL = "https://github.com/orionclaw/orionclaw.git";
 const MAX_LOG_CHARS = 8000;
 
 export const DEFAULT_PACKAGE_NAME = "orionclaw";
@@ -65,8 +65,8 @@ export function normalizeTag(value?: string | null): string | null {
   if (!trimmed) {
     return null;
   }
-  if (trimmed.startsWith("openclaw@")) {
-    return trimmed.slice("openclaw@".length);
+  if (trimmed.startsWith("orionclaw@")) {
+    return trimmed.slice("orionclaw@".length);
   }
   if (trimmed.startsWith(`${DEFAULT_PACKAGE_NAME}@`)) {
     return trimmed.slice(`${DEFAULT_PACKAGE_NAME}@`.length);
@@ -213,7 +213,7 @@ export async function ensureGitCheckout(params: {
     const empty = await isEmptyDir(params.dir);
     if (!empty) {
       throw new Error(
-        `OPENCLAW_GIT_DIR points at a non-git directory: ${params.dir}. Set OPENCLAW_GIT_DIR to an empty folder or an openclaw checkout.`,
+        `OPENCLAW_GIT_DIR points at a non-git directory: ${params.dir}. Set OPENCLAW_GIT_DIR to an empty folder or an orionclaw checkout.`,
       );
     }
 

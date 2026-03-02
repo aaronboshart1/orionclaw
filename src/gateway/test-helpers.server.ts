@@ -95,7 +95,7 @@ async function setupGatewayTestHome() {
   tempHome = await fs.mkdtemp(path.join(os.tmpdir(), "orionclaw-gateway-home-"));
   process.env.HOME = tempHome;
   process.env.USERPROFILE = tempHome;
-  process.env.OPENCLAW_STATE_DIR = path.join(tempHome, ".openclaw");
+  process.env.OPENCLAW_STATE_DIR = path.join(tempHome, ".orionclaw");
   delete process.env.OPENCLAW_CONFIG_PATH;
 }
 
@@ -108,8 +108,8 @@ function applyGatewaySkipEnv() {
   process.env.OPENCLAW_SKIP_CRON = "1";
   process.env.OPENCLAW_TEST_MINIMAL_GATEWAY = "1";
   process.env.OPENCLAW_BUNDLED_PLUGINS_DIR = tempHome
-    ? path.join(tempHome, "openclaw-test-no-bundled-extensions")
-    : "openclaw-test-no-bundled-extensions";
+    ? path.join(tempHome, "orionclaw-test-no-bundled-extensions")
+    : "orionclaw-test-no-bundled-extensions";
 }
 
 async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
@@ -121,7 +121,7 @@ async function resetGatewayTestState(options: { uniqueConfigRoot: boolean }) {
   }
   applyGatewaySkipEnv();
   if (options.uniqueConfigRoot) {
-    tempConfigRoot = await fs.mkdtemp(path.join(tempHome, "openclaw-test-"));
+    tempConfigRoot = await fs.mkdtemp(path.join(tempHome, "orionclaw-test-"));
   } else {
     tempConfigRoot = path.join(tempHome, ".openclaw-test");
     await fs.rm(tempConfigRoot, { recursive: true, force: true });
@@ -242,8 +242,8 @@ type GatewayTestMessage = {
   [key: string]: unknown;
 };
 
-const CONNECT_CHALLENGE_NONCE_KEY = "__openclawTestConnectChallengeNonce";
-const CONNECT_CHALLENGE_TRACKED_KEY = "__openclawTestConnectChallengeTracked";
+const CONNECT_CHALLENGE_NONCE_KEY = "__orionclawTestConnectChallengeNonce";
+const CONNECT_CHALLENGE_TRACKED_KEY = "__orionclawTestConnectChallengeTracked";
 type TrackedWs = WebSocket & Record<string, unknown>;
 
 export function getTrackedConnectChallengeNonce(ws: WebSocket): string | undefined {

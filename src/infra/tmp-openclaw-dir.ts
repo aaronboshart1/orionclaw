@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-export const POSIX_OPENCLAW_TMP_DIR = "/tmp/openclaw";
+export const POSIX_OPENCLAW_TMP_DIR = "/tmp/orionclaw";
 const TMP_DIR_ACCESS_MODE = fs.constants.W_OK | fs.constants.X_OK;
 
 type ResolvePreferredOpenClawTmpDirOptions = {
@@ -67,7 +67,7 @@ export function resolvePreferredOpenClawTmpDir(
 
   const fallback = (): string => {
     const base = tmpdir();
-    const suffix = uid === undefined ? "orionclaw" : `openclaw-${uid}`;
+    const suffix = uid === undefined ? "orionclaw" : `orionclaw-${uid}`;
     return path.join(base, suffix);
   };
 
@@ -109,7 +109,7 @@ export function resolvePreferredOpenClawTmpDir(
         return false;
       }
       chmodSync(candidatePath, 0o700);
-      warn(`[openclaw] tightened permissions on temp dir: ${candidatePath}`);
+      warn(`[orionclaw] tightened permissions on temp dir: ${candidatePath}`);
       return resolveDirState(candidatePath) === "available";
     } catch {
       return false;

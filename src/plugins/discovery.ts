@@ -263,7 +263,7 @@ function deriveIdHint(params: {
   }
 
   // Prefer the unscoped name so config keys stay stable even when the npm
-  // package is scoped (example: @openclaw/voice-call -> voice-call).
+  // package is scoped (example: @orionclaw/voice-call -> voice-call).
   const unscoped = rawPackageName.includes("/")
     ? (rawPackageName.split("/").pop() ?? rawPackageName)
     : rawPackageName;
@@ -595,7 +595,7 @@ export function discoverOpenClawPlugins(params: {
   }
   if (workspaceDir) {
     const workspaceRoot = resolveUserPath(workspaceDir);
-    const workspaceExtDirs = [path.join(workspaceRoot, ".openclaw", "extensions")];
+    const workspaceExtDirs = [path.join(workspaceRoot, ".orionclaw", "extensions")];
     for (const dir of workspaceExtDirs) {
       discoverInDirectory({
         dir,

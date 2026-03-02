@@ -219,7 +219,7 @@ function auditGatewayToken(
   issues.push({
     code: SERVICE_AUDIT_CODES.gatewayTokenMismatch,
     message:
-      "Gateway service OPENCLAW_GATEWAY_TOKEN does not match gateway.auth.token in openclaw.json",
+      "Gateway service OPENCLAW_GATEWAY_TOKEN does not match gateway.auth.token in orionclaw.json",
     detail: serviceToken ? "service token is stale" : "service token is missing",
     level: "recommended",
   });
@@ -373,7 +373,7 @@ export function checkTokenDrift(params: {
       code: SERVICE_AUDIT_CODES.gatewayTokenDrift,
       message:
         "Config token differs from service token. The daemon will use the old token after restart.",
-      detail: "Run `openclaw gateway install --force` to sync the token.",
+      detail: "Run `orionclaw gateway install --force` to sync the token.",
       level: "recommended",
     };
   }

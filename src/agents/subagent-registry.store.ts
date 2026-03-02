@@ -36,7 +36,7 @@ function resolveSubagentStateDir(env: NodeJS.ProcessEnv = process.env): string {
     return resolveStateDir(env);
   }
   if (env.VITEST || env.NODE_ENV === "test") {
-    return path.join(os.tmpdir(), "openclaw-test-state", String(process.pid));
+    return path.join(os.tmpdir(), "orionclaw-test-state", String(process.pid));
   }
   return resolveStateDir(env);
 }

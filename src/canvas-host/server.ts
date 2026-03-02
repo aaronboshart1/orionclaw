@@ -120,7 +120,7 @@ function defaultIndexHTML() {
     const d = ev && ev.detail || {};
     log("Action status: id=" + (d.id || "?") + " ok=" + String(!!d.ok) + (d.error ? (" error=" + d.error) : ""));
   };
-  window.addEventListener("openclaw:a2ui-action-status", onStatus);
+  window.addEventListener("orionclaw:a2ui-action-status", onStatus);
 
   function send(name, sourceComponentId) {
     if (!hasHelper()) {

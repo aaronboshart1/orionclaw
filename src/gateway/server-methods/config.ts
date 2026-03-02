@@ -19,7 +19,7 @@ import {
 } from "../../config/redact-snapshot.js";
 import { buildConfigSchema, type ConfigSchemaResponse } from "../../config/schema.js";
 import { extractDeliveryInfo } from "../../config/sessions.js";
-import type { OpenClawConfig } from "../../config/types.openclaw.js";
+import type { OpenClawConfig } from "../../config/types.orionclaw.js";
 import {
   formatDoctorNonInteractiveHint,
   type RestartSentinelPayload,

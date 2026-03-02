@@ -10,11 +10,11 @@ import { hasExplicitOptions } from "../command-options.js";
 export function registerSetupCommand(program: Command) {
   program
     .command("setup")
-    .description("Initialize ~/.orionclaw/openclaw.json and the agent workspace")
+    .description("Initialize ~/.orionclaw/orionclaw.json and the agent workspace")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/setup", "docs.openclaw.ai/cli/setup")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/setup", "docs.orionclaw.local/cli/setup")}\n`,
     )
     .option(
       "--workspace <dir>",

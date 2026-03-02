@@ -19,8 +19,8 @@ export const isNixMode = resolveIsNixMode();
 
 // Support historical (and occasionally misspelled) legacy state dirs.
 const LEGACY_STATE_DIRNAMES = [".clawdbot", ".moldbot", ".moltbot"] as const;
-const NEW_STATE_DIRNAME = ".openclaw";
-const CONFIG_FILENAME = "openclaw.json";
+const NEW_STATE_DIRNAME = ".orionclaw";
+const CONFIG_FILENAME = "orionclaw.json";
 const LEGACY_CONFIG_FILENAMES = ["clawdbot.json", "moldbot.json", "moltbot.json"] as const;
 
 function resolveDefaultHomeDir(): string {
@@ -55,7 +55,7 @@ export function resolveNewStateDir(homedir: () => string = resolveDefaultHomeDir
 /**
  * State directory for mutable data (sessions, logs, caches).
  * Can be overridden via OPENCLAW_STATE_DIR.
- * Default: ~/.openclaw
+ * Default: ~/.orionclaw
  */
 export function resolveStateDir(
   env: NodeJS.ProcessEnv = process.env,
@@ -110,7 +110,7 @@ export const STATE_DIR = resolveStateDir();
 /**
  * Config file path (JSON5).
  * Can be overridden via OPENCLAW_CONFIG_PATH.
- * Default: ~/.orionclaw/openclaw.json (or $OPENCLAW_STATE_DIR/openclaw.json)
+ * Default: ~/.orionclaw/orionclaw.json (or $OPENCLAW_STATE_DIR/orionclaw.json)
  */
 export function resolveCanonicalConfigPath(
   env: NodeJS.ProcessEnv = process.env,
@@ -223,7 +223,7 @@ export const DEFAULT_GATEWAY_PORT = 18789;
 export function resolveGatewayLockDir(tmpdir: () => string = os.tmpdir): string {
   const base = tmpdir();
   const uid = typeof process.getuid === "function" ? process.getuid() : undefined;
-  const suffix = uid != null ? `openclaw-${uid}` : "orionclaw";
+  const suffix = uid != null ? `orionclaw-${uid}` : "orionclaw";
   return path.join(base, suffix);
 }
 

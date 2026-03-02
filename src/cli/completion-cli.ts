@@ -235,7 +235,7 @@ export function registerCompletionCli(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/completion", "docs.openclaw.ai/cli/completion")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/completion", "docs.orionclaw.local/cli/completion")}\n`,
     )
     .addOption(
       new Option("-s, --shell <shell>", "Shell to generate completion for (default: zsh)").choices(
@@ -603,7 +603,7 @@ function generateFishCompletion(program: Command): string {
     } // Only push if not root, or consistent root handling
 
     // Fish uses 'seen_subcommand_from' to determine context.
-    // For root: complete -c openclaw -n "__fish_use_subcommand" -a "subcmd" -d "desc"
+    // For root: complete -c orionclaw -n "__fish_use_subcommand" -a "subcmd" -d "desc"
 
     // Root logic
     if (parents.length === 0) {
@@ -632,7 +632,7 @@ function generateFishCompletion(program: Command): string {
       // Actually, a robust fish completion often requires defining a function to check current line.
       // For simplicity, we'll assume standard fish helper __fish_seen_subcommand_from.
 
-      // To properly scope to 'openclaw gateway' and not 'openclaw other gateway', we need to check the sequence.
+      // To properly scope to 'orionclaw gateway' and not 'orionclaw other gateway', we need to check the sequence.
       // A simplified approach:
 
       // Subcommands

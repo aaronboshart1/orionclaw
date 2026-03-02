@@ -7,7 +7,7 @@ import type { SlackMonitorContext } from "../context.js";
 import { escapeSlackMrkdwn } from "../mrkdwn.js";
 
 // Prefix for OpenClaw-generated action IDs to scope our handler
-const OPENCLAW_ACTION_PREFIX = "openclaw:";
+const OPENCLAW_ACTION_PREFIX = "orionclaw:";
 const SLACK_INTERACTION_EVENT_PREFIX = "Slack interaction: ";
 const REDACTED_INTERACTION_VALUE = "[redacted]";
 const SLACK_INTERACTION_EVENT_MAX_CHARS = 2400;

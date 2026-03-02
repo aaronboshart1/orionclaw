@@ -10,13 +10,13 @@ import { resolveDefaultChannelAccountContext } from "./channel-account-context.j
 
 export async function noteSecurityWarnings(cfg: OpenClawConfig) {
   const warnings: string[] = [];
-  const auditHint = `- Run: ${formatCliCommand("openclaw security audit --deep")}`;
+  const auditHint = `- Run: ${formatCliCommand("orionclaw security audit --deep")}`;
 
   if (cfg.approvals?.exec?.enabled === false) {
     warnings.push(
       "- Note: approvals.exec.enabled=false disables approval forwarding only.",
       "  Host exec gating still comes from ~/.orionclaw/exec-approvals.json.",
-      `  Check local policy with: ${formatCliCommand("openclaw approvals get --gateway")}`,
+      `  Check local policy with: ${formatCliCommand("orionclaw approvals get --gateway")}`,
     );
   }
 
@@ -53,7 +53,7 @@ export async function noteSecurityWarnings(cfg: OpenClawConfig) {
   const saferRemoteAccessLines = [
     "  Safer remote access: keep bind loopback and use Tailscale Serve/Funnel or an SSH tunnel.",
     "  Example tunnel: ssh -N -L 18789:127.0.0.1:18789 user@gateway-host",
-    "  Docs: https://docs.openclaw.ai/gateway/remote",
+    "  Docs: https://docs.orionclaw.local/gateway/remote",
   ];
 
   if (isExposed) {
@@ -61,19 +61,19 @@ export async function noteSecurityWarnings(cfg: OpenClawConfig) {
       const authFixLines =
         resolvedAuth.mode === "password"
           ? [
-              `  Fix: ${formatCliCommand("openclaw configure")} to set a password`,
-              `  Or switch to token: ${formatCliCommand("openclaw config set gateway.auth.mode token")}`,
+              `  Fix: ${formatCliCommand("orionclaw configure")} to set a password`,
+              `  Or switch to token: ${formatCliCommand("orionclaw config set gateway.auth.mode token")}`,
             ]
           : [
-              `  Fix: ${formatCliCommand("openclaw doctor --fix")} to generate a token`,
+              `  Fix: ${formatCliCommand("orionclaw doctor --fix")} to generate a token`,
               `  Or set token directly: ${formatCliCommand(
-                "openclaw config set gateway.auth.mode token",
+                "orionclaw config set gateway.auth.mode token",
               )}`,
             ];
       warnings.push(
         `- CRITICAL: Gateway bound to ${bindDescriptor} without authentication.`,
         `  Anyone on your network (or internet if port-forwarded) can fully control your agent.`,
-        `  Fix: ${formatCliCommand("openclaw config set gateway.bind loopback")}`,
+        `  Fix: ${formatCliCommand("orionclaw config set gateway.bind loopback")}`,
         ...saferRemoteAccessLines,
         ...authFixLines,
       );
@@ -133,7 +133,7 @@ export async function noteSecurityWarnings(cfg: OpenClawConfig) {
     if (dmScope === "main" && isMultiUserDm) {
       warnings.push(
         `- ${params.label} DMs: multiple senders share the main session; run: ` +
-          formatCliCommand('openclaw config set session.dmScope "per-channel-peer"') +
+          formatCliCommand('orionclaw config set session.dmScope "per-channel-peer"') +
           ' (or "per-account-channel-peer" for multi-account channels) to isolate sessions.',
       );
     }

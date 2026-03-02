@@ -44,16 +44,16 @@ export function registerUpdateCli(program: Command) {
     .option("--yes", "Skip confirmation prompts (non-interactive)", false)
     .addHelpText("after", () => {
       const examples = [
-        ["openclaw update", "Update a source checkout (git)"],
-        ["openclaw update --channel beta", "Switch to beta channel (git + npm)"],
-        ["openclaw update --channel dev", "Switch to dev channel (git + npm)"],
-        ["openclaw update --tag beta", "One-off update to a dist-tag or version"],
-        ["openclaw update --dry-run", "Preview actions without changing anything"],
-        ["openclaw update --no-restart", "Update without restarting the service"],
-        ["openclaw update --json", "Output result as JSON"],
-        ["openclaw update --yes", "Non-interactive (accept downgrade prompts)"],
-        ["openclaw update wizard", "Interactive update wizard"],
-        ["openclaw --update", "Shorthand for openclaw update"],
+        ["orionclaw update", "Update a source checkout (git)"],
+        ["orionclaw update --channel beta", "Switch to beta channel (git + npm)"],
+        ["orionclaw update --channel dev", "Switch to dev channel (git + npm)"],
+        ["orionclaw update --tag beta", "One-off update to a dist-tag or version"],
+        ["orionclaw update --dry-run", "Preview actions without changing anything"],
+        ["orionclaw update --no-restart", "Update without restarting the service"],
+        ["orionclaw update --json", "Output result as JSON"],
+        ["orionclaw update --yes", "Non-interactive (accept downgrade prompts)"],
+        ["orionclaw update wizard", "Interactive update wizard"],
+        ["orionclaw --update", "Shorthand for orionclaw update"],
       ] as const;
       const fmtExamples = examples
         .map(([cmd, desc]) => `  ${theme.command(cmd)} ${theme.muted(`# ${desc}`)}`)
@@ -65,7 +65,7 @@ ${theme.heading("What this does:")}
 
 ${theme.heading("Switch channels:")}
   - Use --channel stable|beta|dev to persist the update channel in config
-  - Run openclaw update status to see the active channel and source
+  - Run orionclaw update status to see the active channel and source
   - Use --tag <dist-tag|version> for a one-off npm update without persisting
 
 ${theme.heading("Non-interactive:")}
@@ -82,7 +82,7 @@ ${theme.heading("Notes:")}
   - Downgrades require confirmation (can break configuration)
   - Skips update if the working directory has uncommitted changes
 
-${theme.muted("Docs:")} ${formatDocsLink("/cli/update", "docs.openclaw.ai/cli/update")}`;
+${theme.muted("Docs:")} ${formatDocsLink("/cli/update", "docs.orionclaw.local/cli/update")}`;
     })
     .action(async (opts) => {
       try {
@@ -107,7 +107,7 @@ ${theme.muted("Docs:")} ${formatDocsLink("/cli/update", "docs.openclaw.ai/cli/up
     .option("--timeout <seconds>", "Timeout for each update step in seconds (default: 1200)")
     .addHelpText(
       "after",
-      `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/update", "docs.openclaw.ai/cli/update")}\n`,
+      `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/update", "docs.orionclaw.local/cli/update")}\n`,
     )
     .action(async (opts, command) => {
       try {
@@ -129,14 +129,14 @@ ${theme.muted("Docs:")} ${formatDocsLink("/cli/update", "docs.openclaw.ai/cli/up
       "after",
       () =>
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
-          ["openclaw update status", "Show channel + version status."],
-          ["openclaw update status --json", "JSON output."],
-          ["openclaw update status --timeout 10", "Custom timeout."],
+          ["orionclaw update status", "Show channel + version status."],
+          ["orionclaw update status --json", "JSON output."],
+          ["orionclaw update status --timeout 10", "Custom timeout."],
         ])}\n\n${theme.heading("Notes:")}\n${theme.muted(
           "- Shows current update channel (stable/beta/dev) and source",
         )}\n${theme.muted("- Includes git tag/branch/SHA for source checkouts")}\n\n${theme.muted(
           "Docs:",
-        )} ${formatDocsLink("/cli/update", "docs.openclaw.ai/cli/update")}`,
+        )} ${formatDocsLink("/cli/update", "docs.orionclaw.local/cli/update")}`,
     )
     .action(async (opts, command) => {
       try {

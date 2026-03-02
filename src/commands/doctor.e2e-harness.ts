@@ -41,7 +41,7 @@ function createCommandWithTimeoutResult() {
 
 function createLegacyConfigSnapshot() {
   return {
-    path: "/tmp/openclaw.json",
+    path: "/tmp/orionclaw.json",
     exists: false,
     raw: null,
     parsed: {},
@@ -157,7 +157,7 @@ export const runLegacyStateMigrations = vi.fn().mockResolvedValue({
 }) as unknown as MockFn;
 
 const DEFAULT_CONFIG_SNAPSHOT = {
-  path: "/tmp/openclaw.json",
+  path: "/tmp/orionclaw.json",
   exists: true,
   raw: "{}",
   parsed: {},
@@ -187,7 +187,7 @@ vi.mock("../config/config.js", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../config/config.js")>();
   return {
     ...actual,
-    CONFIG_PATH: "/tmp/openclaw.json",
+    CONFIG_PATH: "/tmp/orionclaw.json",
     createConfigIO,
     readConfigFileSnapshot,
     writeConfigFile,
@@ -399,7 +399,7 @@ beforeEach(() => {
   originalStateDir = process.env.OPENCLAW_STATE_DIR;
   originalUpdateInProgress = process.env.OPENCLAW_UPDATE_IN_PROGRESS;
   process.env.OPENCLAW_UPDATE_IN_PROGRESS = "1";
-  tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-doctor-state-"));
+  tempStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "orionclaw-doctor-state-"));
   process.env.OPENCLAW_STATE_DIR = tempStateDir;
   fs.mkdirSync(path.join(tempStateDir, "agents", "main", "sessions"), {
     recursive: true,

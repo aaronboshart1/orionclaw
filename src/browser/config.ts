@@ -266,7 +266,7 @@ export function resolveBrowserConfig(
 
   // In headless/noSandbox environments (servers), prefer "orionclaw" profile over "chrome"
   // because Chrome extension relay requires a GUI browser which isn't available headless.
-  // Issue: https://github.com/openclaw/openclaw/issues/14895
+  // Issue: https://github.com/orionclaw/orionclaw/issues/14895
   const preferOpenClawProfile = headless || noSandbox;
   const defaultProfile =
     defaultProfileFromConfig ??

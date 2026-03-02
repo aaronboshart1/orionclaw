@@ -515,7 +515,7 @@ export function collectSyncedFolderFindings(params: {
       severity: "warn",
       title: "State/config path looks like a synced folder",
       detail: `stateDir=${params.stateDir}, configPath=${params.configPath}. Synced folders (iCloud/Dropbox/OneDrive/Google Drive) can leak tokens and transcripts onto other devices.`,
-      remediation: `Keep OPENCLAW_STATE_DIR on a local-only volume and re-run "${formatCliCommand("openclaw security audit --fix")}".`,
+      remediation: `Keep OPENCLAW_STATE_DIR on a local-only volume and re-run "${formatCliCommand("orionclaw security audit --fix")}".`,
     });
   }
   return findings;
@@ -677,7 +677,7 @@ export function collectGatewayHttpSessionKeyOverrideFindings(
     severity: "info",
     title: "HTTP API session-key override is enabled",
     detail:
-      `${enabledEndpoints.join(", ")} accept x-openclaw-session-key for per-request session routing. ` +
+      `${enabledEndpoints.join(", ")} accept x-orionclaw-session-key for per-request session routing. ` +
       "Treat API credential holders as trusted principals.",
   });
 

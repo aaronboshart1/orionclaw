@@ -81,11 +81,11 @@ function validatePluginId(pluginId: string): string | null {
 async function ensureOpenClawExtensions(manifest: PackageManifest) {
   const extensions = manifest[MANIFEST_KEY]?.extensions;
   if (!Array.isArray(extensions)) {
-    throw new Error("package.json missing openclaw.extensions");
+    throw new Error("package.json missing orionclaw.extensions");
   }
   const list = extensions.map((e) => (typeof e === "string" ? e.trim() : "")).filter(Boolean);
   if (list.length === 0) {
-    throw new Error("package.json openclaw.extensions is empty");
+    throw new Error("package.json orionclaw.extensions is empty");
   }
   return list;
 }
@@ -153,9 +153,9 @@ async function installPluginFromPackageDir(params: {
   const pkgName = typeof manifest.name === "string" ? manifest.name : "";
   const npmPluginId = pkgName ? unscopedPackageName(pkgName) : "plugin";
 
-  // Prefer the canonical `id` from openclaw.plugin.json over the npm package name.
+  // Prefer the canonical `id` from orionclaw.plugin.json over the npm package name.
   // This avoids a latent key-mismatch bug: if the manifest id (e.g. "memory-cognee")
-  // differs from the npm package name (e.g. "cognee-openclaw"), the plugin registry
+  // differs from the npm package name (e.g. "cognee-orionclaw"), the plugin registry
   // uses the manifest id as the authoritative key, so the config entry must match it.
   const ocManifestResult = loadPluginManifest(params.packageDir);
   const manifestPluginId =
@@ -212,12 +212,12 @@ async function installPluginFromPackageDir(params: {
       );
     } else if (scanSummary.warn > 0) {
       logger.warn?.(
-        `Plugin "${pluginId}" has ${scanSummary.warn} suspicious code pattern(s). Run "openclaw security audit --deep" for details.`,
+        `Plugin "${pluginId}" has ${scanSummary.warn} suspicious code pattern(s). Run "orionclaw security audit --deep" for details.`,
       );
     }
   } catch (err) {
     logger.warn?.(
-      `Plugin "${pluginId}" code safety scan failed (${String(err)}). Installation continues; run "openclaw security audit --deep" after install.`,
+      `Plugin "${pluginId}" code safety scan failed (${String(err)}). Installation continues; run "orionclaw security audit --deep" after install.`,
     );
   }
 
@@ -321,7 +321,7 @@ export async function installPluginFromArchive(params: {
 
   return await withExtractedArchiveRoot({
     archivePath,
-    tempDirPrefix: "openclaw-plugin-",
+    tempDirPrefix: "orionclaw-plugin-",
     timeoutMs,
     logger,
     onExtracted: async (packageDir) =>
@@ -428,7 +428,7 @@ export async function installPluginFromNpmSpec(params: {
 
   logger.info?.(`Downloading ${spec}…`);
   const flowResult = await installFromNpmSpecArchiveWithInstaller({
-    tempDirPrefix: "openclaw-npm-pack-",
+    tempDirPrefix: "orionclaw-npm-pack-",
     spec,
     timeoutMs,
     expectedIntegrity: params.expectedIntegrity,
