@@ -25,7 +25,7 @@ x-i18n:
 
 ## 使用哪个 Chrome 配置文件？
 
-OpenClaw 控制一个**专用的 Chrome 配置文件**（名为 `openclaw`，橙色调 UI）。这与你的日常浏览器配置文件是分开的。
+OrionClaw 控制一个**专用的 Chrome 配置文件**（名为 `openclaw`，橙色调 UI）。这与你的日常浏览器配置文件是分开的。
 
 两种简单的访问方式：
 

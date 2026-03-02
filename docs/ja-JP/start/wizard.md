@@ -16,14 +16,14 @@ x-i18n:
 
 # オンボーディングウィザード（CLI）
 
-CLIオンボーディングウィザードは、macOS、Linux、Windows（WSL2経由）でOpenClawをセットアップする際の推奨パスです。ローカルGatewayまたはリモートGateway接続に加えて、ワークスペースのデフォルト設定、チャンネル、Skillsを構成します。
+CLIオンボーディングウィザードは、macOS、Linux、Windows（WSL2経由）でOrionClawをセットアップする際の推奨パスです。ローカルGatewayまたはリモートGateway接続に加えて、ワークスペースのデフォルト設定、チャンネル、Skillsを構成します。
 
 ```bash
-openclaw onboard
+orionclaw onboard
 ```
 
 <Info>
-最速で初回チャットを開始する方法：Control UI を開きます（チャンネル設定は不要）。`openclaw dashboard` を実行してブラウザでチャットできます。ドキュメント：[Dashboard](/web/dashboard)。
+最速で初回チャットを開始する方法：Control UI を開きます（チャンネル設定は不要）。`orionclaw dashboard` を実行してブラウザでチャットできます。ドキュメント：[Dashboard](/web/dashboard)。
 </Info>
 
 ## クイックスタート vs 詳細設定
@@ -58,8 +58,8 @@ openclaw onboard
 ## よく使うフォローアップコマンド
 
 ```bash
-openclaw configure
-openclaw agents add <name>
+orionclaw configure
+orionclaw agents add <name>
 ```
 
 <Note>
@@ -67,11 +67,11 @@ openclaw agents add <name>
 </Note>
 
 <Tip>
-推奨：エージェントが `web_search` を使用できるように、Brave Search APIキーを設定してください（`web_fetch` はキーなしで動作します）。最も簡単な方法：`openclaw configure --section web` を実行すると `tools.web.search.apiKey` が保存されます。ドキュメント：[Webツール](/tools/web)。
+推奨：エージェントが `web_search` を使用できるように、Brave Search APIキーを設定してください（`web_fetch` はキーなしで動作します）。最も簡単な方法：`orionclaw configure --section web` を実行すると `tools.web.search.apiKey` が保存されます。ドキュメント：[Webツール](/tools/web)。
 </Tip>
 
 ## 関連ドキュメント
 
-- CLIコマンドリファレンス：[`openclaw onboard`](/cli/onboard)
+- CLIコマンドリファレンス：[`orionclaw onboard`](/cli/onboard)
 - macOSアプリのオンボーディング：[オンボーディング](/start/onboarding)
 - エージェント初回起動の手順：[エージェントブートストラップ](/start/bootstrapping)

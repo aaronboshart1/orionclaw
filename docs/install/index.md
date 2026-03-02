@@ -1,5 +1,5 @@
 ---
-summary: "Install OpenClaw — installer script, npm/pnpm, from source, Docker, and more"
+summary: "Install OrionClaw — installer script, npm/pnpm, from source, Docker, and more"
 read_when:
   - You need an install method other than the Getting Started quickstart
   - You want to deploy to a cloud platform
@@ -18,17 +18,17 @@ Already followed [Getting Started](/start/getting-started)? You're all set — t
 - `pnpm` only if you build from source
 
 <Note>
-On Windows, we strongly recommend running OpenClaw under [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install).
+On Windows, we strongly recommend running OrionClaw under [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install).
 </Note>
 
 ## Install methods
 
 <Tip>
-The **installer script** is the recommended way to install OpenClaw. It handles Node detection, installation, and onboarding in one step.
+The **installer script** is the recommended way to install OrionClaw. It handles Node detection, installation, and onboarding in one step.
 </Tip>
 
 <Warning>
-For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possible. Prefer a clean base OS image (for example Ubuntu LTS), then install OpenClaw yourself with the installer script.
+For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possible. Prefer a clean base OS image (for example Ubuntu LTS), then install OrionClaw yourself with the installer script.
 </Warning>
 
 <AccordionGroup>
@@ -38,12 +38,12 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
     <Tabs>
       <Tab title="macOS / Linux / WSL2">
         ```bash
-        curl -fsSL https://openclaw.ai/install.sh | bash
+        curl -fsSL https://orionclaw.local/install.sh | bash
         ```
       </Tab>
       <Tab title="Windows (PowerShell)">
         ```powershell
-        iwr -useb https://openclaw.ai/install.ps1 | iex
+        iwr -useb https://orionclaw.local/install.ps1 | iex
         ```
       </Tab>
     </Tabs>
@@ -55,12 +55,12 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
     <Tabs>
       <Tab title="macOS / Linux / WSL2">
         ```bash
-        curl -fsSL https://openclaw.ai/install.sh | bash -s -- --no-onboard
+        curl -fsSL https://orionclaw.local/install.sh | bash -s -- --no-onboard
         ```
       </Tab>
       <Tab title="Windows (PowerShell)">
         ```powershell
-        & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -NoOnboard
+        & ([scriptblock]::Create((iwr -useb https://orionclaw.local/install.ps1))) -NoOnboard
         ```
       </Tab>
     </Tabs>
@@ -76,7 +76,7 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
       <Tab title="npm">
         ```bash
         npm install -g openclaw@latest
-        openclaw onboard --install-daemon
+        orionclaw onboard --install-daemon
         ```
 
         <Accordion title="sharp build errors?">
@@ -93,7 +93,7 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
         ```bash
         pnpm add -g openclaw@latest
         pnpm approve-builds -g        # approve openclaw, node-llama-cpp, sharp, etc.
-        openclaw onboard --install-daemon
+        orionclaw onboard --install-daemon
         ```
 
         <Note>
@@ -109,10 +109,10 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
 
     <Steps>
       <Step title="Clone and build">
-        Clone the [OpenClaw repo](https://github.com/openclaw/openclaw) and build:
+        Clone the [OrionClaw repo](https://github.com/aaronboshart1/orionclaw) and build:
 
         ```bash
-        git clone https://github.com/openclaw/openclaw.git
+        git clone https://github.com/aaronboshart1/orionclaw.git
         cd openclaw
         pnpm install
         pnpm ui:build
@@ -130,7 +130,7 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
       </Step>
       <Step title="Run onboarding">
         ```bash
-        openclaw onboard --install-daemon
+        orionclaw onboard --install-daemon
         ```
       </Step>
     </Steps>
@@ -165,7 +165,7 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
 Verify everything is working:
 
 ```bash
-openclaw doctor         # check for config issues
+orionclaw doctor         # check for config issues
 openclaw status         # gateway status
 openclaw dashboard      # open the browser UI
 ```
@@ -207,12 +207,12 @@ Then open a new terminal (or `rehash` in zsh / `hash -r` in bash).
 
 <CardGroup cols={3}>
   <Card title="Updating" href="/install/updating" icon="refresh-cw">
-    Keep OpenClaw up to date.
+    Keep OrionClaw up to date.
   </Card>
   <Card title="Migrating" href="/install/migrating" icon="arrow-right">
     Move to a new machine.
   </Card>
   <Card title="Uninstall" href="/install/uninstall" icon="trash-2">
-    Remove OpenClaw completely.
+    Remove OrionClaw completely.
   </Card>
 </CardGroup>

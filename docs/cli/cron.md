@@ -1,12 +1,12 @@
 ---
-summary: "CLI reference for `openclaw cron` (schedule and run background jobs)"
+summary: "CLI reference for `orionclaw cron` (schedule and run background jobs)"
 read_when:
   - You want scheduled jobs and wakeups
   - You’re debugging cron execution and logs
 title: "cron"
 ---
 
-# `openclaw cron`
+# `orionclaw cron`
 
 Manage cron jobs for the Gateway scheduler.
 
@@ -14,7 +14,7 @@ Related:
 
 - Cron jobs: [Cron jobs](/automation/cron-jobs)
 
-Tip: run `openclaw cron --help` for the full command surface.
+Tip: run `orionclaw cron --help` for the full command surface.
 
 Note: isolated `cron add` jobs default to `--announce` delivery. Use `--no-deliver` to keep
 output internal. `--deliver` remains as a deprecated alias for `--announce`.
@@ -26,7 +26,7 @@ Note: recurring jobs now use exponential retry backoff after consecutive errors 
 Note: retention/pruning is controlled in config:
 
 - `cron.sessionRetention` (default `24h`) prunes completed isolated run sessions.
-- `cron.runLog.maxBytes` + `cron.runLog.keepLines` prune `~/.openclaw/cron/runs/<jobId>.jsonl`.
+- `cron.runLog.maxBytes` + `cron.runLog.keepLines` prune `~/.orionclaw/cron/runs/<jobId>.jsonl`.
 
 ## Common edits
 

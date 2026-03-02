@@ -8,7 +8,7 @@ title: "Authentication"
 
 # Authentication
 
-OpenClaw supports OAuth and API keys for model providers. For Anthropic
+OrionClaw supports OAuth and API keys for model providers. For Anthropic
 accounts, we recommend using an **API key**. For Claude subscription access,
 use the long‑lived token created by `claude setup-token`.
 
@@ -21,7 +21,7 @@ For SecretRef-based auth (`env`/`file`/`exec` providers), see [Secrets Managemen
 If you’re using Anthropic directly, use an API key.
 
 1. Create an API key in the Anthropic Console.
-2. Put it on the **gateway host** (the machine running `openclaw gateway`).
+2. Put it on the **gateway host** (the machine running `orionclaw gateway`).
 
 ```bash
 export ANTHROPIC_API_KEY="..."
@@ -29,10 +29,10 @@ openclaw models status
 ```
 
 3. If the Gateway runs under systemd/launchd, prefer putting the key in
-   `~/.openclaw/.env` so the daemon can read it:
+   `~/.orionclaw/.env` so the daemon can read it:
 
 ```bash
-cat >> ~/.openclaw/.env <<'EOF'
+cat >> ~/.orionclaw/.env <<'EOF'
 ANTHROPIC_API_KEY=...
 EOF
 ```
@@ -41,14 +41,14 @@ Then restart the daemon (or restart your Gateway process) and re-check:
 
 ```bash
 openclaw models status
-openclaw doctor
+orionclaw doctor
 ```
 
 If you’d rather not manage env vars yourself, the onboarding wizard can store
-API keys for daemon use: `openclaw onboard`.
+API keys for daemon use: `orionclaw onboard`.
 
 See [Help](/help) for details on env inheritance (`env.shellEnv`,
-`~/.openclaw/.env`, systemd/launchd).
+`~/.orionclaw/.env`, systemd/launchd).
 
 ## Anthropic: setup-token (subscription auth)
 
@@ -59,7 +59,7 @@ subscription, the setup-token flow is also supported. Run it on the **gateway ho
 claude setup-token
 ```
 
-Then paste it into OpenClaw:
+Then paste it into OrionClaw:
 
 ```bash
 openclaw models auth setup-token --provider anthropic
@@ -106,7 +106,7 @@ Optional ops scripts (systemd/Termux) are documented here:
 
 ```bash
 openclaw models status
-openclaw doctor
+orionclaw doctor
 ```
 
 ## API key rotation behavior (gateway)
@@ -121,7 +121,7 @@ hits a provider rate limit.
   - `<PROVIDER>_API_KEY_*`
 - Google providers also include `GOOGLE_API_KEY` as an additional fallback.
 - The same key list is deduplicated before use.
-- OpenClaw retries with the next key only for rate-limit errors (for example
+- OrionClaw retries with the next key only for rate-limit errors (for example
   `429`, `rate_limit`, `quota`, `resource exhausted`).
 - Non-rate-limit errors are not retried with alternate keys.
 - If all keys fail, the final error from the last attempt is returned.
@@ -159,7 +159,7 @@ openclaw models status
 
 ### Token expiring/expired
 
-Run `openclaw models status` to confirm which profile is expiring. If the profile
+Run `orionclaw models status` to confirm which profile is expiring. If the profile
 is missing, rerun `claude setup-token` and paste the token again.
 
 ## Requirements

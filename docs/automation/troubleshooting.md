@@ -15,10 +15,10 @@ Use this page for scheduler and delivery issues (`cron` + `heartbeat`).
 
 ```bash
 openclaw status
-openclaw gateway status
+orionclaw gateway status
 openclaw logs --follow
-openclaw doctor
-openclaw channels status --probe
+orionclaw doctor
+orionclaw channels status --probe
 ```
 
 Then run automation checks:
@@ -55,7 +55,7 @@ Common signatures:
 ```bash
 openclaw cron runs --id <jobId> --limit 20
 openclaw cron list
-openclaw channels status --probe
+orionclaw channels status --probe
 openclaw logs --follow
 ```
 
@@ -76,8 +76,8 @@ Common signatures:
 ```bash
 openclaw system heartbeat last
 openclaw logs --follow
-openclaw config get agents.defaults.heartbeat
-openclaw channels status --probe
+orionclaw config get agents.defaults.heartbeat
+orionclaw channels status --probe
 ```
 
 Good output looks like:
@@ -95,9 +95,9 @@ Common signatures:
 ## Timezone and activeHours gotchas
 
 ```bash
-openclaw config get agents.defaults.heartbeat.activeHours
-openclaw config get agents.defaults.heartbeat.activeHours.timezone
-openclaw config get agents.defaults.userTimezone || echo "agents.defaults.userTimezone not set"
+orionclaw config get agents.defaults.heartbeat.activeHours
+orionclaw config get agents.defaults.heartbeat.activeHours.timezone
+orionclaw config get agents.defaults.userTimezone || echo "agents.defaults.userTimezone not set"
 openclaw cron list
 openclaw logs --follow
 ```

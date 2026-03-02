@@ -1,8 +1,8 @@
 ---
 read_when:
-  - 你想在 OpenClaw 中使用 Qwen
+  - 你想在 OrionClaw 中使用 Qwen
   - 你想要免费层 OAuth 访问 Qwen Coder
-summary: 在 OpenClaw 中使用 Qwen OAuth（免费层）
+summary: 在 OrionClaw 中使用 Qwen OAuth（免费层）
 title: Qwen
 x-i18n:
   generated_at: "2026-02-03T07:53:34Z"
@@ -46,7 +46,7 @@ openclaw models set qwen-portal/coder-model
 
 ## 复用 Qwen Code CLI 登录
 
-如果你已经使用 Qwen Code CLI 登录，OpenClaw 会在加载认证存储时从 `~/.qwen/oauth_creds.json` 同步凭证。你仍然需要一个 `models.providers.qwen-portal` 条目（使用上面的登录命令创建一个）。
+如果你已经使用 Qwen Code CLI 登录，OrionClaw 会在加载认证存储时从 `~/.qwen/oauth_creds.json` 同步凭证。你仍然需要一个 `models.providers.qwen-portal` 条目（使用上面的登录命令创建一个）。
 
 ## 注意
 

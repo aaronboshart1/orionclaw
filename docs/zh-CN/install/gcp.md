@@ -1,9 +1,9 @@
 ---
 read_when:
-  - 你想在 GCP 上 24/7 运行 OpenClaw
+  - 你想在 GCP 上 24/7 运行 OrionClaw
   - 你想要在自己的 VM 上运行生产级、常驻的 Gateway 网关
   - 你想完全控制持久化、二进制文件和重启行为
-summary: 在 GCP Compute Engine VM（Docker）上 24/7 运行 OpenClaw Gateway 网关并持久化状态
+summary: 在 GCP Compute Engine VM（Docker）上 24/7 运行 OrionClaw Gateway 网关并持久化状态
 title: GCP
 x-i18n:
   generated_at: "2026-02-03T07:52:50Z"
@@ -14,13 +14,13 @@ x-i18n:
   workflow: 15
 ---
 
-# 在 GCP Compute Engine 上运行 OpenClaw（Docker，生产 VPS 指南）
+# 在 GCP Compute Engine 上运行 OrionClaw（Docker，生产 VPS 指南）
 
 ## 目标
 
-使用 Docker 在 GCP Compute Engine VM 上运行持久化的 OpenClaw Gateway 网关，具有持久状态、内置二进制文件和安全的重启行为。
+使用 Docker 在 GCP Compute Engine VM 上运行持久化的 OrionClaw Gateway 网关，具有持久状态、内置二进制文件和安全的重启行为。
 
-如果你想要"OpenClaw 24/7 大约 $5-12/月"，这是在 Google Cloud 上的可靠设置。
+如果你想要"OrionClaw 24/7 大约 $5-12/月"，这是在 Google Cloud 上的可靠设置。
 价格因机器类型和区域而异；选择适合你工作负载的最小 VM，如果遇到 OOM 则扩容。
 
 ## 我们在做什么（简单说明）？
@@ -28,8 +28,8 @@ x-i18n:
 - 创建 GCP 项目并启用计费
 - 创建 Compute Engine VM
 - 安装 Docker（隔离的应用运行时）
-- 在 Docker 中启动 OpenClaw Gateway 网关
-- 在主机上持久化 `~/.openclaw` + `~/.openclaw/workspace`（重启/重建后仍保留）
+- 在 Docker 中启动 OrionClaw Gateway 网关
+- 在主机上持久化 `~/.orionclaw` + `~/.orionclaw/workspace`（重启/重建后仍保留）
 - 通过 SSH 隧道从你的笔记本电脑访问控制 UI
 
 Gateway 网关可以通过以下方式访问：
@@ -49,7 +49,7 @@ Ubuntu 也可以；请相应地映射软件包。
 2. 创建 Compute Engine VM（e2-small，Debian 12，20GB）
 3. SSH 进入 VM
 4. 安装 Docker
-5. 克隆 OpenClaw 仓库
+5. 克隆 OrionClaw 仓库
 6. 创建持久化主机目录
 7. 配置 `.env` 和 `docker-compose.yml`
 8. 内置所需二进制文件、构建并启动
@@ -96,7 +96,7 @@ gcloud auth login
 **CLI：**
 
 ```bash
-gcloud projects create my-openclaw-project --name="OpenClaw Gateway"
+gcloud projects create my-openclaw-project --name="OrionClaw Gateway"
 gcloud config set project my-openclaw-project
 ```
 
@@ -129,7 +129,7 @@ gcloud services enable compute.googleapis.com
 **CLI：**
 
 ```bash
-gcloud compute instances create openclaw-gateway \
+gcloud compute instances create orionclaw-gateway \
   --zone=us-central1-a \
   --machine-type=e2-small \
   --boot-disk-size=20GB \
@@ -140,7 +140,7 @@ gcloud compute instances create openclaw-gateway \
 **Console：**
 
 1. 转到 Compute Engine > VM instances > Create instance
-2. Name：`openclaw-gateway`
+2. Name：`orionclaw-gateway`
 3. Region：`us-central1`，Zone：`us-central1-a`
 4. Machine type：`e2-small`
 5. Boot disk：Debian 12，20GB
@@ -153,7 +153,7 @@ gcloud compute instances create openclaw-gateway \
 **CLI：**
 
 ```bash
-gcloud compute ssh openclaw-gateway --zone=us-central1-a
+gcloud compute ssh orionclaw-gateway --zone=us-central1-a
 ```
 
 **Console：**
@@ -182,7 +182,7 @@ exit
 然后重新 SSH 登录：
 
 ```bash
-gcloud compute ssh openclaw-gateway --zone=us-central1-a
+gcloud compute ssh orionclaw-gateway --zone=us-central1-a
 ```
 
 验证：
@@ -194,10 +194,10 @@ docker compose version
 
 ---
 
-## 6) 克隆 OpenClaw 仓库
+## 6) 克隆 OrionClaw 仓库
 
 ```bash
-git clone https://github.com/openclaw/openclaw.git
+git clone https://github.com/aaronboshart1/orionclaw.git
 cd openclaw
 ```
 
@@ -211,8 +211,8 @@ Docker 容器是临时的。
 所有长期状态必须存在于主机上。
 
 ```bash
-mkdir -p ~/.openclaw
-mkdir -p ~/.openclaw/workspace
+mkdir -p ~/.orionclaw
+mkdir -p ~/.orionclaw/workspace
 ```
 
 ---
@@ -250,7 +250,7 @@ openssl rand -hex 32
 
 ```yaml
 services:
-  openclaw-gateway:
+  orionclaw-gateway:
     image: ${OPENCLAW_IMAGE}
     build: .
     restart: unless-stopped
@@ -358,15 +358,15 @@ CMD ["node","dist/index.js"]
 
 ```bash
 docker compose build
-docker compose up -d openclaw-gateway
+docker compose up -d orionclaw-gateway
 ```
 
 验证二进制文件：
 
 ```bash
-docker compose exec openclaw-gateway which gog
-docker compose exec openclaw-gateway which goplaces
-docker compose exec openclaw-gateway which wacli
+docker compose exec orionclaw-gateway which gog
+docker compose exec orionclaw-gateway which goplaces
+docker compose exec orionclaw-gateway which wacli
 ```
 
 预期输出：
@@ -382,7 +382,7 @@ docker compose exec openclaw-gateway which wacli
 ## 12) 验证 Gateway 网关
 
 ```bash
-docker compose logs -f openclaw-gateway
+docker compose logs -f orionclaw-gateway
 ```
 
 成功：
@@ -398,7 +398,7 @@ docker compose logs -f openclaw-gateway
 创建 SSH 隧道以转发 Gateway 网关端口：
 
 ```bash
-gcloud compute ssh openclaw-gateway --zone=us-central1-a -- -L 18789:127.0.0.1:18789
+gcloud compute ssh orionclaw-gateway --zone=us-central1-a -- -L 18789:127.0.0.1:18789
 ```
 
 在浏览器中打开：
@@ -411,12 +411,12 @@ gcloud compute ssh openclaw-gateway --zone=us-central1-a -- -L 18789:127.0.0.1:1
 
 ## 什么持久化在哪里（真实来源）
 
-OpenClaw 在 Docker 中运行，但 Docker 不是真实来源。
+OrionClaw 在 Docker 中运行，但 Docker 不是真实来源。
 所有长期状态必须在重启、重建和重启后仍然存在。
 
 | 组件             | 位置                              | 持久化机制    | 说明                        |
 | ---------------- | --------------------------------- | ------------- | --------------------------- |
-| Gateway 网关配置 | `/home/node/.openclaw/`           | 主机卷挂载    | 包括 `openclaw.json`、令牌  |
+| Gateway 网关配置 | `/home/node/.openclaw/`           | 主机卷挂载    | 包括 `orionclaw.json`、令牌  |
 | 模型认证配置文件 | `/home/node/.openclaw/`           | 主机卷挂载    | OAuth 令牌、API 密钥        |
 | Skill 配置       | `/home/node/.openclaw/skills/`    | 主机卷挂载    | Skill 级别状态              |
 | 智能体工作区     | `/home/node/.openclaw/workspace/` | 主机卷挂载    | 代码和智能体产物            |
@@ -431,7 +431,7 @@ OpenClaw 在 Docker 中运行，但 Docker 不是真实来源。
 
 ## 更新
 
-在 VM 上更新 OpenClaw：
+在 VM 上更新 OrionClaw：
 
 ```bash
 cd ~/openclaw
@@ -464,15 +464,15 @@ gcloud compute os-login describe-profile
 
 ```bash
 # 首先停止 VM
-gcloud compute instances stop openclaw-gateway --zone=us-central1-a
+gcloud compute instances stop orionclaw-gateway --zone=us-central1-a
 
 # 更改机器类型
-gcloud compute instances set-machine-type openclaw-gateway \
+gcloud compute instances set-machine-type orionclaw-gateway \
   --zone=us-central1-a \
   --machine-type=e2-small
 
 # 启动 VM
-gcloud compute instances start openclaw-gateway --zone=us-central1-a
+gcloud compute instances start orionclaw-gateway --zone=us-central1-a
 ```
 
 ---
@@ -487,7 +487,7 @@ gcloud compute instances start openclaw-gateway --zone=us-central1-a
 
    ```bash
    gcloud iam service-accounts create openclaw-deploy \
-     --display-name="OpenClaw Deployment"
+     --display-name="OrionClaw Deployment"
    ```
 
 2. 授予 Compute Instance Admin 角色（或更窄的自定义角色）：

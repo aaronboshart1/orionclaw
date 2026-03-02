@@ -8,7 +8,7 @@ title: "OpenResponses API"
 
 # OpenResponses API (HTTP)
 
-OpenClaw’s Gateway can serve an OpenResponses-compatible `POST /v1/responses` endpoint.
+OrionClaw’s Gateway can serve an OpenResponses-compatible `POST /v1/responses` endpoint.
 
 This endpoint is **disabled by default**. Enable it in config first.
 
@@ -16,7 +16,7 @@ This endpoint is **disabled by default**. Enable it in config first.
 - Same port as the Gateway (WS + HTTP multiplex): `http://<gateway-host>:<port>/v1/responses`
 
 Under the hood, requests are executed as a normal Gateway agent run (same codepath as
-`openclaw agent`), so routing/permissions/config match your Gateway.
+`orionclaw agent`), so routing/permissions/config match your Gateway.
 
 ## Authentication
 
@@ -49,7 +49,7 @@ No custom headers required: encode the agent id in the OpenResponses `model` fie
 - `model: "openclaw:<agentId>"` (example: `"openclaw:main"`, `"openclaw:beta"`)
 - `model: "agent:<agentId>"` (alias)
 
-Or target a specific OpenClaw agent by header:
+Or target a specific OrionClaw agent by header:
 
 - `x-openclaw-agent-id: <agentId>` (default: `main`)
 
@@ -325,7 +325,7 @@ curl -sS http://127.0.0.1:18789/v1/responses \
   -H 'Content-Type: application/json' \
   -H 'x-openclaw-agent-id: main' \
   -d '{
-    "model": "openclaw",
+    "model": "orionclaw",
     "input": "hi"
   }'
 ```
@@ -338,7 +338,7 @@ curl -N http://127.0.0.1:18789/v1/responses \
   -H 'Content-Type: application/json' \
   -H 'x-openclaw-agent-id: main' \
   -d '{
-    "model": "openclaw",
+    "model": "orionclaw",
     "stream": true,
     "input": "hi"
   }'

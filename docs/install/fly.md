@@ -1,15 +1,15 @@
 ---
 title: Fly.io
-description: Deploy OpenClaw on Fly.io
-summary: "Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS"
+description: Deploy OrionClaw on Fly.io
+summary: "Step-by-step Fly.io deployment for OrionClaw with persistent storage and HTTPS"
 read_when:
-  - Deploying OpenClaw on Fly.io
+  - Deploying OrionClaw on Fly.io
   - Setting up Fly volumes, secrets, and first-run config
 ---
 
 # Fly.io Deployment
 
-**Goal:** OpenClaw Gateway running on a [Fly.io](https://fly.io) machine with persistent storage, automatic HTTPS, and Discord/channel access.
+**Goal:** OrionClaw Gateway running on a [Fly.io](https://fly.io) machine with persistent storage, automatic HTTPS, and Discord/channel access.
 
 ## What you need
 
@@ -29,7 +29,7 @@ read_when:
 
 ```bash
 # Clone the repo
-git clone https://github.com/openclaw/openclaw.git
+git clone https://github.com/aaronboshart1/orionclaw.git
 cd openclaw
 
 # Create a new Fly app (pick your own name)
@@ -111,7 +111,7 @@ fly secrets set DISCORD_BOT_TOKEN=MTQ...
 
 - Non-loopback binds (`--bind lan`) require `OPENCLAW_GATEWAY_TOKEN` for security.
 - Treat these tokens like passwords.
-- **Prefer env vars over config file** for all API keys and tokens. This keeps secrets out of `openclaw.json` where they could be accidentally exposed or logged.
+- **Prefer env vars over config file** for all API keys and tokens. This keeps secrets out of `orionclaw.json` where they could be accidentally exposed or logged.
 
 ## 4) Deploy
 
@@ -147,7 +147,7 @@ Create the config directory and file:
 
 ```bash
 mkdir -p /data
-cat > /data/openclaw.json << 'EOF'
+cat > /data/orionclaw.json << 'EOF'
 {
   "agents": {
     "defaults": {
@@ -199,7 +199,7 @@ cat > /data/openclaw.json << 'EOF'
 EOF
 ```
 
-**Note:** With `OPENCLAW_STATE_DIR=/data`, the config path is `/data/openclaw.json`.
+**Note:** With `OPENCLAW_STATE_DIR=/data`, the config path is `/data/orionclaw.json`.
 
 **Note:** The Discord token can come from either:
 
@@ -292,12 +292,12 @@ The lock file is at `/data/gateway.*.lock` (not in a subdirectory).
 
 ### Config Not Being Read
 
-If using `--allow-unconfigured`, the gateway creates a minimal config. Your custom config at `/data/openclaw.json` should be read on restart.
+If using `--allow-unconfigured`, the gateway creates a minimal config. Your custom config at `/data/orionclaw.json` should be read on restart.
 
 Verify the config exists:
 
 ```bash
-fly ssh console --command "cat /data/openclaw.json"
+fly ssh console --command "cat /data/orionclaw.json"
 ```
 
 ### Writing Config via SSH
@@ -306,17 +306,17 @@ The `fly ssh console -C` command doesn't support shell redirection. To write a c
 
 ```bash
 # Use echo + tee (pipe from local to remote)
-echo '{"your":"config"}' | fly ssh console -C "tee /data/openclaw.json"
+echo '{"your":"config"}' | fly ssh console -C "tee /data/orionclaw.json"
 
 # Or use sftp
 fly sftp shell
-> put /local/path/config.json /data/openclaw.json
+> put /local/path/config.json /data/orionclaw.json
 ```
 
 **Note:** `fly sftp` may fail if the file already exists. Delete first:
 
 ```bash
-fly ssh console --command "rm /data/openclaw.json"
+fly ssh console --command "rm /data/orionclaw.json"
 ```
 
 ### State Not Persisting

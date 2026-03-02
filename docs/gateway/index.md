@@ -30,11 +30,11 @@ Use this page for day-1 startup and day-2 operations of the Gateway service.
   <Step title="Start the Gateway">
 
 ```bash
-openclaw gateway --port 18789
+orionclaw gateway --port 18789
 # debug/trace mirrored to stdio
-openclaw gateway --port 18789 --verbose
+orionclaw gateway --port 18789 --verbose
 # force-kill listener on selected port, then start
-openclaw gateway --force
+orionclaw gateway --force
 ```
 
   </Step>
@@ -42,7 +42,7 @@ openclaw gateway --force
   <Step title="Verify service health">
 
 ```bash
-openclaw gateway status
+orionclaw gateway status
 openclaw status
 openclaw logs --follow
 ```
@@ -54,7 +54,7 @@ Healthy baseline: `Runtime: running` and `RPC probe: ok`.
   <Step title="Validate channel readiness">
 
 ```bash
-openclaw channels status --probe
+orionclaw channels status --probe
 ```
 
   </Step>
@@ -94,15 +94,15 @@ Default mode is `gateway.reload.mode="hybrid"`.
 ## Operator command set
 
 ```bash
-openclaw gateway status
-openclaw gateway status --deep
-openclaw gateway status --json
-openclaw gateway install
-openclaw gateway restart
-openclaw gateway stop
+orionclaw gateway status
+orionclaw gateway status --deep
+orionclaw gateway status --json
+orionclaw gateway install
+orionclaw gateway restart
+orionclaw gateway stop
 openclaw secrets reload
 openclaw logs --follow
-openclaw doctor
+orionclaw doctor
 ```
 
 ## Remote access
@@ -130,22 +130,22 @@ Use supervised runs for production-like reliability.
   <Tab title="macOS (launchd)">
 
 ```bash
-openclaw gateway install
-openclaw gateway status
-openclaw gateway restart
-openclaw gateway stop
+orionclaw gateway install
+orionclaw gateway status
+orionclaw gateway restart
+orionclaw gateway stop
 ```
 
-LaunchAgent labels are `ai.openclaw.gateway` (default) or `ai.openclaw.<profile>` (named profile). `openclaw doctor` audits and repairs service config drift.
+LaunchAgent labels are `ai.openclaw.gateway` (default) or `ai.openclaw.<profile>` (named profile). `orionclaw doctor` audits and repairs service config drift.
 
   </Tab>
 
   <Tab title="Linux (systemd user)">
 
 ```bash
-openclaw gateway install
-systemctl --user enable --now openclaw-gateway[-<profile>].service
-openclaw gateway status
+orionclaw gateway install
+systemctl --user enable --now orionclaw-gateway[-<profile>].service
+orionclaw gateway status
 ```
 
 For persistence after logout, enable lingering:
@@ -162,7 +162,7 @@ Use a system unit for multi-user/always-on hosts.
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable --now openclaw-gateway[-<profile>].service
+sudo systemctl enable --now orionclaw-gateway[-<profile>].service
 ```
 
   </Tab>
@@ -183,8 +183,8 @@ Checklist per instance:
 Example:
 
 ```bash
-OPENCLAW_CONFIG_PATH=~/.openclaw/a.json OPENCLAW_STATE_DIR=~/.openclaw-a openclaw gateway --port 19001
-OPENCLAW_CONFIG_PATH=~/.openclaw/b.json OPENCLAW_STATE_DIR=~/.openclaw-b openclaw gateway --port 19002
+OPENCLAW_CONFIG_PATH=~/.orionclaw/a.json OPENCLAW_STATE_DIR=~/.orionclaw-a orionclaw gateway --port 19001
+OPENCLAW_CONFIG_PATH=~/.orionclaw/b.json OPENCLAW_STATE_DIR=~/.orionclaw-b orionclaw gateway --port 19002
 ```
 
 See: [Multiple gateways](/gateway/multiple-gateways).
@@ -223,8 +223,8 @@ See full protocol docs: [Gateway Protocol](/gateway/protocol).
 ### Readiness
 
 ```bash
-openclaw gateway status
-openclaw channels status --probe
+orionclaw gateway status
+orionclaw channels status --probe
 openclaw health
 ```
 

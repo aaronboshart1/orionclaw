@@ -1,12 +1,12 @@
 ---
-summary: "CLI reference for `openclaw plugins` (list, install, uninstall, enable/disable, doctor)"
+summary: "CLI reference for `orionclaw plugins` (list, install, uninstall, enable/disable, doctor)"
 read_when:
   - You want to install or manage in-process Gateway plugins
   - You want to debug plugin load failures
 title: "plugins"
 ---
 
-# `openclaw plugins`
+# `orionclaw plugins`
 
 Manage Gateway plugins/extensions (loaded in-process).
 
@@ -29,7 +29,7 @@ openclaw plugins update <id>
 openclaw plugins update --all
 ```
 
-Bundled plugins ship with OpenClaw but start disabled. Use `plugins enable` to
+Bundled plugins ship with OrionClaw but start disabled. Use `plugins enable` to
 activate them.
 
 All plugins must ship a `openclaw.plugin.json` file with an inline JSON Schema
@@ -88,5 +88,5 @@ openclaw plugins update <id> --dry-run
 Updates only apply to plugins installed from npm (tracked in `plugins.installs`).
 
 When a stored integrity hash exists and the fetched artifact hash changes,
-OpenClaw prints a warning and asks for confirmation before proceeding. Use
+OrionClaw prints a warning and asks for confirmation before proceeding. Use
 global `--yes` to bypass prompts in CI/non-interactive runs.

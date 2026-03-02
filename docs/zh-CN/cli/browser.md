@@ -1,9 +1,9 @@
 ---
 read_when:
-  - 你使用 `openclaw browser` 并想要常见任务的示例
+  - 你使用 `orionclaw browser` 并想要常见任务的示例
   - 你想通过 node host 控制在另一台机器上运行的浏览器
   - 你想使用 Chrome 扩展中继（通过工具栏按钮附加/分离）
-summary: "`openclaw browser` 的 CLI 参考（配置文件、标签页、操作、扩展中继）"
+summary: "`orionclaw browser` 的 CLI 参考（配置文件、标签页、操作、扩展中继）"
 title: browser
 x-i18n:
   generated_at: "2026-02-03T07:44:49Z"
@@ -14,9 +14,9 @@ x-i18n:
   workflow: 15
 ---
 
-# `openclaw browser`
+# `orionclaw browser`
 
-管理 OpenClaw 的浏览器控制服务器并运行浏览器操作（标签页、快照、截图、导航、点击、输入）。
+管理 OrionClaw 的浏览器控制服务器并运行浏览器操作（标签页、快照、截图、导航、点击、输入）。
 
 相关：
 
@@ -44,7 +44,7 @@ openclaw browser --browser-profile openclaw snapshot
 
 配置文件是命名的浏览器路由配置。实际上：
 
-- `openclaw`：启动/附加到专用的 OpenClaw 管理的 Chrome 实例（隔离的用户数据目录）。
+- `openclaw`：启动/附加到专用的 OrionClaw 管理的 Chrome 实例（隔离的用户数据目录）。
 - `chrome`：通过 Chrome 扩展中继控制你现有的 Chrome 标签页。
 
 ```bash
@@ -63,7 +63,7 @@ openclaw browser --browser-profile work tabs
 
 ```bash
 openclaw browser tabs
-openclaw browser open https://docs.openclaw.ai
+openclaw browser open https://docs.orionclaw.local
 openclaw browser focus <targetId>
 openclaw browser close <targetId>
 ```

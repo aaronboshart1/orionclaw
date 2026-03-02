@@ -2,7 +2,7 @@
 read_when:
   - 你想安装或管理进程内 Gateway 网关插件
   - 你想调试插件加载失败问题
-summary: "`openclaw plugins` 的 CLI 参考（列出、安装、启用/禁用、诊断）"
+summary: "`orionclaw plugins` 的 CLI 参考（列出、安装、启用/禁用、诊断）"
 title: plugins
 x-i18n:
   generated_at: "2026-02-03T07:45:08Z"
@@ -13,7 +13,7 @@ x-i18n:
   workflow: 15
 ---
 
-# `openclaw plugins`
+# `orionclaw plugins`
 
 管理 Gateway 网关插件/扩展（进程内加载）。
 
@@ -35,7 +35,7 @@ openclaw plugins update <id>
 openclaw plugins update --all
 ```
 
-内置插件随 OpenClaw 一起发布，但默认禁用。使用 `plugins enable` 来激活它们。
+内置插件随 OrionClaw 一起发布，但默认禁用。使用 `plugins enable` 来激活它们。
 
 所有插件必须提供 `openclaw.plugin.json` 文件，其中包含内联 JSON Schema（`configSchema`，即使为空）。缺少或无效的清单或模式会阻止插件加载并导致配置验证失败。
 

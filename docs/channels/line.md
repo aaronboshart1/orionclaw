@@ -1,7 +1,7 @@
 ---
 summary: "LINE Messaging API plugin setup, config, and usage"
 read_when:
-  - You want to connect OpenClaw to LINE
+  - You want to connect OrionClaw to LINE
   - You need LINE webhook + credential setup
   - You want LINE-specific message options
 title: LINE
@@ -9,7 +9,7 @@ title: LINE
 
 # LINE (plugin)
 
-LINE connects to OpenClaw via the LINE Messaging API. The plugin runs as a webhook
+LINE connects to OrionClaw via the LINE Messaging API. The plugin runs as a webhook
 receiver on the gateway and uses your channel access token + channel secret for
 authentication.
 
@@ -22,7 +22,7 @@ are not supported.
 Install the LINE plugin:
 
 ```bash
-openclaw plugins install @openclaw/line
+openclaw plugins install @orionclaw/line
 ```
 
 Local checkout (when running from a git repo):

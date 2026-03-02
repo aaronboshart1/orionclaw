@@ -1,7 +1,7 @@
 ---
-summary: "Use Venice AI privacy-focused models in OpenClaw"
+summary: "Use Venice AI privacy-focused models in OrionClaw"
 read_when:
-  - You want privacy-focused inference in OpenClaw
+  - You want privacy-focused inference in OrionClaw
   - You want Venice AI setup guidance
 title: "Venice AI"
 ---
@@ -12,7 +12,7 @@ title: "Venice AI"
 
 Venice AI provides privacy-focused AI inference with support for uncensored models and access to major proprietary models through their anonymized proxy. All inference is private by default—no training on your data, no logging.
 
-## Why Venice in OpenClaw
+## Why Venice in OrionClaw
 
 - **Private inference** for open-source models (no logging).
 - **Uncensored models** when you need them.
@@ -47,7 +47,7 @@ Venice offers two privacy levels — understanding this is key to choosing your 
 2. Go to **Settings → API Keys → Create new key**
 3. Copy your API key (format: `vapi_xxxxxxxxxxxx`)
 
-### 2. Configure OpenClaw
+### 2. Configure OrionClaw
 
 **Option A: Environment Variable**
 
@@ -58,7 +58,7 @@ export VENICE_API_KEY="vapi_xxxxxxxxxxxx"
 **Option B: Interactive Setup (Recommended)**
 
 ```bash
-openclaw onboard --auth-choice venice-api-key
+orionclaw onboard --auth-choice venice-api-key
 ```
 
 This will:
@@ -71,7 +71,7 @@ This will:
 **Option C: Non-interactive**
 
 ```bash
-openclaw onboard --non-interactive \
+orionclaw onboard --non-interactive \
   --auth-choice venice-api-key \
   --venice-api-key "vapi_xxxxxxxxxxxx"
 ```
@@ -79,12 +79,12 @@ openclaw onboard --non-interactive \
 ### 3. Verify Setup
 
 ```bash
-openclaw agent --model venice/llama-3.3-70b --message "Hello, are you working?"
+orionclaw agent --model venice/llama-3.3-70b --message "Hello, are you working?"
 ```
 
 ## Model Selection
 
-After setup, OpenClaw shows all available Venice models. Pick based on your needs:
+After setup, OrionClaw shows all available Venice models. Pick based on your needs:
 
 - **Default (our pick)**: `venice/llama-3.3-70b` for private, balanced performance.
 - **Best overall quality**: `venice/claude-opus-45` for hard jobs (Opus remains the strongest).
@@ -104,9 +104,9 @@ List all available models:
 openclaw models list | grep venice
 ```
 
-## Configure via `openclaw configure`
+## Configure via `orionclaw configure`
 
-1. Run `openclaw configure`
+1. Run `orionclaw configure`
 2. Select **Model/auth**
 3. Choose **Venice AI**
 
@@ -162,7 +162,7 @@ openclaw models list | grep venice
 
 ## Model Discovery
 
-OpenClaw automatically discovers models from the Venice API when `VENICE_API_KEY` is set. If the API is unreachable, it falls back to a static catalog.
+OrionClaw automatically discovers models from the Venice API when `VENICE_API_KEY` is set. If the API is unreachable, it falls back to a static catalog.
 
 The `/models` endpoint is public (no auth needed for listing), but inference requires a valid API key.
 
@@ -195,19 +195,19 @@ Venice uses a credit-based system. Check [venice.ai/pricing](https://venice.ai/p
 
 ```bash
 # Use default private model
-openclaw agent --model venice/llama-3.3-70b --message "Quick health check"
+orionclaw agent --model venice/llama-3.3-70b --message "Quick health check"
 
 # Use Claude via Venice (anonymized)
-openclaw agent --model venice/claude-opus-45 --message "Summarize this task"
+orionclaw agent --model venice/claude-opus-45 --message "Summarize this task"
 
 # Use uncensored model
-openclaw agent --model venice/venice-uncensored --message "Draft options"
+orionclaw agent --model venice/venice-uncensored --message "Draft options"
 
 # Use vision model with image
-openclaw agent --model venice/qwen3-vl-235b-a22b --message "Review attached image"
+orionclaw agent --model venice/qwen3-vl-235b-a22b --message "Review attached image"
 
 # Use coding model
-openclaw agent --model venice/qwen3-coder-480b-a35b-instruct --message "Refactor this function"
+orionclaw agent --model venice/qwen3-coder-480b-a35b-instruct --message "Refactor this function"
 ```
 
 ## Troubleshooting
@@ -223,7 +223,7 @@ Ensure the key starts with `vapi_`.
 
 ### Model not available
 
-The Venice model catalog updates dynamically. Run `openclaw models list` to see currently available models. Some models may be temporarily offline.
+The Venice model catalog updates dynamically. Run `orionclaw models list` to see currently available models. Some models may be temporarily offline.
 
 ### Connection issues
 

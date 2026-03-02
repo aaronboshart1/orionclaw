@@ -1,5 +1,5 @@
 ---
-summary: "CLI reference for `openclaw secrets` (reload, audit, configure, apply)"
+summary: "CLI reference for `orionclaw secrets` (reload, audit, configure, apply)"
 read_when:
   - Re-resolving secret refs at runtime
   - Auditing plaintext residues and unresolved refs
@@ -7,9 +7,9 @@ read_when:
 title: "secrets"
 ---
 
-# `openclaw secrets`
+# `orionclaw secrets`
 
-Use `openclaw secrets` to migrate credentials from plaintext to SecretRefs and keep the active secrets runtime healthy.
+Use `orionclaw secrets` to migrate credentials from plaintext to SecretRefs and keep the active secrets runtime healthy.
 
 Command roles:
 
@@ -55,7 +55,7 @@ Notes:
 
 ## Audit
 
-Scan OpenClaw state for:
+Scan OrionClaw state for:
 
 - plaintext secret storage
 - unresolved refs
@@ -111,7 +111,7 @@ Notes:
 
 - Requires an interactive TTY.
 - You cannot combine `--providers-only` with `--skip-provider-setup`.
-- `configure` targets secret-bearing fields in `openclaw.json`.
+- `configure` targets secret-bearing fields in `orionclaw.json`.
 - Include all secret-bearing fields you intend to migrate (for example both `models.providers.*.apiKey` and `skills.entries.*.apiKey`) so audit can reach a clean state.
 - It performs preflight resolution before apply.
 - Generated plans default to scrub options (`scrubEnv`, `scrubAuthProfilesForProviderTargets`, `scrubLegacyAuthJson` all enabled).
@@ -140,10 +140,10 @@ Plan contract details (allowed target paths, validation rules, and failure seman
 
 What `apply` may update:
 
-- `openclaw.json` (SecretRef targets + provider upserts/deletes)
+- `orionclaw.json` (SecretRef targets + provider upserts/deletes)
 - `auth-profiles.json` (provider-target scrubbing)
 - legacy `auth.json` residues
-- `~/.openclaw/.env` known secret keys whose values were migrated
+- `~/.orionclaw/.env` known secret keys whose values were migrated
 
 ## Why no rollback backups
 

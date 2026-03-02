@@ -1,9 +1,9 @@
 ---
 read_when:
-  - 在 Oracle Cloud 上设置 OpenClaw
-  - 寻找 OpenClaw 的低成本 VPS 托管
-  - 想要在小型服务器上 24/7 运行 OpenClaw
-summary: 在 Oracle Cloud 上运行 OpenClaw（Always Free ARM）
+  - 在 Oracle Cloud 上设置 OrionClaw
+  - 寻找 OrionClaw 的低成本 VPS 托管
+  - 想要在小型服务器上 24/7 运行 OrionClaw
+summary: 在 Oracle Cloud 上运行 OrionClaw（Always Free ARM）
 title: Oracle Cloud
 x-i18n:
   generated_at: "2026-02-03T07:53:25Z"
@@ -14,13 +14,13 @@ x-i18n:
   workflow: 15
 ---
 
-# 在 Oracle Cloud（OCI）上运行 OpenClaw
+# 在 Oracle Cloud（OCI）上运行 OrionClaw
 
 ## 目标
 
-在 Oracle Cloud 的 **Always Free** ARM 层上运行持久化的 OpenClaw Gateway 网关。
+在 Oracle Cloud 的 **Always Free** ARM 层上运行持久化的 OrionClaw Gateway 网关。
 
-Oracle 的免费层非常适合 OpenClaw（特别是如果你已经有 OCI 账户），但有一些权衡：
+Oracle 的免费层非常适合 OrionClaw（特别是如果你已经有 OCI 账户），但有一些权衡：
 
 - ARM 架构（大多数东西都能工作，但某些二进制文件可能仅支持 x86）
 - 容量和注册可能比较麻烦
@@ -101,12 +101,12 @@ sudo tailscale up --ssh --hostname=openclaw
 tailscale status
 ```
 
-**从现在开始，通过 Tailscale 连接：** `ssh ubuntu@openclaw`（或使用 Tailscale IP）。
+**从现在开始，通过 Tailscale 连接：** `ssh ubuntu@orionclaw`（或使用 Tailscale IP）。
 
-## 5) 安装 OpenClaw
+## 5) 安装 OrionClaw
 
 ```bash
-curl -fsSL https://openclaw.ai/install.sh | bash
+curl -fsSL https://orionclaw.local/install.sh | bash
 source ~/.bashrc
 ```
 
@@ -120,17 +120,17 @@ source ~/.bashrc
 
 ```bash
 # 在 VM 上保持 Gateway 网关私有
-openclaw config set gateway.bind loopback
+orionclaw config set gateway.bind loopback
 
 # 要求 Gateway 网关 + 控制 UI 的认证
-openclaw config set gateway.auth.mode token
-openclaw doctor --generate-gateway-token
+orionclaw config set gateway.auth.mode token
+orionclaw doctor --generate-gateway-token
 
 # 通过 Tailscale Serve 暴露（HTTPS + tailnet 访问）
-openclaw config set gateway.tailscale.mode serve
-openclaw config set gateway.trustedProxies '["127.0.0.1"]'
+orionclaw config set gateway.tailscale.mode serve
+orionclaw config set gateway.trustedProxies '["127.0.0.1"]'
 
-systemctl --user restart openclaw-gateway
+systemctl --user restart orionclaw-gateway
 ```
 
 ## 7) 验证
@@ -140,7 +140,7 @@ systemctl --user restart openclaw-gateway
 openclaw --version
 
 # 检查守护进程状态
-systemctl --user status openclaw-gateway
+systemctl --user status orionclaw-gateway
 
 # 检查 Tailscale Serve
 tailscale serve status
@@ -185,7 +185,7 @@ https://openclaw.<tailnet-name>.ts.net/
 
 通过锁定 VCN（仅开放 UDP 41641）并将 Gateway 网关绑定到 loopback，你获得了强大的纵深防御：公共流量在网络边缘被阻止，管理访问通过你的 tailnet 进行。
 
-此设置通常消除了纯粹为了阻止互联网范围的 SSH 暴力破解而需要额外的基于主机的防火墙规则的*需求*——但你仍应保持操作系统更新，运行 `openclaw security audit`，并验证你没有意外地在公共接口上监听。
+此设置通常消除了纯粹为了阻止互联网范围的 SSH 暴力破解而需要额外的基于主机的防火墙规则的*需求*——但你仍应保持操作系统更新，运行 `orionclaw security audit`，并验证你没有意外地在公共接口上监听。
 
 ### 已经受保护的内容
 
@@ -200,8 +200,8 @@ https://openclaw.<tailnet-name>.ts.net/
 
 ### 仍然推荐
 
-- **凭证权限：** `chmod 700 ~/.openclaw`
-- **安全审计：** `openclaw security audit`
+- **凭证权限：** `chmod 700 ~/.orionclaw`
+- **安全审计：** `orionclaw security audit`
 - **系统更新：** 定期 `sudo apt update && sudo apt upgrade`
 - **监控 Tailscale：** 在 [Tailscale 管理控制台](https://login.tailscale.com/admin) 中查看设备
 
@@ -226,7 +226,7 @@ sudo systemctl disable --now ssh
 
 ```bash
 # 从你的本地机器（通过 Tailscale）
-ssh -L 18789:127.0.0.1:18789 ubuntu@openclaw
+ssh -L 18789:127.0.0.1:18789 ubuntu@orionclaw
 ```
 
 然后打开 `http://localhost:18789`。
@@ -256,9 +256,9 @@ sudo tailscale up --ssh --hostname=openclaw --reset
 ### Gateway 网关无法启动
 
 ```bash
-openclaw gateway status
-openclaw doctor --non-interactive
-journalctl --user -u openclaw-gateway -n 50
+orionclaw gateway status
+orionclaw doctor --non-interactive
+journalctl --user -u orionclaw-gateway -n 50
 ```
 
 ### 无法访问控制 UI
@@ -271,7 +271,7 @@ tailscale serve status
 curl http://localhost:18789
 
 # 如需要则重启
-systemctl --user restart openclaw-gateway
+systemctl --user restart orionclaw-gateway
 ```
 
 ### ARM 二进制文件问题
@@ -290,13 +290,13 @@ uname -m  # 应该显示 aarch64
 
 所有状态存储在：
 
-- `~/.openclaw/` — 配置、凭证、会话数据
-- `~/.openclaw/workspace/` — 工作区（SOUL.md、记忆、产物）
+- `~/.orionclaw/` — 配置、凭证、会话数据
+- `~/.orionclaw/workspace/` — 工作区（SOUL.md、记忆、产物）
 
 定期备份：
 
 ```bash
-tar -czvf openclaw-backup.tar.gz ~/.openclaw ~/.openclaw/workspace
+tar -czvf openclaw-backup.tar.gz ~/.orionclaw ~/.orionclaw/workspace
 ```
 
 ---

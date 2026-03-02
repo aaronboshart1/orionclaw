@@ -47,7 +47,7 @@ x-i18n:
 ### 2）插件运行时（执行层，注入式）
 
 范围：所有涉及核心运行时行为的内容。
-通过 `OpenClawPluginApi.runtime` 访问，确保插件永远不会导入 `src/**`。
+通过 `OrionClawPluginApi.runtime` 访问，确保插件永远不会导入 `src/**`。
 
 建议的接口（最小但完整）：
 
@@ -56,8 +56,8 @@ export type PluginRuntime = {
   channel: {
     text: {
       chunkMarkdownText(text: string, limit: number): string[];
-      resolveTextChunkLimit(cfg: OpenClawConfig, channel: string, accountId?: string): number;
-      hasControlCommand(text: string, cfg: OpenClawConfig): boolean;
+      resolveTextChunkLimit(cfg: OrionClawConfig, channel: string, accountId?: string): number;
+      hasControlCommand(text: string, cfg: OrionClawConfig): boolean;
     };
     reply: {
       dispatchReplyWithBufferedBlockDispatcher(params: {
@@ -101,12 +101,12 @@ export type PluginRuntime = {
       ): Promise<{ path: string; contentType?: string }>;
     };
     mentions: {
-      buildMentionRegexes(cfg: OpenClawConfig, agentId?: string): RegExp[];
+      buildMentionRegexes(cfg: OrionClawConfig, agentId?: string): RegExp[];
       matchesMentionPatterns(text: string, regexes: RegExp[]): boolean;
     };
     groups: {
       resolveGroupPolicy(
-        cfg: OpenClawConfig,
+        cfg: OrionClawConfig,
         channel: string,
         accountId: string,
         groupId: string,
@@ -117,7 +117,7 @@ export type PluginRuntime = {
         defaultConfig?: unknown;
       };
       resolveRequireMention(
-        cfg: OpenClawConfig,
+        cfg: OrionClawConfig,
         channel: string,
         accountId: string,
         groupId: string,
@@ -132,7 +132,7 @@ export type PluginRuntime = {
         onFlush: (entries: T[]) => Promise<void>;
         onError?: (err: unknown) => void;
       }): { push: (v: T) => void; flush: () => Promise<void> };
-      resolveInboundDebounceMs(cfg: OpenClawConfig, channel: string): number;
+      resolveInboundDebounceMs(cfg: OrionClawConfig, channel: string): number;
     };
     commands: {
       resolveCommandAuthorizedFromAuthorizers(params: {
@@ -146,7 +146,7 @@ export type PluginRuntime = {
     getChildLogger(name: string): PluginLogger;
   };
   state: {
-    resolveStateDir(cfg: OpenClawConfig): string;
+    resolveStateDir(cfg: OrionClawConfig): string;
   };
 };
 ```
@@ -162,7 +162,7 @@ export type PluginRuntime = {
 ### 阶段 0：基础搭建
 
 - 引入 `openclaw/plugin-sdk`。
-- 在 `OpenClawPluginApi` 中添加带有上述接口的 `api.runtime`。
+- 在 `OrionClawPluginApi` 中添加带有上述接口的 `api.runtime`。
 - 在过渡期内保留现有导入方式（添加弃用警告）。
 
 ### 阶段 1：桥接清理（低风险）

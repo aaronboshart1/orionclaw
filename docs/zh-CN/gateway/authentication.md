@@ -15,7 +15,7 @@ x-i18n:
 
 # 认证
 
-OpenClaw 支持模型提供商的 OAuth 和 API 密钥。对于 Anthropic 账户，我们推荐使用 **API 密钥**。对于 Claude 订阅访问，使用 `claude setup-token` 创建的长期令牌。
+OrionClaw 支持模型提供商的 OAuth 和 API 密钥。对于 Anthropic 账户，我们推荐使用 **API 密钥**。对于 Claude 订阅访问，使用 `claude setup-token` 创建的长期令牌。
 
 参阅 [/concepts/oauth](/concepts/oauth) 了解完整的 OAuth 流程和存储布局。
 
@@ -24,17 +24,17 @@ OpenClaw 支持模型提供商的 OAuth 和 API 密钥。对于 Anthropic 账户
 如果你直接使用 Anthropic，请使用 API 密钥。
 
 1. 在 Anthropic 控制台创建 API 密钥。
-2. 将其放在 **Gateway 网关主机**（运行 `openclaw gateway` 的机器）上。
+2. 将其放在 **Gateway 网关主机**（运行 `orionclaw gateway` 的机器）上。
 
 ```bash
 export ANTHROPIC_API_KEY="..."
 openclaw models status
 ```
 
-3. 如果 Gateway 网关在 systemd/launchd 下运行，最好将密钥放在 `~/.openclaw/.env` 中以便守护进程可以读取：
+3. 如果 Gateway 网关在 systemd/launchd 下运行，最好将密钥放在 `~/.orionclaw/.env` 中以便守护进程可以读取：
 
 ```bash
-cat >> ~/.openclaw/.env <<'EOF'
+cat >> ~/.orionclaw/.env <<'EOF'
 ANTHROPIC_API_KEY=...
 EOF
 ```
@@ -43,12 +43,12 @@ EOF
 
 ```bash
 openclaw models status
-openclaw doctor
+orionclaw doctor
 ```
 
-如果你不想自己管理环境变量，新手引导向导可以为守护进程使用存储 API 密钥：`openclaw onboard`。
+如果你不想自己管理环境变量，新手引导向导可以为守护进程使用存储 API 密钥：`orionclaw onboard`。
 
-参阅[帮助](/help)了解环境变量继承的详情（`env.shellEnv`、`~/.openclaw/.env`、systemd/launchd）。
+参阅[帮助](/help)了解环境变量继承的详情（`env.shellEnv`、`~/.orionclaw/.env`、systemd/launchd）。
 
 ## Anthropic：setup-token（订阅认证）
 
@@ -58,7 +58,7 @@ openclaw doctor
 claude setup-token
 ```
 
-然后将其粘贴到 OpenClaw：
+然后将其粘贴到 OrionClaw：
 
 ```bash
 openclaw models auth setup-token --provider anthropic
@@ -99,7 +99,7 @@ openclaw models status --check
 
 ```bash
 openclaw models status
-openclaw doctor
+orionclaw doctor
 ```
 
 ## 控制使用哪个凭证
@@ -134,7 +134,7 @@ openclaw models status
 
 ### 令牌即将过期/已过期
 
-运行 `openclaw models status` 确认哪个配置文件即将过期。如果配置文件缺失，重新运行 `claude setup-token` 并再次粘贴令牌。
+运行 `orionclaw models status` 确认哪个配置文件即将过期。如果配置文件缺失，重新运行 `claude setup-token` 并再次粘贴令牌。
 
 ## 要求
 

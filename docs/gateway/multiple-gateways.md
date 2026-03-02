@@ -1,5 +1,5 @@
 ---
-summary: "Run multiple OpenClaw Gateways on one host (isolation, ports, and profiles)"
+summary: "Run multiple OrionClaw Gateways on one host (isolation, ports, and profiles)"
 read_when:
   - Running more than one Gateway on the same machine
   - You need isolated config/state/ports per Gateway
@@ -59,8 +59,8 @@ Port spacing: leave at least 20 ports between base ports so the derived browser/
 ```bash
 # Main bot (existing or fresh, without --profile param)
 # Runs on port 18789 + Chrome CDC/Canvas/... Ports
-openclaw onboard
-openclaw gateway install
+orionclaw onboard
+orionclaw gateway install
 
 # Rescue bot (isolated profile + ports)
 openclaw --profile rescue onboard
@@ -94,13 +94,13 @@ If you override any of these in config or env, you must keep them unique per ins
 ## Manual env example
 
 ```bash
-OPENCLAW_CONFIG_PATH=~/.openclaw/main.json \
-OPENCLAW_STATE_DIR=~/.openclaw-main \
-openclaw gateway --port 18789
+OPENCLAW_CONFIG_PATH=~/.orionclaw/main.json \
+OPENCLAW_STATE_DIR=~/.orionclaw-main \
+orionclaw gateway --port 18789
 
-OPENCLAW_CONFIG_PATH=~/.openclaw/rescue.json \
-OPENCLAW_STATE_DIR=~/.openclaw-rescue \
-openclaw gateway --port 19001
+OPENCLAW_CONFIG_PATH=~/.orionclaw/rescue.json \
+OPENCLAW_STATE_DIR=~/.orionclaw-rescue \
+orionclaw gateway --port 19001
 ```
 
 ## Quick checks

@@ -16,12 +16,12 @@ x-i18n:
 
 # 设备发现 & 传输协议
 
-OpenClaw 有两个表面上看起来相似的不同问题：
+OrionClaw 有两个表面上看起来相似的不同问题：
 
 1. **操作员远程控制**：macOS 菜单栏应用控制运行在其他地方的 Gateway 网关。
 2. **节点配对**：iOS/Android（以及未来的节点）发现 Gateway 网关并安全配对。
 
-设计目标是将所有网络发现/广播保留在 **Node Gateway 网关**（`openclaw gateway`）中，并让客户端（mac 应用、iOS）作为消费者。
+设计目标是将所有网络发现/广播保留在 **Node Gateway 网关**（`orionclaw gateway`）中，并让客户端（mac 应用、iOS）作为消费者。
 
 ## 术语
 
@@ -78,7 +78,7 @@ Bonjour 是尽力而为的，不会跨网络。它仅用于"同一 LAN"的便利
 禁用/覆盖：
 
 - `OPENCLAW_DISABLE_BONJOUR=1` 禁用广播。
-- `~/.openclaw/openclaw.json` 中的 `gateway.bind` 控制 Gateway 网关绑定模式。
+- `~/.orionclaw/orionclaw.json` 中的 `gateway.bind` 控制 Gateway 网关绑定模式。
 - `OPENCLAW_SSH_PORT` 覆盖 TXT 中广播的 SSH 端口（默认为 22）。
 - `OPENCLAW_TAILNET_DNS` 发布 `tailnetDns` 提示（MagicDNS）。
 - `OPENCLAW_CLI_PATH` 覆盖广播的 CLI 路径。

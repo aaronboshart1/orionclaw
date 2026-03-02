@@ -14,17 +14,17 @@ Use this page when a node is visible in status but node tools fail.
 
 ```bash
 openclaw status
-openclaw gateway status
+orionclaw gateway status
 openclaw logs --follow
-openclaw doctor
-openclaw channels status --probe
+orionclaw doctor
+orionclaw channels status --probe
 ```
 
 Then run node specific checks:
 
 ```bash
-openclaw nodes status
-openclaw nodes describe --node <idOrNameOrIp>
+orionclaw nodes status
+orionclaw nodes describe --node <idOrNameOrIp>
 openclaw approvals get --node <idOrNameOrIp>
 ```
 
@@ -41,8 +41,8 @@ Healthy signals:
 Quick check and fix:
 
 ```bash
-openclaw nodes describe --node <idOrNameOrIp>
-openclaw nodes canvas snapshot --node <idOrNameOrIp>
+orionclaw nodes describe --node <idOrNameOrIp>
+orionclaw nodes canvas snapshot --node <idOrNameOrIp>
 openclaw logs --follow
 ```
 
@@ -68,7 +68,7 @@ Quick checks:
 
 ```bash
 openclaw devices list
-openclaw nodes status
+orionclaw nodes status
 openclaw approvals get --node <idOrNameOrIp>
 openclaw approvals allowlist add --node <idOrNameOrIp> "/usr/bin/uname"
 ```
@@ -92,8 +92,8 @@ If pairing is fine but `system.run` fails, fix exec approvals/allowlist.
 ## Fast recovery loop
 
 ```bash
-openclaw nodes status
-openclaw nodes describe --node <idOrNameOrIp>
+orionclaw nodes status
+orionclaw nodes describe --node <idOrNameOrIp>
 openclaw approvals get --node <idOrNameOrIp>
 openclaw logs --follow
 ```

@@ -1,5 +1,5 @@
 ---
-summary: "OpenClaw plugins/extensions: discovery, config, and safety"
+summary: "OrionClaw plugins/extensions: discovery, config, and safety"
 read_when:
   - Adding or modifying plugins/extensions
   - Documenting plugin install or load rules
@@ -10,11 +10,11 @@ title: "Plugins"
 
 ## Quick start (new to plugins?)
 
-A plugin is just a **small code module** that extends OpenClaw with extra
+A plugin is just a **small code module** that extends OrionClaw with extra
 features (commands, tools, and Gateway RPC).
 
 Most of the time, you’ll use plugins when you want a feature that’s not built
-into core OpenClaw yet (or you want to keep optional features out of your main
+into core OrionClaw yet (or you want to keep optional features out of your main
 install).
 
 Fast path:
@@ -28,7 +28,7 @@ openclaw plugins list
 2. Install an official plugin (example: Voice Call):
 
 ```bash
-openclaw plugins install @openclaw/voice-call
+openclaw plugins install @orionclaw/voice-call
 ```
 
 Npm specs are **registry-only** (package name + optional version/tag). Git/URL/file
@@ -41,21 +41,21 @@ Looking for third-party listings? See [Community plugins](/plugins/community).
 
 ## Available plugins (official)
 
-- Microsoft Teams is plugin-only as of 2026.1.15; install `@openclaw/msteams` if you use Teams.
+- Microsoft Teams is plugin-only as of 2026.1.15; install `@orionclaw/msteams` if you use Teams.
 - Memory (Core) — bundled memory search plugin (enabled by default via `plugins.slots.memory`)
 - Memory (LanceDB) — bundled long-term memory plugin (auto-recall/capture; set `plugins.slots.memory = "memory-lancedb"`)
-- [Voice Call](/plugins/voice-call) — `@openclaw/voice-call`
-- [Zalo Personal](/plugins/zalouser) — `@openclaw/zalouser`
-- [Matrix](/channels/matrix) — `@openclaw/matrix`
-- [Nostr](/channels/nostr) — `@openclaw/nostr`
-- [Zalo](/channels/zalo) — `@openclaw/zalo`
-- [Microsoft Teams](/channels/msteams) — `@openclaw/msteams`
+- [Voice Call](/plugins/voice-call) — `@orionclaw/voice-call`
+- [Zalo Personal](/plugins/zalouser) — `@orionclaw/zalouser`
+- [Matrix](/channels/matrix) — `@orionclaw/matrix`
+- [Nostr](/channels/nostr) — `@orionclaw/nostr`
+- [Zalo](/channels/zalo) — `@orionclaw/zalo`
+- [Microsoft Teams](/channels/msteams) — `@orionclaw/msteams`
 - Google Antigravity OAuth (provider auth) — bundled as `google-antigravity-auth` (disabled by default)
 - Gemini CLI OAuth (provider auth) — bundled as `google-gemini-cli-auth` (disabled by default)
 - Qwen OAuth (provider auth) — bundled as `qwen-portal-auth` (disabled by default)
 - Copilot Proxy (provider auth) — local VS Code Copilot Proxy bridge; distinct from built-in `github-copilot` device login (bundled, disabled by default)
 
-OpenClaw plugins are **TypeScript modules** loaded at runtime via jiti. **Config
+OrionClaw plugins are **TypeScript modules** loaded at runtime via jiti. **Config
 validation does not execute plugin code**; it uses the plugin manifest and JSON
 Schema instead. See [Plugin manifest](/plugins/manifest).
 
@@ -79,7 +79,7 @@ Plugins can access selected core helpers via `api.runtime`. For telephony TTS:
 
 ```ts
 const result = await api.runtime.tts.textToSpeechTelephony({
-  text: "Hello from OpenClaw",
+  text: "Hello from OrionClaw",
   cfg: api.config,
 });
 ```
@@ -92,7 +92,7 @@ Notes:
 
 ## Discovery & precedence
 
-OpenClaw scans, in order:
+OrionClaw scans, in order:
 
 1. Config paths
 
@@ -105,21 +105,21 @@ OpenClaw scans, in order:
 
 3. Global extensions
 
-- `~/.openclaw/extensions/*.ts`
-- `~/.openclaw/extensions/*/index.ts`
+- `~/.orionclaw/extensions/*.ts`
+- `~/.orionclaw/extensions/*/index.ts`
 
-4. Bundled extensions (shipped with OpenClaw, **disabled by default**)
+4. Bundled extensions (shipped with OrionClaw, **disabled by default**)
 
 - `<openclaw>/extensions/*`
 
 Bundled plugins must be enabled explicitly via `plugins.entries.<id>.enabled`
-or `openclaw plugins enable <id>`. Installed plugins are enabled by default,
+or `orionclaw plugins enable <id>`. Installed plugins are enabled by default,
 but can be disabled the same way.
 
 Hardening notes:
 
-- If `plugins.allow` is empty and non-bundled plugins are discoverable, OpenClaw logs a startup warning with plugin ids and sources.
-- Candidate paths are safety-checked before discovery admission. OpenClaw blocks candidates when:
+- If `plugins.allow` is empty and non-bundled plugins are discoverable, OrionClaw logs a startup warning with plugin ids and sources.
+- Candidate paths are safety-checked before discovery admission. OrionClaw blocks candidates when:
   - extension entry resolves outside plugin root (including symlink/path traversal escapes),
   - plugin root/source path is world-writable,
   - path ownership is suspicious for non-bundled plugins (POSIX owner is neither current uid nor root).
@@ -139,7 +139,7 @@ A plugin directory may include a `package.json` with `openclaw.extensions`:
 ```json
 {
   "name": "my-pack",
-  "openclaw": {
+  "orionclaw": {
     "extensions": ["./src/safety.ts", "./src/tools.ts"]
   }
 }
@@ -155,7 +155,7 @@ Security guardrail: every `openclaw.extensions` entry must stay inside the plugi
 directory after symlink resolution. Entries that escape the package directory are
 rejected.
 
-Security note: `openclaw plugins install` installs plugin dependencies with
+Security note: `orionclaw plugins install` installs plugin dependencies with
 `npm install --ignore-scripts` (no lifecycle scripts). Keep plugin dependency
 trees "pure JS/TS" and avoid packages that require `postinstall` builds.
 
@@ -168,8 +168,8 @@ Example:
 
 ```json
 {
-  "name": "@openclaw/nextcloud-talk",
-  "openclaw": {
+  "name": "@orionclaw/nextcloud-talk",
+  "orionclaw": {
     "extensions": ["./index.ts"],
     "channel": {
       "id": "nextcloud-talk",
@@ -182,7 +182,7 @@ Example:
       "aliases": ["nc-talk", "nc"]
     },
     "install": {
-      "npmSpec": "@openclaw/nextcloud-talk",
+      "npmSpec": "@orionclaw/nextcloud-talk",
       "localPath": "extensions/nextcloud-talk",
       "defaultChoice": "npm"
     }
@@ -190,16 +190,16 @@ Example:
 }
 ```
 
-OpenClaw can also merge **external channel catalogs** (for example, an MPM
+OrionClaw can also merge **external channel catalogs** (for example, an MPM
 registry export). Drop a JSON file at one of:
 
-- `~/.openclaw/mpm/plugins.json`
-- `~/.openclaw/mpm/catalog.json`
-- `~/.openclaw/plugins/catalog.json`
+- `~/.orionclaw/mpm/plugins.json`
+- `~/.orionclaw/mpm/catalog.json`
+- `~/.orionclaw/plugins/catalog.json`
 
 Or point `OPENCLAW_PLUGIN_CATALOG_PATHS` (or `OPENCLAW_MPM_CATALOG_PATHS`) at
 one or more JSON files (comma/semicolon/`PATH`-delimited). Each file should
-contain `{ "entries": [ { "name": "@scope/pkg", "openclaw": { "channel": {...}, "install": {...} } } ] }`.
+contain `{ "entries": [ { "name": "@scope/pkg", "orionclaw": { "channel": {...}, "install": {...} } } ] }`.
 
 ## Plugin IDs
 
@@ -208,7 +208,7 @@ Default plugin ids:
 - Package packs: `package.json` `name`
 - Standalone file: file base name (`~/.../voice-call.ts` → `voice-call`)
 
-If a plugin exports `id`, OpenClaw uses it but warns when it doesn’t match the
+If a plugin exports `id`, OrionClaw uses it but warns when it doesn’t match the
 configured id.
 
 ## Config
@@ -268,7 +268,7 @@ are disabled with diagnostics.
 
 The Control UI uses `config.schema` (JSON Schema + `uiHints`) to render better forms.
 
-OpenClaw augments `uiHints` at runtime based on discovered plugins:
+OrionClaw augments `uiHints` at runtime based on discovered plugins:
 
 - Adds per-plugin labels for `plugins.entries.<id>` / `.enabled` / `.config`
 - Merges optional plugin-provided config field hints under:
@@ -302,13 +302,13 @@ Example:
 ```bash
 openclaw plugins list
 openclaw plugins info <id>
-openclaw plugins install <path>                 # copy a local file/dir into ~/.openclaw/extensions/<id>
+openclaw plugins install <path>                 # copy a local file/dir into ~/.orionclaw/extensions/<id>
 openclaw plugins install ./extensions/voice-call # relative path ok
 openclaw plugins install ./plugin.tgz           # install from a local tarball
 openclaw plugins install ./plugin.zip           # install from a local zip
 openclaw plugins install -l ./extensions/voice-call # link (no copy) for dev
-openclaw plugins install @openclaw/voice-call # install from npm
-openclaw plugins install @openclaw/voice-call --pin # store exact resolved name@version
+openclaw plugins install @orionclaw/voice-call # install from npm
+openclaw plugins install @orionclaw/voice-call --pin # store exact resolved name@version
 openclaw plugins update <id>
 openclaw plugins update --all
 openclaw plugins enable <id>
@@ -317,9 +317,9 @@ openclaw plugins doctor
 ```
 
 `plugins update` only works for npm installs tracked under `plugins.installs`.
-If stored integrity metadata changes between updates, OpenClaw warns and asks for confirmation (use global `--yes` to bypass prompts).
+If stored integrity metadata changes between updates, OrionClaw warns and asks for confirmation (use global `--yes` to bypass prompts).
 
-Plugins may also register their own top‑level commands (example: `openclaw voicecall`).
+Plugins may also register their own top‑level commands (example: `orionclaw voicecall`).
 
 ## Plugin API (overview)
 
@@ -354,18 +354,18 @@ Notes:
 
 - Register hooks explicitly via `api.registerHook(...)`.
 - Hook eligibility rules still apply (OS/bins/env/config requirements).
-- Plugin-managed hooks show up in `openclaw hooks list` with `plugin:<id>`.
-- You cannot enable/disable plugin-managed hooks via `openclaw hooks`; enable/disable the plugin instead.
+- Plugin-managed hooks show up in `orionclaw hooks list` with `plugin:<id>`.
+- You cannot enable/disable plugin-managed hooks via `orionclaw hooks`; enable/disable the plugin instead.
 
 ## Provider plugins (model auth)
 
 Plugins can register **model provider auth** flows so users can run OAuth or
-API-key setup inside OpenClaw (no external scripts needed).
+API-key setup inside OrionClaw (no external scripts needed).
 
 Register a provider via `api.registerProvider(...)`. Each provider exposes one
 or more auth methods (OAuth, API key, device code, etc.). These methods power:
 
-- `openclaw models auth login --provider <id> [--method <id>]`
+- `orionclaw models auth login --provider <id> [--method <id>]`
 
 Example:
 
@@ -614,7 +614,7 @@ Command handler context:
 - `isAuthorizedSender`: Whether the sender is an authorized user
 - `args`: Arguments passed after the command (if `acceptsArgs: true`)
 - `commandBody`: The full command text
-- `config`: The current OpenClaw config
+- `config`: The current OrionClaw config
 
 Command options:
 
@@ -678,13 +678,13 @@ it’s present in your workspace/managed skills locations.
 Recommended packaging:
 
 - Main package: `openclaw` (this repo)
-- Plugins: separate npm packages under `@openclaw/*` (example: `@openclaw/voice-call`)
+- Plugins: separate npm packages under `@orionclaw/*` (example: `@orionclaw/voice-call`)
 
 Publishing contract:
 
 - Plugin `package.json` must include `openclaw.extensions` with one or more entry files.
 - Entry files can be `.js` or `.ts` (jiti loads TS at runtime).
-- `openclaw plugins install <npm-spec>` uses `npm pack`, extracts into `~/.openclaw/extensions/<id>/`, and enables it in config.
+- `orionclaw plugins install <npm-spec>` uses `npm pack`, extracts into `~/.orionclaw/extensions/<id>/`, and enables it in config.
 - Config key stability: scoped packages are normalized to the **unscoped** id for `plugins.entries.*`.
 
 ## Example plugin: Voice Call
@@ -693,7 +693,7 @@ This repo includes a voice‑call plugin (Twilio or log fallback):
 
 - Source: `extensions/voice-call`
 - Skill: `skills/voice-call`
-- CLI: `openclaw voicecall start|status`
+- CLI: `orionclaw voicecall start|status`
 - Tool: `voice_call`
 - RPC: `voicecall.start`, `voicecall.status`
 - Config (twilio): `provider: "twilio"` + `twilio.accountSid/authToken/from` (optional `statusCallbackUrl`, `twimlUrl`)

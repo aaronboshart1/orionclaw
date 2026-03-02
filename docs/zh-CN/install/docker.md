@@ -2,7 +2,7 @@
 read_when:
   - 你想要容器化的 Gateway 网关而不是本地安装
   - 你正在验证 Docker 流程
-summary: OpenClaw 的可选 Docker 设置和新手引导
+summary: OrionClaw 的可选 Docker 设置和新手引导
 title: Docker
 x-i18n:
   generated_at: "2026-02-03T07:51:20Z"
@@ -19,13 +19,13 @@ Docker 是**可选的**。仅当你想要容器化的 Gateway 网关或验证 Do
 
 ## Docker 适合我吗？
 
-- **是**：你想要一个隔离的、可丢弃的 Gateway 网关环境，或在没有本地安装的主机上运行 OpenClaw。
+- **是**：你想要一个隔离的、可丢弃的 Gateway 网关环境，或在没有本地安装的主机上运行 OrionClaw。
 - **否**：你在自己的机器上运行，只想要最快的开发循环。请改用正常的安装流程。
 - **沙箱注意事项**：智能体沙箱隔离也使用 Docker，但它**不需要**完整的 Gateway 网关在 Docker 中运行。参阅[沙箱隔离](/gateway/sandboxing)。
 
 本指南涵盖：
 
-- 容器化 Gateway 网关（完整的 OpenClaw 在 Docker 中）
+- 容器化 Gateway 网关（完整的 OrionClaw 在 Docker 中）
 - 每会话智能体沙箱（主机 Gateway 网关 + Docker 隔离的智能体工具）
 
 沙箱隔离详情：[沙箱隔离](/gateway/sandboxing)
@@ -67,8 +67,8 @@ Docker 是**可选的**。仅当你想要容器化的 Gateway 网关或验证 Do
 
 它在主机上写入配置/工作区：
 
-- `~/.openclaw/`
-- `~/.openclaw/workspace`
+- `~/.orionclaw/`
+- `~/.orionclaw/workspace`
 
 在 VPS 上运行？参阅 [Hetzner（Docker VPS）](/install/hetzner)。
 
@@ -77,7 +77,7 @@ Docker 是**可选的**。仅当你想要容器化的 Gateway 网关或验证 Do
 ```bash
 docker build -t openclaw:local -f Dockerfile .
 docker compose run --rm openclaw-cli onboard
-docker compose up -d openclaw-gateway
+docker compose up -d orionclaw-gateway
 ```
 
 注意：从仓库根目录运行 `docker compose ...`。如果你启用了 `OPENCLAW_EXTRA_MOUNTS` 或 `OPENCLAW_HOME_VOLUME`，设置脚本会写入 `docker-compose.extra.yml`；在其他地方运行 Compose 时包含它：
@@ -100,7 +100,7 @@ docker compose run --rm openclaw-cli devices approve <requestId>
 
 ### 额外挂载（可选）
 
-如果你想将额外的主机目录挂载到容器中，在运行 `docker-setup.sh` 之前设置 `OPENCLAW_EXTRA_MOUNTS`。这接受逗号分隔的 Docker 绑定挂载列表，并通过生成 `docker-compose.extra.yml` 将它们应用到 `openclaw-gateway` 和 `openclaw-cli`。
+如果你想将额外的主机目录挂载到容器中，在运行 `docker-setup.sh` 之前设置 `OPENCLAW_EXTRA_MOUNTS`。这接受逗号分隔的 Docker 绑定挂载列表，并通过生成 `docker-compose.extra.yml` 将它们应用到 `orionclaw-gateway` 和 `openclaw-cli`。
 
 示例：
 
@@ -268,7 +268,7 @@ docker compose run --rm openclaw-cli channels add --channel discord --token "<to
 ### 健康检查
 
 ```bash
-docker compose exec openclaw-gateway node dist/index.js health --token "$OPENCLAW_GATEWAY_TOKEN"
+docker compose exec orionclaw-gateway node dist/index.js health --token "$OPENCLAW_GATEWAY_TOKEN"
 ```
 
 ### E2E 冒烟测试（Docker）
@@ -287,7 +287,7 @@ pnpm test:docker:qr
 
 - Gateway 网关绑定默认为 `lan` 用于容器使用。
 - Dockerfile CMD 使用 `--allow-unconfigured`；挂载的配置如果 `gateway.mode` 不是 `local` 仍会启动。覆盖 CMD 以强制执行检查。
-- Gateway 网关容器是会话的真实来源（`~/.openclaw/agents/<agentId>/sessions/`）。
+- Gateway 网关容器是会话的真实来源（`~/.orionclaw/agents/<agentId>/sessions/`）。
 
 ## 智能体沙箱（主机 Gateway 网关 + Docker 工具）
 
@@ -320,7 +320,7 @@ pnpm test:docker:qr
 
 - 镜像：`openclaw-sandbox:bookworm-slim`
 - 每个智能体一个容器
-- 智能体工作区访问：`workspaceAccess: "none"`（默认）使用 `~/.openclaw/sandboxes`
+- 智能体工作区访问：`workspaceAccess: "none"`（默认）使用 `~/.orionclaw/sandboxes`
   - `"ro"` 保持沙箱工作区在 `/workspace` 并将智能体工作区只读挂载在 `/agent`（禁用 `write`/`edit`/`apply_patch`）
   - `"rw"` 将智能体工作区读写挂载在 `/workspace`
 - 自动清理：空闲 > 24h 或 年龄 > 7d
@@ -335,7 +335,7 @@ pnpm test:docker:qr
 - 默认 `docker.network` 是 `"none"`（无出站）。
 - `readOnlyRoot: true` 阻止包安装。
 - `user` 必须是 root 才能运行 `apt-get`（省略 `user` 或设置 `user: "0:0"`）。
-  当 `setupCommand`（或 docker 配置）更改时，OpenClaw 会自动重建容器，除非容器是**最近使用的**（在约 5 分钟内）。热容器会记录警告，包含确切的 `openclaw sandbox recreate ...` 命令。
+  当 `setupCommand`（或 docker 配置）更改时，OrionClaw 会自动重建容器，除非容器是**最近使用的**（在约 5 分钟内）。热容器会记录警告，包含确切的 `orionclaw sandbox recreate ...` 命令。
 
 ```json5
 {
@@ -345,7 +345,7 @@ pnpm test:docker:qr
         mode: "non-main", // off | non-main | all
         scope: "agent", // session | agent | shared（默认为 agent）
         workspaceAccess: "none", // none | ro | rw
-        workspaceRoot: "~/.openclaw/sandboxes",
+        workspaceRoot: "~/.orionclaw/sandboxes",
         docker: {
           image: "openclaw-sandbox:bookworm-slim",
           workdir: "/workspace",
@@ -526,7 +526,7 @@ docker build -t my-openclaw-sbx -f Dockerfile.sandbox .
 
 ## 故障排除
 
-- 镜像缺失：使用 [`scripts/sandbox-setup.sh`](https://github.com/openclaw/openclaw/blob/main/scripts/sandbox-setup.sh) 构建或设置 `agents.defaults.sandbox.docker.image`。
+- 镜像缺失：使用 [`scripts/sandbox-setup.sh`](https://github.com/aaronboshart1/orionclaw/blob/main/scripts/sandbox-setup.sh) 构建或设置 `agents.defaults.sandbox.docker.image`。
 - 容器未运行：它会按需为每个会话自动创建。
 - 沙箱中的权限错误：将 `docker.user` 设置为与你挂载的工作区所有权匹配的 UID:GID（或 chown 工作区文件夹）。
-- 找不到自定义工具：OpenClaw 使用 `sh -lc`（登录 shell）运行命令，这会 source `/etc/profile` 并可能重置 PATH。设置 `docker.env.PATH` 以在前面添加你的自定义工具路径（例如 `/custom/bin:/usr/local/share/npm-global/bin`），或在你的 Dockerfile 中在 `/etc/profile.d/` 下添加脚本。
+- 找不到自定义工具：OrionClaw 使用 `sh -lc`（登录 shell）运行命令，这会 source `/etc/profile` 并可能重置 PATH。设置 `docker.env.PATH` 以在前面添加你的自定义工具路径（例如 `/custom/bin:/usr/local/share/npm-global/bin`），或在你的 Dockerfile 中在 `/etc/profile.d/` 下添加脚本。

@@ -15,14 +15,14 @@ x-i18n:
 
 # Hooks
 
-Hooks 提供了一个可扩展的事件驱动系统，用于响应智能体命令和事件自动执行操作。Hooks 从目录中自动发现，可以通过 CLI 命令管理，类似于 OpenClaw 中 Skills 的工作方式。
+Hooks 提供了一个可扩展的事件驱动系统，用于响应智能体命令和事件自动执行操作。Hooks 从目录中自动发现，可以通过 CLI 命令管理，类似于 OrionClaw 中 Skills 的工作方式。
 
 ## 入门指南
 
 Hooks 是在事件发生时运行的小脚本。有两种类型：
 
 - **Hooks**（本页）：当智能体事件触发时在 Gateway 网关内运行，如 `/new`、`/reset`、`/stop` 或生命周期事件。
-- **Webhooks**：外部 HTTP webhooks，让其他系统触发 OpenClaw 中的工作。参见 [Webhook Hooks](/automation/webhook) 或使用 `openclaw webhooks` 获取 Gmail 助手命令。
+- **Webhooks**：外部 HTTP webhooks，让其他系统触发 OrionClaw 中的工作。参见 [Webhook Hooks](/automation/webhook) 或使用 `orionclaw webhooks` 获取 Gmail 助手命令。
 
 Hooks 也可以捆绑在插件中；参见 [插件](/tools/plugin#plugin-hooks)。
 
@@ -42,16 +42,16 @@ hooks 系统允许你：
 - 在发出 `/new` 时将会话上下文保存到记忆
 - 记录所有命令以供审计
 - 在智能体生命周期事件上触发自定义自动化
-- 在不修改核心代码的情况下扩展 OpenClaw 的行为
+- 在不修改核心代码的情况下扩展 OrionClaw 的行为
 
 ## 入门
 
 ### 捆绑的 Hooks
 
-OpenClaw 附带三个自动发现的捆绑 hooks：
+OrionClaw 附带三个自动发现的捆绑 hooks：
 
-- **💾 session-memory**：当你发出 `/new` 时将会话上下文保存到智能体工作区（默认 `~/.openclaw/workspace/memory/`）
-- **📝 command-logger**：将所有命令事件记录到 `~/.openclaw/logs/commands.log`
+- **💾 session-memory**：当你发出 `/new` 时将会话上下文保存到智能体工作区（默认 `~/.orionclaw/workspace/memory/`）
+- **📝 command-logger**：将所有命令事件记录到 `~/.orionclaw/logs/commands.log`
 - **🚀 boot-md**：当 Gateway 网关启动时运行 `BOOT.md`（需要启用内部 hooks）
 
 列出可用的 hooks：
@@ -80,15 +80,15 @@ openclaw hooks info session-memory
 
 ### 新手引导
 
-在新手引导期间（`openclaw onboard`），你将被提示启用推荐的 hooks。向导会自动发现符合条件的 hooks 并呈现供选择。
+在新手引导期间（`orionclaw onboard`），你将被提示启用推荐的 hooks。向导会自动发现符合条件的 hooks 并呈现供选择。
 
 ## Hook 发现
 
 Hooks 从三个目录自动发现（按优先级顺序）：
 
 1. **工作区 hooks**：`<workspace>/hooks/`（每智能体，最高优先级）
-2. **托管 hooks**：`~/.openclaw/hooks/`（用户安装，跨工作区共享）
-3. **捆绑 hooks**：`<openclaw>/dist/hooks/bundled/`（随 OpenClaw 附带）
+2. **托管 hooks**：`~/.orionclaw/hooks/`（用户安装，跨工作区共享）
+3. **捆绑 hooks**：`<openclaw>/dist/hooks/bundled/`（随 OrionClaw 附带）
 
 托管 hook 目录可以是**单个 hook** 或 **hook 包**（包目录）。
 
@@ -114,14 +114,14 @@ openclaw hooks install <path-or-spec>
 {
   "name": "@acme/my-hooks",
   "version": "0.1.0",
-  "openclaw": {
+  "orionclaw": {
     "hooks": ["./hooks/my-hook", "./hooks/other-hook"]
   }
 }
 ```
 
 每个条目指向包含 `HOOK.md` 和 `handler.ts`（或 `index.ts`）的 hook 目录。
-Hook 包可以附带依赖；它们将安装在 `~/.openclaw/hooks/<id>` 下。
+Hook 包可以附带依赖；它们将安装在 `~/.orionclaw/hooks/<id>` 下。
 
 ## Hook 结构
 
@@ -133,9 +133,9 @@ Hook 包可以附带依赖；它们将安装在 `~/.openclaw/hooks/<id>` 下。
 ---
 name: my-hook
 description: "Short description of what this hook does"
-homepage: https://docs.openclaw.ai/automation/hooks#my-hook
+homepage: https://docs.orionclaw.local/automation/hooks#my-hook
 metadata:
-  { "openclaw": { "emoji": "🔗", "events": ["command:new"], "requires": { "bins": ["node"] } } }
+  { "orionclaw": { "emoji": "🔗", "events": ["command:new"], "requires": { "bins": ["node"] } } }
 ---
 
 # My Hook
@@ -219,7 +219,7 @@ export default myHandler;
     senderId?: string,
     workspaceDir?: string,
     bootstrapFiles?: WorkspaceBootstrapFile[],
-    cfg?: OpenClawConfig
+    cfg?: OrionClawConfig
   }
 }
 ```
@@ -247,7 +247,7 @@ export default myHandler;
 
 ### 工具结果 Hooks（插件 API）
 
-这些 hooks 不是事件流监听器；它们让插件在 OpenClaw 持久化工具结果之前同步调整它们。
+这些 hooks 不是事件流监听器；它们让插件在 OrionClaw 持久化工具结果之前同步调整它们。
 
 - **`tool_result_persist`**：在工具结果写入会话记录之前转换它们。必须是同步的；返回更新后的工具结果负载或 `undefined` 保持原样。参见 [智能体循环](/concepts/agent-loop)。
 
@@ -266,13 +266,13 @@ export default myHandler;
 ### 1. 选择位置
 
 - **工作区 hooks**（`<workspace>/hooks/`）：每智能体，最高优先级
-- **托管 hooks**（`~/.openclaw/hooks/`）：跨工作区共享
+- **托管 hooks**（`~/.orionclaw/hooks/`）：跨工作区共享
 
 ### 2. 创建目录结构
 
 ```bash
-mkdir -p ~/.openclaw/hooks/my-hook
-cd ~/.openclaw/hooks/my-hook
+mkdir -p ~/.orionclaw/hooks/my-hook
+cd ~/.orionclaw/hooks/my-hook
 ```
 
 ### 3. 创建 HOOK.md
@@ -281,7 +281,7 @@ cd ~/.openclaw/hooks/my-hook
 ---
 name: my-hook
 description: "Does something useful"
-metadata: { "openclaw": { "emoji": "🎯", "events": ["command:new"] } }
+metadata: { "orionclaw": { "emoji": "🎯", "events": ["command:new"] } }
 ---
 
 # My Custom Hook
@@ -459,7 +459,7 @@ openclaw hooks disable command-logger
 
 **要求**：必须配置 `workspace.dir`
 
-**输出**：`<workspace>/memory/YYYY-MM-DD-slug.md`（默认为 `~/.openclaw/workspace`）
+**输出**：`<workspace>/memory/YYYY-MM-DD-slug.md`（默认为 `~/.orionclaw/workspace`）
 
 **功能**：
 
@@ -498,7 +498,7 @@ openclaw hooks enable session-memory
 
 **要求**：无
 
-**输出**：`~/.openclaw/logs/commands.log`
+**输出**：`~/.orionclaw/logs/commands.log`
 
 **功能**：
 
@@ -517,13 +517,13 @@ openclaw hooks enable session-memory
 
 ```bash
 # View recent commands
-tail -n 20 ~/.openclaw/logs/commands.log
+tail -n 20 ~/.orionclaw/logs/commands.log
 
 # Pretty-print with jq
-cat ~/.openclaw/logs/commands.log | jq .
+cat ~/.orionclaw/logs/commands.log | jq .
 
 # Filter by action
-grep '"action":"new"' ~/.openclaw/logs/commands.log | jq .
+grep '"action":"new"' ~/.orionclaw/logs/commands.log | jq .
 ```
 
 **启用**：
@@ -607,13 +607,13 @@ const handler: HookHandler = async (event) => {
 尽可能在元数据中指定确切事件：
 
 ```yaml
-metadata: { "openclaw": { "events": ["command:new"] } } # Specific
+metadata: { "orionclaw": { "events": ["command:new"] } } # Specific
 ```
 
 而不是：
 
 ```yaml
-metadata: { "openclaw": { "events": ["command"] } } # General - more overhead
+metadata: { "orionclaw": { "events": ["command"] } } # General - more overhead
 ```
 
 ## 调试
@@ -668,7 +668,7 @@ openclaw hooks info my-hook
 ./scripts/clawlog.sh -f
 
 # Other platforms
-tail -f ~/.openclaw/gateway.log
+tail -f ~/.orionclaw/gateway.log
 ```
 
 ### 直接测试 Hooks
@@ -744,14 +744,14 @@ Gateway 网关启动
 1. 检查目录结构：
 
    ```bash
-   ls -la ~/.openclaw/hooks/my-hook/
+   ls -la ~/.orionclaw/hooks/my-hook/
    # Should show: HOOK.md, handler.ts
    ```
 
 2. 验证 HOOK.md 格式：
 
    ```bash
-   cat ~/.openclaw/hooks/my-hook/HOOK.md
+   cat ~/.orionclaw/hooks/my-hook/HOOK.md
    # Should have YAML frontmatter with name and metadata
    ```
 
@@ -827,8 +827,8 @@ node -e "import('./path/to/handler.ts').then(console.log)"
 1. 创建 hook 目录：
 
    ```bash
-   mkdir -p ~/.openclaw/hooks/my-hook
-   mv ./hooks/handlers/my-handler.ts ~/.openclaw/hooks/my-hook/handler.ts
+   mkdir -p ~/.orionclaw/hooks/my-hook
+   mv ./hooks/handlers/my-handler.ts ~/.orionclaw/hooks/my-hook/handler.ts
    ```
 
 2. 创建 HOOK.md：
@@ -837,7 +837,7 @@ node -e "import('./path/to/handler.ts').then(console.log)"
    ---
    name: my-hook
    description: "My custom hook"
-   metadata: { "openclaw": { "emoji": "🎯", "events": ["command:new"] } }
+   metadata: { "orionclaw": { "emoji": "🎯", "events": ["command:new"] } }
    ---
 
    # My Hook
@@ -877,6 +877,6 @@ node -e "import('./path/to/handler.ts').then(console.log)"
 ## 另请参阅
 
 - [CLI 参考：hooks](/cli/hooks)
-- [捆绑 Hooks README](https://github.com/openclaw/openclaw/tree/main/src/hooks/bundled)
+- [捆绑 Hooks README](https://github.com/aaronboshart1/orionclaw/tree/main/src/hooks/bundled)
 - [Webhook Hooks](/automation/webhook)
 - [配置](/gateway/configuration#hooks)

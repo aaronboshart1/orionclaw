@@ -13,7 +13,7 @@ title: "TUI"
 1. Start the Gateway.
 
 ```bash
-openclaw gateway
+orionclaw gateway
 ```
 
 2. Open the TUI.
@@ -58,7 +58,7 @@ Use `--password` if your Gateway uses password auth.
 - Turn delivery on:
   - `/deliver on`
   - or the Settings panel
-  - or start with `openclaw tui --deliver`
+  - or start with `orionclaw tui --deliver`
 
 ## Pickers + overlays
 
@@ -151,13 +151,13 @@ Pass `--token` or `--password` explicitly. Missing explicit credentials is an er
 No output after sending a message:
 
 - Run `/status` in the TUI to confirm the Gateway is connected and idle/busy.
-- Check the Gateway logs: `openclaw logs --follow`.
-- Confirm the agent can run: `openclaw status` and `openclaw models status`.
+- Check the Gateway logs: `orionclaw logs --follow`.
+- Confirm the agent can run: `orionclaw status` and `orionclaw models status`.
 - If you expect messages in a chat channel, enable delivery (`/deliver on` or `--deliver`).
 - `--history-limit <n>`: History entries to load (default 200)
 
 ## Connection troubleshooting
 
 - `disconnected`: ensure the Gateway is running and your `--url/--token/--password` are correct.
-- No agents in picker: check `openclaw agents list` and your routing config.
+- No agents in picker: check `orionclaw agents list` and your routing config.
 - Empty session picker: you might be in global scope or have no sessions yet.

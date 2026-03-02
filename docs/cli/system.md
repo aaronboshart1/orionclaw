@@ -1,5 +1,5 @@
 ---
-summary: "CLI reference for `openclaw system` (system events, heartbeat, presence)"
+summary: "CLI reference for `orionclaw system` (system events, heartbeat, presence)"
 read_when:
   - You want to enqueue a system event without creating a cron job
   - You need to enable or disable heartbeats
@@ -7,7 +7,7 @@ read_when:
 title: "system"
 ---
 
-# `openclaw system`
+# `orionclaw system`
 
 System-level helpers for the Gateway: enqueue system events, control heartbeats,
 and view presence.

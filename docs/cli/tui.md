@@ -1,12 +1,12 @@
 ---
-summary: "CLI reference for `openclaw tui` (terminal UI connected to the Gateway)"
+summary: "CLI reference for `orionclaw tui` (terminal UI connected to the Gateway)"
 read_when:
   - You want a terminal UI for the Gateway (remote-friendly)
   - You want to pass url/token/session from scripts
 title: "tui"
 ---
 
-# `openclaw tui`
+# `orionclaw tui`
 
 Open the terminal UI connected to the Gateway.
 

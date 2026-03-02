@@ -144,7 +144,7 @@ if (candidatePids.length > 0) {
 const includePattern = /codex|claude/i;
 
 const excludePatterns = [
-  /openclaw-gateway/i,
+  /orionclaw-gateway/i,
   /signal-cli/i,
   /node_modules\/\.bin\/openclaw/i,
   /recover-orphaned-processes\.sh/i,

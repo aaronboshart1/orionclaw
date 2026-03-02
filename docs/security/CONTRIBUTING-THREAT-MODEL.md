@@ -1,6 +1,6 @@
-# Contributing to the OpenClaw Threat Model
+# Contributing to the OrionClaw Threat Model
 
-Thanks for helping make OpenClaw more secure. This threat model is a living document and we welcome contributions from anyone - you don't need to be a security expert.
+Thanks for helping make OrionClaw more secure. This threat model is a living document and we welcome contributions from anyone - you don't need to be a security expert.
 
 ## Ways to Contribute
 
@@ -11,13 +11,13 @@ Spotted an attack vector or risk we haven't covered? Open an issue on [openclaw/
 **Helpful to include (but not required):**
 
 - The attack scenario and how it could be exploited
-- Which parts of OpenClaw are affected (CLI, gateway, channels, ClawHub, MCP servers, etc.)
+- Which parts of OrionClaw are affected (CLI, gateway, channels, ClawHub, MCP servers, etc.)
 - How severe you think it is (low / medium / high / critical)
 - Any links to related research, CVEs, or real-world examples
 
 We'll handle the ATLAS mapping, threat IDs, and risk assessment during review. If you want to include those details, great - but it's not expected.
 
-> **This is for adding to the threat model, not reporting live vulnerabilities.** If you've found an exploitable vulnerability, see our [Trust page](https://trust.openclaw.ai) for responsible disclosure instructions.
+> **This is for adding to the threat model, not reporting live vulnerabilities.** If you've found an exploitable vulnerability, see our [Trust page](https://trust.orionclaw.local) for responsible disclosure instructions.
 
 ### Suggest a Mitigation
 
@@ -77,14 +77,14 @@ If you're unsure about the risk level, just describe the impact and we'll assess
 - [ATLAS Website](https://atlas.mitre.org/)
 - [ATLAS Techniques](https://atlas.mitre.org/techniques/)
 - [ATLAS Case Studies](https://atlas.mitre.org/studies/)
-- [OpenClaw Threat Model](./THREAT-MODEL-ATLAS.md)
+- [OrionClaw Threat Model](./THREAT-MODEL-ATLAS.md)
 
 ## Contact
 
-- **Security vulnerabilities:** See our [Trust page](https://trust.openclaw.ai) for reporting instructions
+- **Security vulnerabilities:** See our [Trust page](https://trust.orionclaw.local) for reporting instructions
 - **Threat model questions:** Open an issue on [openclaw/trust](https://github.com/openclaw/trust/issues)
 - **General chat:** Discord #security channel
 
 ## Recognition
 
-Contributors to the threat model are recognized in the threat model acknowledgments, release notes, and the OpenClaw security hall of fame for significant contributions.
+Contributors to the threat model are recognized in the threat model acknowledgments, release notes, and the OrionClaw security hall of fame for significant contributions.

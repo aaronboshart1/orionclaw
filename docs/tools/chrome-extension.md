@@ -1,5 +1,5 @@
 ---
-summary: "Chrome extension: let OpenClaw drive your existing Chrome tab"
+summary: "Chrome extension: let OrionClaw drive your existing Chrome tab"
 read_when:
   - You want the agent to drive an existing Chrome tab (toolbar button)
   - You need remote Gateway + local browser automation via Tailscale
@@ -9,7 +9,7 @@ title: "Chrome Extension"
 
 # Chrome extension (browser relay)
 
-The OpenClaw Chrome extension lets the agent control your **existing Chrome tabs** (your normal Chrome window) instead of launching a separate openclaw-managed Chrome profile.
+The OrionClaw Chrome extension lets the agent control your **existing Chrome tabs** (your normal Chrome window) instead of launching a separate openclaw-managed Chrome profile.
 
 Attach/detach happens via a **single Chrome toolbar button**.
 
@@ -21,7 +21,7 @@ There are three parts:
 - **Local relay server** (loopback CDP): bridges between the control server and the extension (`http://127.0.0.1:18792` by default)
 - **Chrome MV3 extension**: attaches to the active tab using `chrome.debugger` and pipes CDP messages to the relay
 
-OpenClaw then controls the attached tab through the normal `browser` tool surface (selecting the right profile).
+OrionClaw then controls the attached tab through the normal `browser` tool surface (selecting the right profile).
 
 ## Install / load (unpacked)
 
@@ -46,16 +46,16 @@ openclaw browser extension path
 
 ## Updates (no build step)
 
-The extension ships inside the OpenClaw release (npm package) as static files. There is no separate “build” step.
+The extension ships inside the OrionClaw release (npm package) as static files. There is no separate “build” step.
 
-After upgrading OpenClaw:
+After upgrading OrionClaw:
 
-- Re-run `openclaw browser extension install` to refresh the installed files under your OpenClaw state directory.
+- Re-run `orionclaw browser extension install` to refresh the installed files under your OrionClaw state directory.
 - Chrome → `chrome://extensions` → click “Reload” on the extension.
 
 ## Use it (set gateway token once)
 
-OpenClaw ships with a built-in browser profile named `chrome` that targets the extension relay on the default port.
+OrionClaw ships with a built-in browser profile named `chrome` that targets the extension relay on the default port.
 
 Before first attach, open extension Options and set:
 
@@ -64,7 +64,7 @@ Before first attach, open extension Options and set:
 
 Use it:
 
-- CLI: `openclaw browser --browser-profile chrome tabs`
+- CLI: `orionclaw browser --browser-profile chrome tabs`
 - Agent tool: `browser` with `profile="chrome"`
 
 If you want a different name or a different relay port, create your own profile:
@@ -91,7 +91,7 @@ Configure the extension to use the derived relay port in the extension Options p
 
 ## Attach / detach (toolbar button)
 
-- Open the tab you want OpenClaw to control.
+- Open the tab you want OrionClaw to control.
 - Click the extension icon.
   - Badge shows `ON` when attached.
 - Click again to detach.
@@ -104,7 +104,7 @@ Configure the extension to use the derived relay port in the extension Options p
 
 ## Badge + common errors
 
-- `ON`: attached; OpenClaw can drive that tab.
+- `ON`: attached; OrionClaw can drive that tab.
 - `…`: connecting to the local relay.
 - `!`: relay not reachable/authenticated (most common: relay server not running, or gateway token missing/wrong).
 
@@ -155,7 +155,7 @@ Options:
 
 Then ensure the tool isn’t denied by tool policy, and (if needed) call `browser` with `target="host"`.
 
-Debugging: `openclaw sandbox explain`
+Debugging: `orionclaw sandbox explain`
 
 ## Remote access tips
 
@@ -164,9 +164,9 @@ Debugging: `openclaw sandbox explain`
 
 ## How “extension path” works
 
-`openclaw browser extension path` prints the **installed** on-disk directory containing the extension files.
+`orionclaw browser extension path` prints the **installed** on-disk directory containing the extension files.
 
-The CLI intentionally does **not** print a `node_modules` path. Always run `openclaw browser extension install` first to copy the extension to a stable location under your OpenClaw state directory.
+The CLI intentionally does **not** print a `node_modules` path. Always run `orionclaw browser extension install` first to copy the extension to a stable location under your OrionClaw state directory.
 
 If you move or delete that install directory, Chrome will mark the extension as broken until you reload it from a valid path.
 

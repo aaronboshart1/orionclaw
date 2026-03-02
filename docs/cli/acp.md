@@ -8,7 +8,7 @@ title: "acp"
 
 # acp
 
-Run the [Agent Client Protocol (ACP)](https://agentclientprotocol.com/) bridge that talks to a OpenClaw Gateway.
+Run the [Agent Client Protocol (ACP)](https://agentclientprotocol.com/) bridge that talks to a OrionClaw Gateway.
 
 This command speaks ACP over stdio for IDEs and forwards prompts to the Gateway
 over WebSocket. It keeps ACP sessions mapped to Gateway session keys.
@@ -22,7 +22,7 @@ openclaw acp
 openclaw acp --url wss://gateway-host:18789 --token <token>
 
 # Remote Gateway (token from file)
-openclaw acp --url wss://gateway-host:18789 --token-file ~/.openclaw/gateway.token
+openclaw acp --url wss://gateway-host:18789 --token-file ~/.orionclaw/gateway.token
 
 # Attach to an existing session key
 openclaw acp --session agent:main:main
@@ -43,7 +43,7 @@ It spawns the ACP bridge and lets you type prompts interactively.
 openclaw acp client
 
 # Point the spawned bridge at a remote Gateway
-openclaw acp client --server-args --url wss://gateway-host:18789 --token-file ~/.openclaw/gateway.token
+openclaw acp client --server-args --url wss://gateway-host:18789 --token-file ~/.orionclaw/gateway.token
 
 # Override the server command (default: openclaw)
 openclaw acp client --server "node" --server-args openclaw.mjs acp --url ws://127.0.0.1:19001
@@ -59,17 +59,17 @@ Permission model (client debug mode):
 ## How to use this
 
 Use ACP when an IDE (or other client) speaks Agent Client Protocol and you want
-it to drive a OpenClaw Gateway session.
+it to drive a OrionClaw Gateway session.
 
 1. Ensure the Gateway is running (local or remote).
 2. Configure the Gateway target (config or flags).
-3. Point your IDE to run `openclaw acp` over stdio.
+3. Point your IDE to run `orionclaw acp` over stdio.
 
 Example config (persisted):
 
 ```bash
-openclaw config set gateway.remote.url wss://gateway-host:18789
-openclaw config set gateway.remote.token <token>
+orionclaw config set gateway.remote.url wss://gateway-host:18789
+orionclaw config set gateway.remote.token <token>
 ```
 
 Example direct run (no config write):
@@ -77,7 +77,7 @@ Example direct run (no config write):
 ```bash
 openclaw acp --url wss://gateway-host:18789 --token <token>
 # preferred for local process safety
-openclaw acp --url wss://gateway-host:18789 --token-file ~/.openclaw/gateway.token
+openclaw acp --url wss://gateway-host:18789 --token-file ~/.orionclaw/gateway.token
 ```
 
 ## Selecting agents
@@ -103,9 +103,9 @@ Add a custom ACP agent in `~/.config/zed/settings.json` (or use Zed’s Settings
 ```json
 {
   "agent_servers": {
-    "OpenClaw ACP": {
+    "OrionClaw ACP": {
       "type": "custom",
-      "command": "openclaw",
+      "command": "orionclaw",
       "args": ["acp"],
       "env": {}
     }
@@ -118,9 +118,9 @@ To target a specific Gateway or agent:
 ```json
 {
   "agent_servers": {
-    "OpenClaw ACP": {
+    "OrionClaw ACP": {
       "type": "custom",
-      "command": "openclaw",
+      "command": "orionclaw",
       "args": [
         "acp",
         "--url",
@@ -136,7 +136,7 @@ To target a specific Gateway or agent:
 }
 ```
 
-In Zed, open the Agent panel and select “OpenClaw ACP” to start a thread.
+In Zed, open the Agent panel and select “OrionClaw ACP” to start a thread.
 
 ## Session mapping
 
@@ -180,7 +180,7 @@ Security note:
 - `--token` and `--password` can be visible in local process listings on some systems.
 - Prefer `--token-file`/`--password-file` or environment variables (`OPENCLAW_GATEWAY_TOKEN`, `OPENCLAW_GATEWAY_PASSWORD`).
 - ACP runtime backend child processes receive `OPENCLAW_SHELL=acp`, which can be used for context-specific shell/profile rules.
-- `openclaw acp client` sets `OPENCLAW_SHELL=acp-client` on the spawned bridge process.
+- `orionclaw acp client` sets `OPENCLAW_SHELL=acp-client` on the spawned bridge process.
 
 ### `acp client` options
 

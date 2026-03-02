@@ -1,7 +1,7 @@
 ---
-summary: "Use NVIDIA's OpenAI-compatible API in OpenClaw"
+summary: "Use NVIDIA's OpenAI-compatible API in OrionClaw"
 read_when:
-  - You want to use NVIDIA models in OpenClaw
+  - You want to use NVIDIA models in OrionClaw
   - You need NVIDIA_API_KEY setup
 title: "NVIDIA"
 ---
@@ -16,7 +16,7 @@ Export the key once, then run onboarding and set an NVIDIA model:
 
 ```bash
 export NVIDIA_API_KEY="nvapi-..."
-openclaw onboard --auth-choice skip
+orionclaw onboard --auth-choice skip
 openclaw models set nvidia/nvidia/llama-3.1-nemotron-70b-instruct
 ```
 

@@ -1,7 +1,7 @@
 ---
-summary: "Symptom first troubleshooting hub for OpenClaw"
+summary: "Symptom first troubleshooting hub for OrionClaw"
 read_when:
-  - OpenClaw is not working and you need the fastest path to a fix
+  - OrionClaw is not working and you need the fastest path to a fix
   - You want a triage flow before diving into deep runbooks
 title: "Troubleshooting"
 ---
@@ -17,22 +17,22 @@ Run this exact ladder in order:
 ```bash
 openclaw status
 openclaw status --all
-openclaw gateway probe
-openclaw gateway status
-openclaw doctor
-openclaw channels status --probe
+orionclaw gateway probe
+orionclaw gateway status
+orionclaw doctor
+orionclaw channels status --probe
 openclaw logs --follow
 ```
 
 Good output in one line:
 
-- `openclaw status` → shows configured channels and no obvious auth errors.
-- `openclaw status --all` → full report is present and shareable.
-- `openclaw gateway probe` → expected gateway target is reachable.
-- `openclaw gateway status` → `Runtime: running` and `RPC probe: ok`.
-- `openclaw doctor` → no blocking config/service errors.
-- `openclaw channels status --probe` → channels report `connected` or `ready`.
-- `openclaw logs --follow` → steady activity, no repeating fatal errors.
+- `orionclaw status` → shows configured channels and no obvious auth errors.
+- `orionclaw status --all` → full report is present and shareable.
+- `orionclaw gateway probe` → expected gateway target is reachable.
+- `orionclaw gateway status` → `Runtime: running` and `RPC probe: ok`.
+- `orionclaw doctor` → no blocking config/service errors.
+- `orionclaw channels status --probe` → channels report `connected` or `ready`.
+- `orionclaw logs --follow` → steady activity, no repeating fatal errors.
 
 ## Anthropic long context 429
 
@@ -44,7 +44,7 @@ go to [/gateway/troubleshooting#anthropic-429-extra-usage-required-for-long-cont
 
 ```mermaid
 flowchart TD
-  A[OpenClaw is not working] --> B{What breaks first}
+  A[OrionClaw is not working] --> B{What breaks first}
   B --> C[No replies]
   B --> D[Dashboard or Control UI will not connect]
   B --> E[Gateway will not start or service not running]
@@ -66,8 +66,8 @@ flowchart TD
   <Accordion title="No replies">
     ```bash
     openclaw status
-    openclaw gateway status
-    openclaw channels status --probe
+    orionclaw gateway status
+    orionclaw channels status --probe
     openclaw pairing list --channel <channel> [--account <id>]
     openclaw logs --follow
     ```
@@ -96,15 +96,15 @@ flowchart TD
   <Accordion title="Dashboard or Control UI will not connect">
     ```bash
     openclaw status
-    openclaw gateway status
+    orionclaw gateway status
     openclaw logs --follow
-    openclaw doctor
-    openclaw channels status --probe
+    orionclaw doctor
+    orionclaw channels status --probe
     ```
 
     Good output looks like:
 
-    - `Dashboard: http://...` is shown in `openclaw gateway status`
+    - `Dashboard: http://...` is shown in `orionclaw gateway status`
     - `RPC probe: ok`
     - No auth loop in logs
 
@@ -125,10 +125,10 @@ flowchart TD
   <Accordion title="Gateway will not start or service installed but not running">
     ```bash
     openclaw status
-    openclaw gateway status
+    orionclaw gateway status
     openclaw logs --follow
-    openclaw doctor
-    openclaw channels status --probe
+    orionclaw doctor
+    orionclaw channels status --probe
     ```
 
     Good output looks like:
@@ -154,10 +154,10 @@ flowchart TD
   <Accordion title="Channel connects but messages do not flow">
     ```bash
     openclaw status
-    openclaw gateway status
+    orionclaw gateway status
     openclaw logs --follow
-    openclaw doctor
-    openclaw channels status --probe
+    orionclaw doctor
+    orionclaw channels status --probe
     ```
 
     Good output looks like:
@@ -182,7 +182,7 @@ flowchart TD
   <Accordion title="Cron or heartbeat did not fire or did not deliver">
     ```bash
     openclaw status
-    openclaw gateway status
+    orionclaw gateway status
     openclaw cron status
     openclaw cron list
     openclaw cron runs --id <jobId> --limit 20
@@ -213,9 +213,9 @@ flowchart TD
   <Accordion title="Node is paired but tool fails camera canvas screen exec">
     ```bash
     openclaw status
-    openclaw gateway status
-    openclaw nodes status
-    openclaw nodes describe --node <idOrNameOrIp>
+    orionclaw gateway status
+    orionclaw nodes status
+    orionclaw nodes describe --node <idOrNameOrIp>
     openclaw logs --follow
     ```
 
@@ -243,10 +243,10 @@ flowchart TD
   <Accordion title="Browser tool fails">
     ```bash
     openclaw status
-    openclaw gateway status
+    orionclaw gateway status
     openclaw browser status
     openclaw logs --follow
-    openclaw doctor
+    orionclaw doctor
     ```
 
     Good output looks like:
