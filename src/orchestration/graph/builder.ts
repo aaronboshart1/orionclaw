@@ -4,17 +4,19 @@
  * Fluent API for constructing workflow graphs without manually wiring edges.
  */
 
-import { WorkflowGraph } from './workflow-graph.js';
-import type { Node, NodeResult } from '../types.js';
-import { NodeType, EdgeCondition } from '../types.js';
+import type { Node, NodeResult } from "../types.js";
+import { NodeType, EdgeCondition } from "../types.js";
+import { WorkflowGraph } from "./workflow-graph.js";
+
+// Global counter to ensure unique IDs across all builder instances
+let globalCounter = 0;
 
 export class WorkflowBuilder {
   private graph: WorkflowGraph = new WorkflowGraph();
   private lastNodeId: string | null = null;
-  private nodeCounter = 0;
 
   private genId(prefix: string): string {
-    return `${prefix}_${++this.nodeCounter}`;
+    return `${prefix}_${++globalCounter}`;
   }
 
   /** Add an LLM agent node, auto-chained to the previous node. */
@@ -22,7 +24,7 @@ export class WorkflowBuilder {
     name: string,
     opts: { prompt?: string; model?: string; tools?: string[]; agentName?: string } = {},
   ): this {
-    const id = this.genId('agent');
+    const id = this.genId("agent");
     this.graph.addNode({ id, type: NodeType.AGENT, name, ...opts });
     if (this.lastNodeId) {
       this.graph.addEdge({ source: this.lastNodeId, target: id, condition: EdgeCondition.ALWAYS });
@@ -39,7 +41,7 @@ export class WorkflowBuilder {
       tools?: string[];
     } = {},
   ): this {
-    const id = this.genId('tool');
+    const id = this.genId("tool");
     this.graph.addNode({ id, type: NodeType.TOOL, name, ...opts });
     if (this.lastNodeId) {
       this.graph.addEdge({ source: this.lastNodeId, target: id, condition: EdgeCondition.ALWAYS });
@@ -50,17 +52,21 @@ export class WorkflowBuilder {
 
   /** Fan-out to parallel branches with automatic JOIN + REDUCER. */
   parallel(...branchFns: Array<(b: WorkflowBuilder) => void>): this {
-    const fanOutId = this.genId('parallel');
-    this.graph.addNode({ id: fanOutId, type: NodeType.PARALLEL, name: 'parallel' });
+    const fanOutId = this.genId("parallel");
+    this.graph.addNode({ id: fanOutId, type: NodeType.PARALLEL, name: "parallel" });
     if (this.lastNodeId) {
-      this.graph.addEdge({ source: this.lastNodeId, target: fanOutId, condition: EdgeCondition.ALWAYS });
+      this.graph.addEdge({
+        source: this.lastNodeId,
+        target: fanOutId,
+        condition: EdgeCondition.ALWAYS,
+      });
     }
 
-    const joinId = this.genId('join');
-    this.graph.addNode({ id: joinId, type: NodeType.JOIN, name: 'join' });
+    const joinId = this.genId("join");
+    this.graph.addNode({ id: joinId, type: NodeType.JOIN, name: "join" });
 
-    const reducerId = this.genId('reducer');
-    this.graph.addNode({ id: reducerId, type: NodeType.REDUCER, name: 'reducer' });
+    const reducerId = this.genId("reducer");
+    this.graph.addNode({ id: reducerId, type: NodeType.REDUCER, name: "reducer" });
     this.graph.addEdge({ source: joinId, target: reducerId, condition: EdgeCondition.ALWAYS });
 
     for (const fn of branchFns) {
@@ -69,8 +75,12 @@ export class WorkflowBuilder {
       const subGraph = sub.buildRaw();
 
       // Merge sub-graph nodes and edges into main graph
-      for (const node of subGraph.getNodes()) this.graph.addNode(node);
-      for (const edge of subGraph.getEdges()) this.graph.addEdge(edge);
+      for (const node of subGraph.getNodes()) {
+        this.graph.addNode(node);
+      }
+      for (const edge of subGraph.getEdges()) {
+        this.graph.addEdge(edge);
+      }
 
       // Connect fanOut → first node(s) of branch
       for (const entry of subGraph.getEntryNodes()) {
@@ -79,7 +89,11 @@ export class WorkflowBuilder {
 
       // Connect terminal node(s) of branch → join
       for (const terminal of subGraph.getTerminalNodes()) {
-        this.graph.addEdge({ source: terminal.id, target: joinId, condition: EdgeCondition.ALWAYS });
+        this.graph.addEdge({
+          source: terminal.id,
+          target: joinId,
+          condition: EdgeCondition.ALWAYS,
+        });
       }
     }
 
@@ -92,7 +106,7 @@ export class WorkflowBuilder {
     name: string,
     opts: { routeFn?: (results: Map<string, NodeResult>) => Promise<string> } = {},
   ): this {
-    const id = this.genId('router');
+    const id = this.genId("router");
     this.graph.addNode({ id, type: NodeType.ROUTER, name, routeFn: opts.routeFn });
     if (this.lastNodeId) {
       this.graph.addEdge({ source: this.lastNodeId, target: id, condition: EdgeCondition.ALWAYS });
@@ -102,16 +116,12 @@ export class WorkflowBuilder {
   }
 
   /** Define a routing target from the current (router) node. Does not advance lastNodeId. */
-  routeTo(
-    targetLabel: string,
-    nodeConfig: Partial<Node> & { name: string },
-  ): this {
-    const id = this.genId('route_target');
+  routeTo(targetLabel: string, nodeConfig: Partial<Node> & { name: string }): this {
+    const id = this.genId("route_target");
     this.graph.addNode({
+      ...nodeConfig,
       id,
       type: nodeConfig.type ?? NodeType.AGENT,
-      ...nodeConfig,
-      id, // ensure id override
     });
     if (this.lastNodeId) {
       this.graph.addEdge({
@@ -126,7 +136,7 @@ export class WorkflowBuilder {
 
   /** Add a human approval checkpoint. */
   humanGate(name: string, prompt?: string): this {
-    const id = this.genId('human');
+    const id = this.genId("human");
     this.graph.addNode({ id, type: NodeType.HUMAN, name, prompt });
     if (this.lastNodeId) {
       this.graph.addEdge({ source: this.lastNodeId, target: id, condition: EdgeCondition.ALWAYS });
@@ -140,7 +150,7 @@ export class WorkflowBuilder {
     const sub = new WorkflowBuilder();
     builderFn(sub);
     const subData = sub.buildRaw().toJSON();
-    const id = this.genId('subgraph');
+    const id = this.genId("subgraph");
     this.graph.addNode({ id, type: NodeType.SUBGRAPH, name, subgraph: subData });
     if (this.lastNodeId) {
       this.graph.addEdge({ source: this.lastNodeId, target: id, condition: EdgeCondition.ALWAYS });
@@ -169,7 +179,7 @@ export class WorkflowBuilder {
   build(): WorkflowGraph {
     const errors = this.graph.validate();
     if (errors.length > 0) {
-      throw new Error(`Invalid workflow graph:\n${errors.join('\n')}`);
+      throw new Error(`Invalid workflow graph:\n${errors.join("\n")}`);
     }
     return this.graph;
   }
@@ -182,7 +192,9 @@ export class WorkflowBuilder {
     agents: Array<{ name: string; prompt?: string; model?: string }>,
   ): WorkflowGraph {
     const b = new WorkflowBuilder();
-    for (const a of agents) b.agent(a.name, a);
+    for (const a of agents) {
+      b.agent(a.name, a);
+    }
     return b.build();
   }
 
@@ -193,9 +205,7 @@ export class WorkflowBuilder {
     _reducer?: { prompt?: string; model?: string },
   ): WorkflowGraph {
     const b = new WorkflowBuilder();
-    b.parallel(
-      ...workers.map(w => (sub: WorkflowBuilder) => sub.agent(w.name, w)),
-    );
+    b.parallel(...workers.map((w) => (sub: WorkflowBuilder) => sub.agent(w.name, w)));
     return b.build();
   }
 
@@ -208,12 +218,12 @@ export class WorkflowBuilder {
   ): WorkflowGraph {
     const b = new WorkflowBuilder();
     b.parallel(
-      ...topics.map(t => (sub: WorkflowBuilder) =>
-        sub.agent(`research-${t}`, { prompt: `Research: ${t}` }),
+      ...topics.map(
+        (t) => (sub: WorkflowBuilder) => sub.agent(`research-${t}`, { prompt: `Research: ${t}` }),
       ),
     );
     b.agent(decider.name, decider);
-    b.humanGate('approval', 'Review the decision before proceeding');
+    b.humanGate("approval", "Review the decision before proceeding");
     b.agent(builder.name, builder);
     return b.build();
   }
