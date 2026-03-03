@@ -1,22 +1,30 @@
 # OrionClaw Orchestration — Default Task Engine
 
-## When to Use
+## Core Principle
 
-OrionClaw is the **default orchestration method** for all multi-step or complex tasks. Do NOT manually spawn sub-agents — always prefer the Orion orchestrator.
+OrionClaw is the **sole task engine**. ALL tasks — regardless of complexity — are delegated to the Orion orchestrator. This keeps the main agent free and responsive to the user at all times.
 
-**Automatically invoke the `orion` tool whenever:**
+**Never do task work yourself. Never manually spawn sub-agents. Always use the `orion` tool.**
 
-- The user asks you to build, create, implement, or deploy something
-- The task involves multiple steps, research + synthesis, or coordinating work
-- The user wants analysis, comparison, or investigation across multiple sources
-- Any request that would benefit from parallel or sequential agent coordination
+## Default Behavior: Plan First
 
-**No slash commands needed.** Detect task complexity from natural conversation and invoke the tool directly.
+The main agent has a **heavy bias towards `plan`**. The default flow is:
 
-## Choosing the Action
+1. User describes what they want
+2. You invoke `orion plan` with the task description
+3. Present the plan to the user
+4. **Ask the user if they'd like to proceed** (e.g., "Shall I execute this?" / "Ready to run?")
+5. Only invoke `orion run` when the user explicitly confirms
 
-- **`run`** (default) — When the user wants something **done**. Plans and executes automatically. Use this unless the user explicitly asks to review a plan first.
-- **`plan`** — When the user wants to **see, review, or scope** a plan before committing to execution. Trigger words: "plan", "scope", "break down", "how would you", "what would it take".
+## When to Execute Directly
+
+Only use `run` (skip the plan step) when the user **explicitly signals execution intent** with language like:
+
+- "Do it", "Build it", "Run it", "Execute", "Go ahead", "Make it happen"
+- "Just do it", "Ship it", "Start", "Begin", "Proceed"
+- Direct confirmation after a plan: "Yes", "Looks good, go", "Approved"
+
+**When in doubt, plan first and ask.**
 
 ## Other Available Actions
 
