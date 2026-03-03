@@ -718,6 +718,22 @@ function buildChatCommands(): ChatCommandDefinition[] {
       formatArgs: COMMAND_ARG_FORMATTERS.queue,
     }),
     defineChatCommand({
+      key: "orion",
+      description:
+        "OrionClaw orchestration engine. Subcommands: plan, run, status, history, lessons, agents.",
+      textAlias: "/orion",
+      scope: "text",
+      category: "tools",
+      args: [
+        {
+          name: "subcommand",
+          description: "Action to perform (plan, run, status, history, lessons, agents)",
+          type: "string",
+          captureRemaining: true,
+        },
+      ],
+    }),
+    defineChatCommand({
       key: "bash",
       description: "Run host shell commands (host-only).",
       textAlias: "/bash",
