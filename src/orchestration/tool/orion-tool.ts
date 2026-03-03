@@ -5,6 +5,7 @@
  * Subcommands: plan, run, status, history, lessons, agents
  */
 
+import crypto from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { Type } from "@sinclair/typebox";
@@ -196,10 +197,12 @@ async function handleRun(
   const assembler = new ContextAssembler(state, memoryProvider, hindsightProcessor);
 
   const spawnFn = await resolveSpawnFn(injectedSpawnFn);
+  const executionId = crypto.randomUUID();
   const bridge = new OpenClawBridge({
     spawnFn,
     context: spawnCtx,
     defaultModel: config?.defaultModel,
+    executionId,
   });
 
   const executor = new GraphExecutor({

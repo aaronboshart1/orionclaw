@@ -5,14 +5,14 @@
  * Uses spawnSubagentDirect() with mode:'run' for synchronous execution.
  */
 
-import type { Node, NodeResult } from '../types.js';
-import { NodeStatus } from '../types.js';
-import type { AgentBridge } from '../graph/executor.js';
 import type {
   SpawnSubagentParams,
   SpawnSubagentContext,
   SpawnSubagentResult,
-} from '../../agents/subagent-spawn.js';
+} from "../../agents/subagent-spawn.js";
+import type { AgentBridge } from "../graph/executor.js";
+import type { Node, NodeResult } from "../types.js";
+import { NodeStatus } from "../types.js";
 
 /**
  * Function signature matching spawnSubagentDirect from OpenClaw.
@@ -28,6 +28,7 @@ export interface OpenClawBridgeOptions {
   context: SpawnSubagentContext;
   defaultModel?: string;
   defaultTimeoutSeconds?: number;
+  executionId?: string;
 }
 
 export class OpenClawBridge implements AgentBridge {
@@ -35,25 +36,40 @@ export class OpenClawBridge implements AgentBridge {
   private context: SpawnSubagentContext;
   private defaultModel: string;
   private defaultTimeoutSeconds: number;
+  private executionId: string;
   private sessionKeys: Map<string, string> = new Map();
 
   constructor(opts: OpenClawBridgeOptions) {
     this.spawnFn = opts.spawnFn;
     this.context = opts.context;
-    this.defaultModel = opts.defaultModel ?? 'anthropic/claude-sonnet-4-20250514';
+    this.defaultModel = opts.defaultModel ?? "anthropic/claude-sonnet-4-20250514";
     this.defaultTimeoutSeconds = opts.defaultTimeoutSeconds ?? 300;
+    this.executionId = opts.executionId ?? "default";
   }
 
   async execute(node: Node, context: string): Promise<NodeResult> {
     const startedAt = new Date().toISOString();
 
+    const progressPath = `~/.orionclaw/workspace/orchestration/active/${this.executionId}/${node.id}.jsonl`;
+    const progressInstructions = [
+      "",
+      "## Progress Reporting",
+      `After EVERY significant action, append ONE JSON line to: ${progressPath}`,
+      'Entry format: {"ts":"ISO","type":"status|finding|done|error","msg":"...","pct":N}',
+      'First entry must be: {"ts":"ISO","type":"status","msg":"Started","pct":0}',
+      'Last entry must be type "done" or "error".',
+      "",
+    ].join("\n");
+
+    const taskWithProgress = context + progressInstructions;
+
     const params: SpawnSubagentParams = {
-      task: context,
+      task: taskWithProgress,
       label: node.name,
       agentId: node.agentName,
       model: node.model ?? this.defaultModel,
-      mode: 'run',
-      cleanup: 'delete',
+      mode: "run",
+      cleanup: "delete",
       runTimeoutSeconds: node.timeoutMs
         ? Math.ceil(node.timeoutMs / 1000)
         : this.defaultTimeoutSeconds,
@@ -62,27 +78,27 @@ export class OpenClawBridge implements AgentBridge {
     if (node.tools && node.tools.length > 0) {
       // Tools are passed via the task description since SpawnSubagentParams
       // doesn't have a direct tools array — they're resolved by the agent runtime.
-      params.task = `Tools available: ${node.tools.join(', ')}\n\n${context}`;
+      params.task = `Tools available: ${node.tools.join(", ")}\n\n${context}`;
     }
 
     try {
       const result = await this.spawnFn(params, this.context);
 
-      if (result.status === 'forbidden') {
+      if (result.status === "forbidden") {
         return {
           nodeId: node.id,
           status: NodeStatus.FAILED,
-          error: `Spawn forbidden: ${result.error ?? 'unknown reason'}`,
+          error: `Spawn forbidden: ${result.error ?? "unknown reason"}`,
           startedAt,
           completedAt: new Date().toISOString(),
         };
       }
 
-      if (result.status === 'error') {
+      if (result.status === "error") {
         return {
           nodeId: node.id,
           status: NodeStatus.FAILED,
-          error: result.error ?? 'Spawn error',
+          error: result.error ?? "Spawn error",
           startedAt,
           completedAt: new Date().toISOString(),
         };
@@ -101,7 +117,7 @@ export class OpenClawBridge implements AgentBridge {
       return {
         nodeId: node.id,
         status: NodeStatus.COMPLETED,
-        output: result.runId ?? result.childSessionKey ?? 'completed',
+        output: result.runId ?? result.childSessionKey ?? "completed",
         startedAt,
         completedAt,
         durationMs,
