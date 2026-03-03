@@ -1,8 +1,10 @@
 import type { OpenClawConfig } from "../config/config.js";
+import { createOrionTool } from "../orchestration/tool/orion-tool.js";
 import { resolvePluginTools } from "../plugins/tools.js";
 import type { GatewayMessageChannel } from "../utils/message-channel.js";
 import { resolveSessionAgentId } from "./agent-scope.js";
 import type { SandboxFsBridge } from "./sandbox/fs-bridge.js";
+import { spawnSubagentDirect } from "./subagent-spawn.js";
 import type { ToolFsPolicy } from "./tool-fs-policy.js";
 import { createAgentsListTool } from "./tools/agents-list-tool.js";
 import { createBrowserTool } from "./tools/browser-tool.js";
@@ -187,6 +189,20 @@ export function createOpenClawTools(options?: {
     ...(webFetchTool ? [webFetchTool] : []),
     ...(imageTool ? [imageTool] : []),
     ...(pdfTool ? [pdfTool] : []),
+    createOrionTool({
+      agentSessionKey: options?.agentSessionKey,
+      agentChannel: options?.agentChannel,
+      agentAccountId: options?.agentAccountId,
+      agentTo: options?.agentTo,
+      agentThreadId: options?.agentThreadId,
+      agentGroupId: options?.agentGroupId,
+      agentGroupChannel: options?.agentGroupChannel,
+      agentGroupSpace: options?.agentGroupSpace,
+      config: (options?.config as Record<string, unknown> | undefined)?.orchestration as
+        | import("../orchestration/types.js").OrionClawConfig
+        | undefined,
+      spawnFn: spawnSubagentDirect,
+    }),
   ];
 
   const pluginTools = resolvePluginTools({
