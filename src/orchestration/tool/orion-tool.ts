@@ -378,30 +378,30 @@ export function createOrionTool(opts?: OrionToolOptions): AnyAgentTool {
               return jsonResult({ error: "task parameter required for plan action" });
             }
             const result = await handlePlan(task, config);
-            return { content: [{ type: "text", text: result }] };
+            return { content: [{ type: "text", text: result }], details: {} };
           }
           case "run": {
             if (!task) {
               return jsonResult({ error: "task parameter required for run action" });
             }
             const result = await handleRun(task, spawnCtx, config, injectedSpawnFn);
-            return { content: [{ type: "text", text: result }] };
+            return { content: [{ type: "text", text: result }], details: {} };
           }
           case "status": {
             const result = await handleStatus(config);
-            return { content: [{ type: "text", text: result }] };
+            return { content: [{ type: "text", text: result }], details: {} };
           }
           case "history": {
             const result = await handleHistory(config);
-            return { content: [{ type: "text", text: result }] };
+            return { content: [{ type: "text", text: result }], details: {} };
           }
           case "lessons": {
             const result = await handleLessons(query ?? task, config);
-            return { content: [{ type: "text", text: result }] };
+            return { content: [{ type: "text", text: result }], details: {} };
           }
           case "agents": {
             const result = await handleAgents(config);
-            return { content: [{ type: "text", text: result }] };
+            return { content: [{ type: "text", text: result }], details: {} };
           }
           default:
             return jsonResult({
