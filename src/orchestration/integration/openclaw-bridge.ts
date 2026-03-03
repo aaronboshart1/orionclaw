@@ -42,7 +42,7 @@ export class OpenClawBridge implements AgentBridge {
   constructor(opts: OpenClawBridgeOptions) {
     this.spawnFn = opts.spawnFn;
     this.context = opts.context;
-    this.defaultModel = opts.defaultModel ?? "anthropic/claude-sonnet-4-6";
+    this.defaultModel = opts.defaultModel ?? "anthropic/claude-opus-4-6";
     this.defaultTimeoutSeconds = opts.defaultTimeoutSeconds ?? 300;
     this.executionId = opts.executionId ?? "default";
   }
