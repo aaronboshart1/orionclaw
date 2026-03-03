@@ -1,45 +1,34 @@
-# OrionClaw Orchestration Skill
+# OrionClaw Orchestration — Default Task Engine
 
-## Trigger
-`/orion` — Graph-based multi-agent orchestration commands.
+## When to Use
 
-## Commands
+OrionClaw is the **default orchestration method** for all multi-step or complex tasks. Do NOT manually spawn sub-agents — always prefer the Orion orchestrator.
 
-### `/orion plan <task description>`
-Analyze a task and generate an orchestration plan (workflow graph) without executing it.
-Shows the selected pattern, node decomposition, and estimated cost.
+**Automatically invoke the `orion` tool whenever:**
 
-### `/orion run <task description>`
-Plan and execute a workflow for the given task. Spawns agents, tracks progress, and returns results.
+- The user asks you to build, create, implement, or deploy something
+- The task involves multiple steps, research + synthesis, or coordinating work
+- The user wants analysis, comparison, or investigation across multiple sources
+- Any request that would benefit from parallel or sequential agent coordination
 
-### `/orion status [workflow_id]`
-Show the current status of a running workflow or the most recent one.
-Displays node statuses, progress percentage, and elapsed time.
+**No slash commands needed.** Detect task complexity from natural conversation and invoke the tool directly.
 
-### `/orion history [limit]`
-List recent workflow executions with their outcomes. Default limit: 10.
+## Choosing the Action
 
-### `/orion lessons [query]`
-Search or list hindsight lessons learned from past workflows.
-Without a query, shows the most recent lessons sorted by confidence.
+- **`run`** (default) — When the user wants something **done**. Plans and executes automatically. Use this unless the user explicitly asks to review a plan first.
+- **`plan`** — When the user wants to **see, review, or scope** a plan before committing to execution. Trigger words: "plan", "scope", "break down", "how would you", "what would it take".
 
-### `/orion agents`
-List all registered agents with their capabilities, performance stats, and cost tiers.
+## Other Available Actions
 
-## Examples
-
-```
-/orion plan Research the top 5 JavaScript frameworks and write a comparison report
-/orion run Build a landing page with hero section, features, and pricing
-/orion status abc123
-/orion history 5
-/orion lessons "deployment failures"
-/orion agents
-```
+- **`status [workflow_id]`** — Check progress of a running or recent workflow.
+- **`history [limit]`** — List recent workflow executions and outcomes.
+- **`lessons [query]`** — Search hindsight lessons from past workflows.
+- **`agents`** — List registered agents with capabilities and performance stats.
 
 ## How It Works
 
 OrionClaw decomposes tasks into directed acyclic graphs (DAGs) where:
+
 - **Nodes** are agents, tools, routers, or human checkpoints
 - **Edges** define data flow and conditions
 - **State** flows between nodes with typed entries

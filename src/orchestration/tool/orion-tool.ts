@@ -362,7 +362,7 @@ export function createOrionTool(opts?: OrionToolOptions): AnyAgentTool {
     name: "orion",
     label: "OrionClaw Orchestration",
     description:
-      "Graph-based multi-agent orchestration engine. Actions: plan (generate workflow graph), run (plan + execute), status (active workflows), history (completed), lessons (hindsight), agents (registered agents).",
+      "Graph-based multi-agent orchestration engine. USE THIS PROACTIVELY for any multi-step or complex task — do not wait for explicit commands. Default action is 'run' (plan + execute) when the user wants something done. Use 'plan' only when the user explicitly wants to review/scope a plan before execution. Other actions: status (check active workflows), history (past executions), lessons (hindsight from past workflows), agents (list registered agents).",
     parameters: OrionToolSchema,
     async execute(_toolCallId: string, args: Record<string, unknown>) {
       const action = readStringParam(args, "action", {
